@@ -13,3 +13,12 @@ public enum eGamePart {
 	Ending,     // エンディングパート
 	Max,
 }
+
+public enum eTerrain {
+	Invalid = -1,
+	Passage,    // 通路
+	Room,       // 部屋
+	Wall,       // 壁
+	Stair,      // 階段
+	Max,
+}

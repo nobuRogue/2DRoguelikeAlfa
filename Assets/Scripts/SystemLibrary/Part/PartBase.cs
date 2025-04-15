@@ -15,15 +15,17 @@ public abstract class PartBase : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public virtual async UniTask Initialize() {
+		gameObject.SetActive(false);
 		await UniTask.CompletedTask;
 	}
 
 	/// <summary>
-	/// パート実行前にじゅんぴ
+	/// パート実行前に準備
 	/// パートに遷移する前に呼ばれる
 	/// </summary>
 	/// <returns></returns>
 	public virtual async UniTask Setup() {
+		gameObject.SetActive(true);
 		await UniTask.CompletedTask;
 	}
 
@@ -38,6 +40,7 @@ public abstract class PartBase : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public virtual async UniTask Teardown() {
+		gameObject.SetActive(false);
 		await UniTask.CompletedTask;
 	}
 }

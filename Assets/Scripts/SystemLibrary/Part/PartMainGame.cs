@@ -10,7 +10,7 @@ using Cysharp.Threading.Tasks;
 public class PartMainGame : PartBase {
 
 	public override async UniTask Execute() {
-		// 
+		// マップの表示
 		await UniTask.CompletedTask;
 	}
 

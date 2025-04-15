@@ -13,6 +13,7 @@ using UnityEngine;
 public class PartTitle : PartBase {
 	public override async UniTask Execute() {
 		// メインパートへ遷移
+		UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
 		await UniTask.CompletedTask;
 	}
 }

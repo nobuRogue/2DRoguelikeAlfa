@@ -29,12 +29,12 @@ public class SystemManager : MonoBehaviour {
 			SystemObject origin = _systemObjectList[i];
 			if (origin == null) continue;
 			// システムオブジェクト生成
-			SystemObject createObject = Instantiate(origin);
+			SystemObject createObject = Instantiate(origin, transform);
 			// 初期化
 			await createObject.Initialize();
 		}
-		// 初期パートの実行
-
+		// スタンバイパートの実行
+		UniTask task = PartManager.instance.TransitionPart(eGamePart.Standby);
 	}
 
 }

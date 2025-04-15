@@ -10,7 +10,8 @@ using Cysharp.Threading.Tasks;
 public class PartStandby : PartBase {
 
 	public override async UniTask Execute() {
-		// タイトルパートへ遷移
+		// タイトルパートへ遷移、終了待ちはしない
+		UniTask task = PartManager.instance.TransitionPart(eGamePart.Title);
 		await UniTask.CompletedTask;
 	}
 
