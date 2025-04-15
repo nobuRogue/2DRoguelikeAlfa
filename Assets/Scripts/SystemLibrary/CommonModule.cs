@@ -22,6 +22,16 @@ public class CommonModule {
 	}
 
 	/// <summary>
+	/// リストに対して有効なインデクスか判定
+	/// </summary>
+	/// <returns></returns>
+	public static bool IsEnableIndex<T>(List<T> list, int index) {
+		if (IsEmpty(list)) return false;
+
+		return index >= 0 && list.Count > index;
+	}
+
+	/// <summary>
 	/// 複数のタスクの終了を待つ
 	/// </summary>
 	/// <param name="taskList"></param>
