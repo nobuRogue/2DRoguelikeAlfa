@@ -25,6 +25,7 @@ public class PartMainGame : PartBase {
 
 	public override async UniTask Execute() {
 		// マップの表示
+		MapCreater.CreateMap();
 		await UniTask.CompletedTask;
 	}
 

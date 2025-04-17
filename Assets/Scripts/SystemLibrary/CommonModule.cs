@@ -21,6 +21,10 @@ public class CommonModule {
 		return list == null || list.Count <= 0;
 	}
 
+	public static bool IsEmpty<T>(T[] array) {
+		return array == null || array.Length <= 0;
+	}
+
 	/// <summary>
 	/// リストに対して有効なインデクスか判定
 	/// </summary>
@@ -29,6 +33,12 @@ public class CommonModule {
 		if (IsEmpty(list)) return false;
 
 		return index >= 0 && list.Count > index;
+	}
+
+	public static bool IsEnableIndex<T>(T[] array, int index) {
+		if (IsEmpty(array)) return false;
+
+		return index >= 0 && array.Length > index;
 	}
 
 	/// <summary>

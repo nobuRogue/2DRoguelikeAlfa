@@ -43,10 +43,10 @@ public class MapSquareData {
 	/// </summary>
 	/// <param name="setTerrain"></param>
 
-	public void SetTerrain(eTerrain setTerrain) {
+	public void SetTerrain(eTerrain setTerrain, int spriteIndex = -1) {
 		terrain = setTerrain;
 		// オブジェクトの地形変更
-		GetObject()?.SetTerrain(terrain);
+		GetObject()?.SetTerrain(terrain, spriteIndex);
 	}
 
 	/// <summary>

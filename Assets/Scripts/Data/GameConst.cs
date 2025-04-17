@@ -13,5 +13,6 @@ public class GameConst {
 	// マップ関連
 	public static readonly int MAP_SQUARE_HEIGHT_COUNT = 32;
 	public static readonly int MAP_SQUARE_WIDTH_COUNT = 32;
+	public static readonly int AREA_DEVIDE_COUNT = 8;
 
 }

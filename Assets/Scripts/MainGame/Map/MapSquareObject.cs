@@ -29,8 +29,8 @@ public class MapSquareObject : MonoBehaviour {
 	/// 地形の変更
 	/// </summary>
 	/// <param name="setTerrain"></param>
-	public void SetTerrain(eTerrain setTerrain) {
+	public void SetTerrain(eTerrain setTerrain, int spriteIndex = -1) {
 		// 地形に対応したスプライト画像を取得して設定
-		_terrainSprite.sprite = TerrainSpriteAssignor.GetTerrainSprite(setTerrain);
+		_terrainSprite.sprite = TerrainSpriteAssignor.GetTerrainSprite(setTerrain, spriteIndex);
 	}
 }
