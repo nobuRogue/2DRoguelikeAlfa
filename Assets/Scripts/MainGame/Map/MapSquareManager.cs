@@ -62,9 +62,35 @@ public class MapSquareManager : MonoBehaviour {
 	/// <param name="ID"></param>
 	/// <returns></returns>
 	public MapSquareObject GetSquareObject(int ID) {
+		// IDがリストに対して無効なインデクスならnullを返す
 		if (!IsEnableIndex(_squareObjectList, ID)) return null;
 
 		return _squareObjectList[ID];
 	}
 
+	/// <summary>
+	/// ID指定のマス情報取得
+	/// </summary>
+	/// <param name="ID"></param>
+	/// <returns></returns>
+	public MapSquareData GetSquareData(int ID) {
+		if (!IsEnableIndex(_squareDataList, ID)) return null;
+
+		return _squareDataList[ID];
+	}
+
+	/// <summary>
+	/// 全てのマスに指定処理実行
+	/// </summary>
+	/// <param name="action"></param>
+	public void ExecuteAllSquare(System.Action<MapSquareData> action) {
+		if (action == null || IsEmpty(_squareDataList)) return;
+
+		for (int i = 0, max = _squareDataList.Count; i < max; i++) {
+			if (_squareDataList[i] == null) continue;
+
+			action(_squareDataList[i]);
+		}
+
+	}
 }

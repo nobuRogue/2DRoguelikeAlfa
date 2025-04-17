@@ -10,7 +10,6 @@ using Cysharp.Threading.Tasks;
 public class PartEnding : PartBase {
 
 	public override async UniTask Execute() {
-		// 
 		await UniTask.CompletedTask;
 	}
 

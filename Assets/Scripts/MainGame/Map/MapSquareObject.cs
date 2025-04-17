@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapSquareObject : MonoBehaviour {
+	private static readonly float _SQUARE_SIZE_RARIO = 0.32f;
+
 	/// <summary>
 	/// 地形画像
 	/// </summary>
@@ -17,9 +19,9 @@ public class MapSquareObject : MonoBehaviour {
 
 	public void Setup(int setX, int setY) {
 		Vector3 position = transform.position;
-		position.x = setX;
-		position.y = setY;
-		position.z = setY;
+		position.x = setX * _SQUARE_SIZE_RARIO;
+		position.y = setY * _SQUARE_SIZE_RARIO;
+		position.z = setY * 0.1f;
 		transform.position = position;
 	}
 
@@ -29,6 +31,6 @@ public class MapSquareObject : MonoBehaviour {
 	/// <param name="setTerrain"></param>
 	public void SetTerrain(eTerrain setTerrain) {
 		// 地形に対応したスプライト画像を取得して設定
-		_terrainSprite.sprite = null;
+		_terrainSprite.sprite = TerrainSpriteAssignor.GetTerrainSprite(setTerrain);
 	}
 }

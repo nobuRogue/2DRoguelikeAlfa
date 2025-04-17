@@ -129,4 +129,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba81e22267eea6b4d82fcd11ad061831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _terrainSprite: {fileID: 0}
+  _terrainSprite: {fileID: 2551718497864317738}
