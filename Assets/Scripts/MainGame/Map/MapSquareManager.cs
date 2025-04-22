@@ -117,6 +117,41 @@ public class MapSquareManager : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// 指定方向に隣接した座標のマスを取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public MapSquareData GetToDirSquare(int x, int y, eDirectionFour dir) {
+		ToDirPos(ref x, ref y, dir);
+		return GetSquareData(x, y);
+	}
+
+	/// <summary>
+	/// 指定方向に隣接した座標取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="dir"></param>
+	private void ToDirPos(ref int x, ref int y, eDirectionFour dir) {
+		switch (dir) {
+			case eDirectionFour.Up:
+			y++;
+			break;
+			case eDirectionFour.Right:
+			x++;
+			break;
+			case eDirectionFour.Down:
+			y--;
+			break;
+			case eDirectionFour.Left:
+			x--;
+			break;
+		}
+	}
+
+	/// <summary>
 	/// 全てのマスに指定処理実行
 	/// </summary>
 	/// <param name="action"></param>

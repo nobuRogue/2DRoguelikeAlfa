@@ -31,6 +31,17 @@ public class MapSquareUtility {
 	}
 
 	/// <summary>
+	/// 指定方向に隣接した座標のマスを取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public static MapSquareData GetToDirSquare(int x, int y, eDirectionFour dir) {
+		return MapSquareManager.instance.GetToDirSquare(x, y, dir);
+	}
+
+	/// <summary>
 	/// 全てのマスに指定処理実行
 	/// </summary>
 	/// <param name="action"></param>

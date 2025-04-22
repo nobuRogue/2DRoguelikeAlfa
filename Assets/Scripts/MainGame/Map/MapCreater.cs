@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using static MapSquareUtility;
+using static CommonModule;
 using static GameConst;
 
 public class MapCreater {
@@ -44,7 +45,7 @@ public class MapCreater {
 		// 部屋を置く
 		CreateAllRoom();
 		// 部屋を繋げる
-
+		ConnectAllRoom();
 		// 階段を置く
 
 	}
@@ -229,15 +230,22 @@ public class MapCreater {
 	/// 全てに部屋を通路で連結
 	/// </summary>
 	private static void ConnectAllRoom() {
+		eDirectionFour digDir = (eDirectionFour)Random.Range(0, (int)eDirectionFour.Max);
 		for (int i = 0, max = _areaList.Count - 1; i < max; i++) {
 			// エリア1を分割線まで掘る
 			AreaData area1 = _areaList[i];
-
-
+			MapSquareData startSquare = DigToDevideLine(area1, digDir);
+			digDir = (eDirectionFour)Random.Range(0, (int)eDirectionFour.Max);
 			// エリア2を分割線まで掘る
 			AreaData area2 = _areaList[i + 1];
+			MapSquareData goalSquare = DigToDevideLine(area2, digDir);
 
+			int dirIndex = (int)digDir + Random.Range(1, (int)eDirectionFour.Max);
+			if (dirIndex >= (int)eDirectionFour.Max) dirIndex -= (int)eDirectionFour.Max;
+
+			digDir = (eDirectionFour)dirIndex;
 			// 分割線内で繋げる
+
 
 		}
 
@@ -250,7 +258,37 @@ public class MapCreater {
 	/// <param name="dir"></param>
 	/// <returns></returns>
 	private static MapSquareData DigToDevideLine(AreaData area, eDirectionFour dir) {
+		// 掘削開始マスの決定
+		eDirectionFour reverseDir = dir.ReverseDir();
+		List<MapSquareData> targetList = new List<MapSquareData>(16);
+		int startX = area.startX;
+		int startY = area.startY;
+		for (int y = 0, height = area.height; y < height; y++) {
+			for (int x = 0, width = area.width; x < width; x++) {
+				// 壁地形でかつ、掘削方向と反対のマスが部屋地形のマスを集約
+				MapSquareData square = GetSquareData(startX + x, startY + y);
+				if (square == null ||
+					square.terrain != eTerrain.Wall) continue;
+				// squareから掘削方向の反対の隣接マスを取得
+				MapSquareData toDirSquare = GetToDirSquare(square.posX, square.posY, reverseDir);
+				if (toDirSquare == null ||
+					toDirSquare.terrain != eTerrain.Room) continue;
 
-		return null;
+				targetList.Add(square);
+			}
+		}
+		if (IsEmpty(targetList)) return null;
+
+		MapSquareData currentSquare = targetList[Random.Range(0, targetList.Count)];
+		// 分割線まで掘る
+		while (true) {
+			currentSquare.SetTerrain(eTerrain.Passage);
+			// 分割線リストに含まれていたら終了
+			if (_devideLineList.Exists(squareID => squareID == currentSquare.ID)) break;
+
+			currentSquare = GetToDirSquare(currentSquare.posX, currentSquare.posY, dir);
+		}
+		return currentSquare;
 	}
+
 }
