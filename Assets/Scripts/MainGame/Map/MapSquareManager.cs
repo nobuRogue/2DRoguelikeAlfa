@@ -57,6 +57,20 @@ public class MapSquareManager : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// 2次元座標からIDに変換
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
+	private int GetSquareID(int x, int y) {
+		// マップの範囲から外れた座標は不正値を返す
+		if (x < 0 || x >= MAP_SQUARE_WIDTH_COUNT ||
+			y < 0 || y >= MAP_SQUARE_HEIGHT_COUNT) return -1;
+
+		return y * MAP_SQUARE_WIDTH_COUNT + x;
+	}
+
+	/// <summary>
 	/// ID指定のマスオブジェクト取得
 	/// </summary>
 	/// <param name="ID"></param>
@@ -77,6 +91,16 @@ public class MapSquareManager : MonoBehaviour {
 		if (!IsEnableIndex(_squareDataList, ID)) return null;
 
 		return _squareDataList[ID];
+	}
+
+	/// <summary>
+	/// 座標指定のマス情報取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
+	public MapSquareData GetSquareData(int x, int y) {
+		return GetSquareData(GetSquareID(x, y));
 	}
 
 	/// <summary>

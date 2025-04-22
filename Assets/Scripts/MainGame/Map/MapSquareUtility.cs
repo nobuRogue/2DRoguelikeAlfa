@@ -20,6 +20,15 @@ public class MapSquareUtility {
 	public static MapSquareData GetSquareData(int ID) {
 		return MapSquareManager.instance.GetSquareData(ID);
 	}
+	/// <summary>
+	/// 座標指定のマス情報取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns></returns>
+	public static MapSquareData GetSquareData(int x, int y) {
+		return MapSquareManager.instance.GetSquareData(x, y);
+	}
 
 	/// <summary>
 	/// 全てのマスに指定処理実行
