@@ -22,3 +22,15 @@ public enum eTerrain {
 	Stair,      // ŠK’i
 	Max,
 }
+
+/// <summary>
+/// 4•ûŒü
+/// </summary>
+public enum eDirectionFour {
+	Invalid = -1,
+	Up,
+	Right,
+	Down,
+	Left,
+	Max,
+}

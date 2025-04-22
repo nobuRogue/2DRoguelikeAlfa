@@ -42,7 +42,7 @@ public class MapCreater {
 		// エリアを分割する
 		DevideAreaFixCount();
 		// 部屋を置く
-
+		CreateAllRoom();
 		// 部屋を繋げる
 
 		// 階段を置く
@@ -56,7 +56,7 @@ public class MapCreater {
 		_areaList = new List<AreaData>();
 		_devideLineList = new List<int>();
 		// マップを全て壁で埋める、ラムダ式も使えるが使わない
-		MapSquareUtility.ExecuteAllSquare(SetFirstWall);
+		ExecuteAllSquare(SetFirstWall);
 		// 最初のエリア生成
 		_areaList.Add(new AreaData(2, 2, MAP_SQUARE_WIDTH_COUNT - 4, MAP_SQUARE_HEIGHT_COUNT - 4));
 	}
@@ -186,4 +186,71 @@ public class MapCreater {
 		}
 	}
 
+	/// <summary>
+	/// 各エリアに部屋を生成
+	/// </summary>
+	private static void CreateAllRoom() {
+		for (int i = 0, max = _areaList.Count; i < max; i++) {
+			// 部屋の生成
+			CreateRoom(_areaList[i]);
+		}
+
+	}
+
+	/// <summary>
+	/// 指定エリアに部屋を生成
+	/// </summary>
+	/// <param name="area"></param>
+	private static void CreateRoom(AreaData area) {
+		if (area == null) return;
+		// 部屋のサイズ決定
+		int roomWidth = Random.Range(MIN_ROOM_SIZE, area.width - 1);
+		int roomHeight = Random.Range(MIN_ROOM_SIZE, area.height - 1);
+		// 部屋の生成位置決定
+		int xRandomRange = area.width - roomWidth - 1;
+		int yRandomRange = area.height - roomHeight - 1;
+		int roomStartX = area.startX + Random.Range(0, xRandomRange) + 1;
+		int roomStartY = area.startY + Random.Range(0, yRandomRange) + 1;
+		// 部屋の生成
+		List<int> roomIDList = new List<int>(roomWidth * roomHeight);
+		for (int y = 0; y < roomHeight; y++) {
+			for (int x = 0; x < roomWidth; x++) {
+				MapSquareData roomSquare = GetSquareData(roomStartX + x, roomStartY + y);
+				if (roomSquare == null) continue;
+				// マスを部屋地形に変更
+				roomSquare.SetTerrain(eTerrain.Room);
+				roomIDList.Add(roomSquare.ID);
+			}
+		}
+		AddRoom(roomIDList);
+	}
+
+	/// <summary>
+	/// 全てに部屋を通路で連結
+	/// </summary>
+	private static void ConnectAllRoom() {
+		for (int i = 0, max = _areaList.Count - 1; i < max; i++) {
+			// エリア1を分割線まで掘る
+			AreaData area1 = _areaList[i];
+
+
+			// エリア2を分割線まで掘る
+			AreaData area2 = _areaList[i + 1];
+
+			// 分割線内で繋げる
+
+		}
+
+	}
+
+	/// <summary>
+	/// 部屋からエリア分割線まで掘る
+	/// </summary>
+	/// <param name="area"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	private static MapSquareData DigToDevideLine(AreaData area, eDirectionFour dir) {
+
+		return null;
+	}
 }

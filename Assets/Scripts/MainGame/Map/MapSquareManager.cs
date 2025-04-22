@@ -23,6 +23,11 @@ public class MapSquareManager : MonoBehaviour {
 	private List<MapSquareData> _squareDataList = null;
 	private List<MapSquareObject> _squareObjectList = null;
 
+	// 使用中の部屋情報リスト
+	private List<RoomData> _roomDataList = null;
+	// 未使用状態の部屋情報リスト
+	private List<RoomData> _unuseRoomDataList = null;
+
 	public void Initialize() {
 		instance = this;
 		// マスを必要な数だけ生成
@@ -42,6 +47,14 @@ public class MapSquareManager : MonoBehaviour {
 			createSquare.Setup(i, x, y);
 			// とりあえず壁地形を設定
 			createSquare.SetTerrain(eTerrain.Wall);
+		}
+		// 部屋リストの初期化
+		int roomCount = AREA_DEVIDE_COUNT + 1;
+		_roomDataList = new List<RoomData>(roomCount);
+		_unuseRoomDataList = new List<RoomData>(roomCount);
+		// 部屋を未使用状態で追加
+		for (int i = 0; i < roomCount; i++) {
+			_unuseRoomDataList.Add(new RoomData());
 		}
 	}
 
@@ -117,4 +130,45 @@ public class MapSquareManager : MonoBehaviour {
 		}
 
 	}
+
+	/// <summary>
+	/// 部屋情報追加
+	/// </summary>
+	/// <param name="roomSquareList"></param>
+	public void AddRoom(List<int> roomSquareList) {
+		// 使用可能な部屋情報を取得
+		RoomData addRoom = GetUsableRoomData();
+		// 使用リストに追加
+		addRoom.Setup(_roomDataList.Count, roomSquareList);
+		_roomDataList.Add(addRoom);
+	}
+
+	/// <summary>
+	/// 使用可能な部屋情報取得
+	/// </summary>
+	/// <returns></returns>
+	private RoomData GetUsableRoomData() {
+		// 未使用リストが空なら新たに生成
+		if (IsEmpty(_unuseRoomDataList)) return new RoomData();
+		// 未使用リストが空でなければ要素0番を返す
+		RoomData result = _unuseRoomDataList[0];
+		_unuseRoomDataList.RemoveAt(0);
+		return result;
+	}
+
+	/// <summary>
+	/// 全ての部屋情報の削除
+	/// </summary>
+	public void RemoveAllRoom() {
+		if (IsEmpty(_roomDataList)) return;
+
+		for (int i = 0, max = _roomDataList.Count; i < max; i++) {
+			RoomData removeRoom = _roomDataList[i];
+			removeRoom.Teardown();
+			// 未使用リストに追加
+			_unuseRoomDataList.Add(removeRoom);
+		}
+		_roomDataList.Clear();
+	}
+
 }

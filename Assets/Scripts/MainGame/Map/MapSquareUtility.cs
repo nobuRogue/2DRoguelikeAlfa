@@ -38,4 +38,18 @@ public class MapSquareUtility {
 		MapSquareManager.instance.ExecuteAllSquare(action);
 	}
 
+	/// <summary>
+	/// •”‰®î•ñ’Ç‰Á
+	/// </summary>
+	/// <param name="roomSquareList"></param>
+	public static void AddRoom(List<int> roomSquareList) {
+		MapSquareManager.instance.AddRoom(roomSquareList);
+	}
+	/// <summary>
+	/// ‘S•”‰®î•ñíœ
+	/// </summary>
+	public static void RemoveAllRoom() {
+		MapSquareManager.instance.RemoveAllRoom();
+	}
+
 }
