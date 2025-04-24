@@ -12,6 +12,7 @@ using UnityEngine;
 using static MapSquareUtility;
 using static CommonModule;
 using static GameConst;
+using Cysharp.Threading.Tasks;
 
 public class MapCreater {
 	/// <summary>
@@ -54,6 +55,7 @@ public class MapCreater {
 	/// 最初のエリア生成
 	/// </summary>
 	private static void CreateFirstArea() {
+		RemoveAllRoom();
 		_areaList = new List<AreaData>();
 		_devideLineList = new List<int>();
 		// マップを全て壁で埋める、ラムダ式も使えるが使わない
@@ -195,7 +197,6 @@ public class MapCreater {
 			// 部屋の生成
 			CreateRoom(_areaList[i]);
 		}
-
 	}
 
 	/// <summary>
@@ -245,10 +246,31 @@ public class MapCreater {
 
 			digDir = (eDirectionFour)dirIndex;
 			// 分割線内で繋げる
-
-
+			ConnetInDevideLine(startSquare.ID, goalSquare.ID);
 		}
+	}
 
+	private static void ConnetInDevideLine(int startID, int goalID) {
+		List<ManhattanMoveData> route = RouteSearcher.RouteSearchManhattan(startID, goalID, IsDivideLine);
+		//List<ManhattanMoveData> route = RouteSearcher.RouteSearchManhattan(startSquare.ID, goalSquare.ID,
+		//	(square, dir, distance) => _devideLineList.Exists(squareID => squareID == square.ID));
+		for (int i = 0, max = route.Count; i < max; i++) {
+			MapSquareData moveSquare = GetSquareData(route[i].targetSquareID);
+			if (moveSquare == null) continue;
+
+			moveSquare.SetTerrain(eTerrain.Passage);
+		}
+	}
+
+	/// <summary>
+	/// マスが分割線リストに含まれているか
+	/// </summary>
+	/// <param name="square"></param>
+	/// <param name="dir"></param>
+	/// <param name="distance"></param>
+	/// <returns></returns>
+	private static bool IsDivideLine(MapSquareData square, eDirectionFour dir, int distance) {
+		return _devideLineList.Exists(squareID => squareID == square.ID);
 	}
 
 	/// <summary>

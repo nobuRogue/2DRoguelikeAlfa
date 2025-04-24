@@ -42,6 +42,26 @@ public class CommonModule {
 	}
 
 	/// <summary>
+	/// リストを初期化する
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="list"></param>
+	/// <param name="capacity"></param>
+	public static void InitializeList<T>(ref List<T> list, int capacity = -1) {
+		if (list == null) {
+			if (capacity < 1) {
+				list = new List<T>();
+			} else {
+				list = new List<T>(capacity);
+			}
+		} else {
+			if (list.Capacity < capacity) list.Capacity = capacity;
+
+			list.Clear();
+		}
+	}
+
+	/// <summary>
 	/// 複数のタスクの終了を待つ
 	/// </summary>
 	/// <param name="taskList"></param>
