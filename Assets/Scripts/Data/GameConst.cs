@@ -16,4 +16,8 @@ public class GameConst {
 	public static readonly int AREA_DEVIDE_COUNT = 8;
 	// 最小部屋サイズ
 	public static readonly int MIN_ROOM_SIZE = 3;
+
+	// フロア関連
+	// 1フロア内のキャラクターの最大数
+	public static readonly int FLOOR_ENEMY_MAX = 15;
 }

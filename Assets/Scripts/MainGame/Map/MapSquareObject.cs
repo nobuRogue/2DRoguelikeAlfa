@@ -16,6 +16,11 @@ public class MapSquareObject : MonoBehaviour {
 	/// </summary>
 	[SerializeField]
 	private SpriteRenderer _terrainSprite = null;
+	/// <summary>
+	/// マスにキャラクターを置く際の位置
+	/// </summary>
+	[SerializeField]
+	private Transform _characterRoot = null;
 
 	public void Setup(int setX, int setY) {
 		Vector3 position = transform.position;
@@ -33,4 +38,10 @@ public class MapSquareObject : MonoBehaviour {
 		// 地形に対応したスプライト画像を取得して設定
 		_terrainSprite.sprite = TerrainSpriteAssignor.GetTerrainSprite(setTerrain, spriteIndex);
 	}
+
+	/// <summary>
+	/// キャラクター基準位置取得
+	/// </summary>
+	/// <returns></returns>
+	public Transform GetCharacterRoot() { return _characterRoot; }
 }

@@ -14,9 +14,7 @@ using static CommonModule;
 public class MapSquareManager : MonoBehaviour {
 	public static MapSquareManager instance { get; private set; } = null;
 
-	/// <summary>
 	/// マスオブジェクトのオリジナル
-	/// </summary>
 	[SerializeField]
 	private MapSquareObject _originObject = null;
 

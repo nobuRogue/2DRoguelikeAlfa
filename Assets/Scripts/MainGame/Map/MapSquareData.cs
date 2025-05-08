@@ -23,6 +23,14 @@ public class MapSquareData {
 	/// 地形
 	/// </summary>
 	public eTerrain terrain { get; private set; } = eTerrain.Invalid;
+	/// <summary>
+	/// マスにいるキャラクターのID
+	/// </summary>
+	public int characterID { get; private set; } = -1;
+	/// <summary>
+	/// マスにキャラクターが存在するか
+	/// </summary>
+	public bool existCharacter { get { return characterID >= 0; } }
 
 	/// <summary>
 	/// 使用前の準備
@@ -55,5 +63,28 @@ public class MapSquareData {
 	/// <returns></returns>
 	private MapSquareObject GetObject() {
 		return MapSquareManager.instance.GetSquareObject(ID);
+	}
+
+	/// <summary>
+	/// キャラクター基準位置取得
+	/// </summary>
+	/// <returns></returns>
+	public Transform GetCharacterRoot() {
+		return GetObject()?.GetCharacterRoot();
+	}
+
+	/// <summary>
+	/// マスにキャラクターを設定する
+	/// </summary>
+	/// <param name="setCharacterID"></param>
+	public void SetCharacter(int setCharacterID) {
+		characterID = setCharacterID;
+	}
+
+	/// <summary>
+	/// マスからキャラクターを取り除
+	/// </summary>
+	public void RemoveCharacter() {
+		characterID = -1;
 	}
 }
