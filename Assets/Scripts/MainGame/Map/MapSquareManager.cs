@@ -206,4 +206,25 @@ public class MapSquareManager : MonoBehaviour {
 		_roomDataList.Clear();
 	}
 
+	/// <summary>
+	/// ƒ‰ƒ“ƒ_ƒ€‚È•”‰®î•ñæ“¾
+	/// </summary>
+	/// <returns></returns>
+	public RoomData GetRandomRoom() {
+		if (IsEmpty(_roomDataList)) return null;
+
+		return GetRoom(Random.Range(0, _roomDataList.Count));
+	}
+
+	/// <summary>
+	/// •”‰®î•ñæ“¾
+	/// </summary>
+	/// <param name="ID"></param>
+	/// <returns></returns>
+	public RoomData GetRoom(int ID) {
+		if (!IsEnableIndex(_roomDataList, ID)) return null;
+
+		return _roomDataList[ID];
+	}
+
 }

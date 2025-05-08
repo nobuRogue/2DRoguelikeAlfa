@@ -63,4 +63,12 @@ public class MapSquareUtility {
 		MapSquareManager.instance.RemoveAllRoom();
 	}
 
+	/// <summary>
+	/// ƒ‰ƒ“ƒ_ƒ€‚È•”‰®î•ñæ“¾
+	/// </summary>
+	/// <returns></returns>
+	public static RoomData GetRandomRoom() {
+		return MapSquareManager.instance.GetRandomRoom();
+	}
+
 }

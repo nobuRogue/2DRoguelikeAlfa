@@ -14,6 +14,9 @@ public enum eGamePart {
 	Max,
 }
 
+/// <summary>
+/// マスの地形
+/// </summary>
 public enum eTerrain {
 	Invalid = -1,
 	Passage,    // 通路

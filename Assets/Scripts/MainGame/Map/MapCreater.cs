@@ -48,7 +48,7 @@ public class MapCreater {
 		// 部屋を繋げる
 		ConnectAllRoom();
 		// 階段を置く
-
+		CreateStair();
 	}
 
 	/// <summary>
@@ -70,7 +70,7 @@ public class MapCreater {
 	/// <param name="squareData"></param>
 	private static void SetFirstWall(MapSquareData squareData) {
 		// 地形を壁にする
-		squareData.SetTerrain(eTerrain.Wall, 0);
+		squareData.SetTerrain(eTerrain.Wall);
 		// 最初のエリアの分割線なら分割線に加える
 		int x = squareData.posX;
 		int y = squareData.posY;
@@ -88,7 +88,6 @@ public class MapCreater {
 	/// </summary>
 	/// <param name="squareData"></param>
 	private static void AddDevideLine(MapSquareData squareData) {
-		squareData.SetTerrain(eTerrain.Wall, 2);
 		_devideLineList.Add(squareData.ID);
 	}
 
@@ -312,5 +311,21 @@ public class MapCreater {
 		}
 		return currentSquare;
 	}
+
+	/// <summary>
+	/// 階段マスの生成
+	/// </summary>
+	private static void CreateStair() {
+		// ランダムな部屋の取得
+		RoomData targetRoom = GetRandomRoom();
+		if (targetRoom == null) return;
+		// 部屋内のランダムな1マスを階段地形にする
+		List<int> roomSquareList = targetRoom.squareIDList;
+		if (IsEmpty(roomSquareList)) return;
+
+		int targetSquareID = roomSquareList[Random.Range(0, roomSquareList.Count)];
+		GetSquareData(targetSquareID)?.SetTerrain(eTerrain.Stair);
+	}
+
 
 }
