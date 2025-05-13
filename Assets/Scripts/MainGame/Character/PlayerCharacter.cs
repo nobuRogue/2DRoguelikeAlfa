@@ -10,5 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCharacter : CharacterBase {
-
+	public override bool IsPlayer() {
+		return true;
+	}
 }

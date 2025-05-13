@@ -27,4 +27,11 @@ public class CharacterObject : MonoBehaviour {
 
 	}
 
+	/// <summary>
+	/// à íuÇÃê›íË
+	/// </summary>
+	/// <param name="position"></param>
+	public void SetPosition(Vector3 position) {
+		transform.position = position;
+	}
 }

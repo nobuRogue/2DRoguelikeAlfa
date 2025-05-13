@@ -25,9 +25,9 @@ public abstract class CharacterBase {
 		ID = setID;
 		masterID = setMasterID;
 		// キャラクターをマスに置く
-
+		SetSquare(squareData);
 		// オブジェクトの準備
-
+		GetObject()?.Setup();
 	}
 
 	/// <summary>
@@ -37,6 +37,14 @@ public abstract class CharacterBase {
 
 		// オブジェクトの片付け
 
+	}
+
+	/// <summary>
+	/// オブジェクトの取得
+	/// </summary>
+	/// <returns></returns>
+	protected CharacterObject GetObject() {
+		return CharacterManager.instance.GetCharacterObject(ID);
 	}
 
 	/// <summary>
@@ -72,6 +80,12 @@ public abstract class CharacterBase {
 	/// <param name="position"></param>
 	public void SetPosition(Vector3 position) {
 		// キャラクターオブジェクトを取得し位置変更する
-
+		GetObject()?.SetPosition(position);
 	}
+
+	/// <summary>
+	/// プレイヤーか否か
+	/// </summary>
+	/// <returns></returns>
+	public abstract bool IsPlayer();
 }

@@ -71,4 +71,42 @@ public class MapSquareUtility {
 		return MapSquareManager.instance.GetRandomRoom();
 	}
 
+	/// <summary>
+	/// 移動可否判定
+	/// </summary>
+	/// <param name="startX"></param>
+	/// <param name="startY"></param>
+	/// <param name="moveSquare"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public bool CanMove(int startX, int startY, MapSquareData moveSquare, eDirectionEight dir) {
+		// 移動可能な地形かつキャラクターが居なければ移動可能
+		return CanMoveTerrain(startX, startY, moveSquare, dir) && !moveSquare.existCharacter;
+	}
+
+	/// <summary>
+	/// 地形のみの移動可否判定
+	/// </summary>
+	/// <param name="startX"></param>
+	/// <param name="startY"></param>
+	/// <param name="moveSquare"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public bool CanMoveTerrain(int startX, int startY, MapSquareData moveSquare, eDirectionEight dir) {
+		// 移動先の地形判定
+		if (moveSquare == null ||
+			moveSquare.terrain == eTerrain.Wall) return false;
+		// 斜め移動でなければ終わり
+		if (!dir.IsSlant()) return true;
+		// 斜め移動なら、方向を分割し各方向のマスの地形を判定
+		eDirectionFour[] separateDir = dir.Separate();
+		for (int i = 0, max = separateDir.Length; i < max; i++) {
+			// 分割した方向の隣接マスを取得
+			MapSquareData checkSquare = GetToDirSquare(startX, startY, separateDir[i]);
+			if (checkSquare == null ||
+				checkSquare.terrain == eTerrain.Wall) return false;
+		}
+		return true;
+	}
+
 }

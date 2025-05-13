@@ -37,3 +37,37 @@ public enum eDirectionFour {
 	Left,
 	Max,
 }
+
+/// <summary>
+/// 8方向
+/// </summary>
+public enum eDirectionEight {
+	Invalid = -1,
+	Up,
+	UpRight,
+	Right,
+	DownRight,
+	Down,
+	DownLeft,
+	Left,
+	UpLeft,
+	Max,
+}
+
+/// <summary>
+/// フロアの終了要因
+/// </summary>
+public enum eFloorEndReason {
+	Invalid = -1,   // フロアは終了していない
+	Dead,           // プレイヤー死亡
+	Stair,          // 階段で移動
+}
+
+/// <summary>
+/// ダンジョン終了要因
+/// </summary>
+public enum eDungeonEndReason {
+	Invalid,    // 終了していない
+	Dead,       // プレイヤー死亡
+	Clear,      // クリア
+}
