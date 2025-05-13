@@ -10,6 +10,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MapSquareUtility;
+using static CharacterUtility;
+using static CommonModule;
+
 public class FloorProcessor {
 	private TurnProcessor _turnProcessor = null;
 
@@ -41,8 +45,26 @@ public class FloorProcessor {
 	private async UniTask SetupFloor() {
 		// マップ生成
 		MapCreater.CreateMap();
+		// プレイヤー配置
+		SetPlayer();
 		// フロアを終了していない状態にする
 		_endReason = eFloorEndReason.Invalid;
+	}
+
+	private void SetPlayer() {
+		// プレイヤー取得
+		CharacterBase player = GetPlayer();
+		if (player == null) return;
+		// ランダムな部屋取得
+		RoomData roomData = GetRandomRoom();
+		if (roomData == null ||
+			IsEmpty(roomData.squareIDList)) return;
+		// 部屋のランダムなマス取得
+		List<int> squareList = roomData.squareIDList;
+		int squareID = squareList[Random.Range(0, squareList.Count)];
+		MapSquareData playerSquare = GetSquareData(squareID);
+		// プレイヤー配置
+		player.SetSquare(playerSquare);
 	}
 
 	private async UniTask TeardownFloor() {

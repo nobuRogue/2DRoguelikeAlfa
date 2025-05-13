@@ -42,6 +42,17 @@ public class MapSquareUtility {
 	}
 
 	/// <summary>
+	/// 指定方向に隣接した座標のマスを取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public static MapSquareData GetToDirSquare(int x, int y, eDirectionEight dir) {
+		return MapSquareManager.instance.GetToDirSquare(x, y, dir);
+	}
+
+	/// <summary>
 	/// 全てのマスに指定処理実行
 	/// </summary>
 	/// <param name="action"></param>
@@ -79,7 +90,7 @@ public class MapSquareUtility {
 	/// <param name="moveSquare"></param>
 	/// <param name="dir"></param>
 	/// <returns></returns>
-	public bool CanMove(int startX, int startY, MapSquareData moveSquare, eDirectionEight dir) {
+	public static bool CanMove(int startX, int startY, MapSquareData moveSquare, eDirectionEight dir) {
 		// 移動可能な地形かつキャラクターが居なければ移動可能
 		return CanMoveTerrain(startX, startY, moveSquare, dir) && !moveSquare.existCharacter;
 	}
@@ -92,7 +103,7 @@ public class MapSquareUtility {
 	/// <param name="moveSquare"></param>
 	/// <param name="dir"></param>
 	/// <returns></returns>
-	public bool CanMoveTerrain(int startX, int startY, MapSquareData moveSquare, eDirectionEight dir) {
+	public static bool CanMoveTerrain(int startX, int startY, MapSquareData moveSquare, eDirectionEight dir) {
 		// 移動先の地形判定
 		if (moveSquare == null ||
 			moveSquare.terrain == eTerrain.Wall) return false;

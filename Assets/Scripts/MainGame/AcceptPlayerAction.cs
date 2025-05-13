@@ -10,13 +10,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MapSquareUtility;
 using static CharacterUtility;
 using static UnityEngine.Input;
 
 public class AcceptPlayerAction {
 
-	public async UniTask AcceptInput() {
+	private System.Action<MoveAction> _addMove = null;
 
+
+	public void Initialize(System.Action<MoveAction> addMove) {
+		// MoveActionをターン処理に積むコールバックをキャッシュしておく
+		_addMove = addMove;
+	}
+
+	public async UniTask AcceptInput() {
+		while (true) {
+			// 移動の受付
+			if (AcceptMove()) break;
+
+			await UniTask.DelayFrame(1);
+		}
 	}
 
 	/// <summary>
@@ -29,8 +43,14 @@ public class AcceptPlayerAction {
 		if (inputDir == eDirectionEight.Invalid) return false;
 		// 移動可否の判定
 		CharacterBase player = GetPlayer();
-
+		MapSquareData moveSquare = GetToDirSquare(player.posX, player.posY, inputDir);
+		if (!CanMove(player.posX, player.posY, moveSquare, inputDir)) return false;
 		// 受け付けた入力に応じて移動
+		MoveAction moveAction = new MoveAction();
+		MapSquareData sourceSquare = GetSquareData(player.posX, player.posY);
+		ChebyshevMoveData moveData = new ChebyshevMoveData(sourceSquare.ID, moveSquare.ID, inputDir);
+		moveAction.ExecuteData(player, moveData);
+		_addMove?.Invoke(moveAction);
 		return true;
 	}
 

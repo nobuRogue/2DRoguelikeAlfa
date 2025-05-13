@@ -34,6 +34,12 @@ public class PartMainGame : PartBase {
 		_characterManager?.Initialize();
 	}
 
+	public override async UniTask Setup() {
+		await base.Setup();
+		// プレイヤーを生成
+		_characterManager.UsePlayer(GetSquareData(0, 0), 0);
+	}
+
 	public override async UniTask Execute() {
 		// ダンジョンの実行
 		eDungeonEndReason endReason = await _dungeonProcessor.Execute();

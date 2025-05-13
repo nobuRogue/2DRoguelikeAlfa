@@ -150,6 +150,51 @@ public class MapSquareManager : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// 指定方向に隣接した座標のマス取得
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public MapSquareData GetToDirSquare(int x, int y, eDirectionEight dir) {
+		ToDirPos(ref x, ref y, dir);
+		return GetSquareData(x, y);
+	}
+
+	private void ToDirPos(ref int x, ref int y, eDirectionEight dir) {
+		switch (dir) {
+			case eDirectionEight.Up:
+			y++;
+			break;
+			case eDirectionEight.UpRight:
+			x++;
+			y++;
+			break;
+			case eDirectionEight.Right:
+			x++;
+			break;
+			case eDirectionEight.DownRight:
+			x++;
+			y--;
+			break;
+			case eDirectionEight.Down:
+			y--;
+			break;
+			case eDirectionEight.DownLeft:
+			x--;
+			y--;
+			break;
+			case eDirectionEight.Left:
+			x--;
+			break;
+			case eDirectionEight.UpLeft:
+			x--;
+			y++;
+			break;
+		}
+	}
+
+	/// <summary>
 	/// 全てのマスに指定処理実行
 	/// </summary>
 	/// <param name="action"></param>
