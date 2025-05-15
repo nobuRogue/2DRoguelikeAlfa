@@ -18,6 +18,29 @@ public class MoveAction {
 	private int _moveCharacterID = -1;
 	private ChebyshevMoveData _moveData = null;
 
+	// フロアを終了させる処理
+	private static System.Action<eFloorEndReason> _EndFloor = null;
+
+	/// <summary>
+	/// フロア終了時処理の受取処理
+	/// </summary>
+	/// <param name="SetEndFloor"></param>
+	public static void SetEndFloor(System.Action<eFloorEndReason> SetEndFloor) {
+		_EndFloor = SetEndFloor;
+	}
+
+
+	/// <summary>
+	/// 階段に乗った時の処理
+	/// </summary>
+	/// <param name="goalSquare">移動先のマス</param>
+	private void ProcessStair(MapSquareData goalSquare) {
+		// 移動先が階段でなければ処理しない
+		if (goalSquare.terrain != eTerrain.Stair) return;
+		// フロア移動（終了要因Stairでフロアを終了させる）
+		_EndFloor?.Invoke(eFloorEndReason.Stair);
+	}
+
 	/// <summary>
 	/// 内部的な移動処理
 	/// </summary>
@@ -54,7 +77,21 @@ public class MoveAction {
 		}
 		moveCharacter.SetPosition(goalPos);
 		// 移動後処理
-
+		AfterMoveProcess(moveCharacter, goalSquare);
 	}
+
+	/// <summary>
+	/// 移動後の処理
+	/// </summary>
+	/// <param name="moveCharacter"></param>
+	/// <param name="goalSquare"></param>
+	private void AfterMoveProcess(CharacterBase moveCharacter, MapSquareData goalSquare) {
+		// プレイヤーでなければ移動後処理は行わない
+		if (!moveCharacter.IsPlayer()) return;
+		// 移動先に階段があったらフロア移動
+		ProcessStair(goalSquare);
+	}
+
+
 
 }

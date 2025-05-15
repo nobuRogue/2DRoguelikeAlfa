@@ -16,16 +16,16 @@ using static CommonModule;
 
 public class FloorProcessor {
 	private TurnProcessor _turnProcessor = null;
-
+	// フロアの終了状態
 	private eFloorEndReason _endReason = eFloorEndReason.Invalid;
 
 	public void Initialize() {
 		_turnProcessor = new TurnProcessor();
-		_turnProcessor.Initialize();
+		_turnProcessor.Initialize(EndFloor);
 	}
 
 	/// <summary>
-	/// フロア実行処理
+	/// 1フロア実行処理
 	/// </summary>
 	/// <returns></returns>
 	public async UniTask Execute() {
@@ -69,5 +69,13 @@ public class FloorProcessor {
 
 	private async UniTask TeardownFloor() {
 
+	}
+
+	/// <summary>
+	/// フロア終了
+	/// </summary>
+	/// <param name="endReason"></param>
+	private void EndFloor(eFloorEndReason endReason) {
+		_endReason = endReason;
 	}
 }

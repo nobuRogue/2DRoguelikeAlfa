@@ -55,6 +55,7 @@ public class MapCreater {
 	/// 最初のエリア生成
 	/// </summary>
 	private static void CreateFirstArea() {
+		// 部屋情報のクリア
 		RemoveAllRoom();
 		_areaList = new List<AreaData>();
 		_devideLineList = new List<int>();

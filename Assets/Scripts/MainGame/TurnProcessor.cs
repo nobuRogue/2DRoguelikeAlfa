@@ -18,23 +18,38 @@ public class TurnProcessor {
 	private AcceptPlayerAction _acceptPlayerAction = null;
 	// 移動アクションリスト
 	private List<MoveAction> _moveActionList = null;
+	// ターン継続フラグ
+	private bool _isContinueTurn = true;
+	// フロア終了処理
+	private System.Action<eFloorEndReason> _EndFloor = null;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	public void Initialize() {
+	public void Initialize(System.Action<eFloorEndReason> SetEndFloor) {
 		_moveActionList = new List<MoveAction>(FLOOR_ENEMY_MAX + 1);
 
 		_acceptPlayerAction = new AcceptPlayerAction();
 		_acceptPlayerAction.Initialize(moveAction => _moveActionList.Add(moveAction));
+
+		_EndFloor = SetEndFloor;
+
+		// 移動アクションにフロア終了処理を渡す
+		MoveAction.SetEndFloor(EndFloor);
 	}
 
+	/// <summary>
+	/// 1ターンの実行処理
+	/// </summary>
+	/// <returns></returns>
 	public async UniTask Execute() {
+		_isContinueTurn = true;
 		// プレイヤーの入力受付、移動以外の行動実行
 		await AcceptPlayerAction();
 		// エネミーの思考
 		// 全キャラクターの移動
 		await MoveAllCharacter();
+
 		// 全エネミーの移動以外の行動
 
 		// ターン終了時の処理
@@ -64,6 +79,20 @@ public class TurnProcessor {
 		_moveActionList.Clear();
 	}
 
+	/// <summary>
+	/// ターンを終了させる
+	/// </summary>
+	private void EndTurn() {
+		_isContinueTurn = false;
+	}
 
+	/// <summary>
+	/// フロアを終了させる
+	/// </summary>
+	/// <param name="endReason"></param>
+	private void EndFloor(eFloorEndReason endReason) {
+		EndTurn();
+		_EndFloor?.Invoke(endReason);
+	}
 
 }

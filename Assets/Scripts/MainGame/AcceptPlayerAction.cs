@@ -16,12 +16,12 @@ using static UnityEngine.Input;
 
 public class AcceptPlayerAction {
 
-	private System.Action<MoveAction> _addMove = null;
+	private System.Action<MoveAction> _AddMove = null;
 
 
-	public void Initialize(System.Action<MoveAction> addMove) {
+	public void Initialize(System.Action<MoveAction> SetAddMove) {
 		// MoveActionをターン処理に積むコールバックをキャッシュしておく
-		_addMove = addMove;
+		_AddMove = SetAddMove;
 	}
 
 	public async UniTask AcceptInput() {
@@ -50,7 +50,7 @@ public class AcceptPlayerAction {
 		MapSquareData sourceSquare = GetSquareData(player.posX, player.posY);
 		ChebyshevMoveData moveData = new ChebyshevMoveData(sourceSquare.ID, moveSquare.ID, inputDir);
 		moveAction.ExecuteData(player, moveData);
-		_addMove?.Invoke(moveAction);
+		_AddMove?.Invoke(moveAction);
 		return true;
 	}
 
