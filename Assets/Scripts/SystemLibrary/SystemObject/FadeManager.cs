@@ -35,21 +35,40 @@ public class FadeManager : SystemObject {
 	/// <param name="duration"></param>
 	/// <returns></returns>
 	public async UniTask FadeOut(float duration = _DEFAULT_FADE_DURAITION) {
+		await FadeTargetAlpha(1.0f, duration);
+	}
+
+	/// <summary>
+	/// フェードイン、明るくする
+	/// </summary>
+	/// <param name="duration"></param>
+	/// <returns></returns>
+	public async UniTask FadeIn(float duration = _DEFAULT_FADE_DURAITION) {
+		await FadeTargetAlpha(0.0f, duration);
+	}
+
+	/// <summary>
+	/// フェード画像を指定の不当明度に変化させる
+	/// </summary>
+	/// <param name="targetAlpha"></param>
+	/// <param name="duration"></param>
+	/// <returns></returns>
+	private async UniTask FadeTargetAlpha(float targetAlpha, float duration) {
 		float elapsedTime = 0.0f;// 経過時間
 		float startAlpha = _fadeImage.color.a;
-		float targetAlpha = 1.0f;
+		Color targetColor = _fadeImage.color;
 		while (elapsedTime < duration) {
 			// フレーム時間経過
 			elapsedTime += Time.deltaTime;
 			// 補間した不透明度をフェード画像に設定
 			float t = elapsedTime / duration;
-			Color setColor = _fadeImage.color;
-			setColor.a = Mathf.Lerp(startAlpha, targetAlpha, t);
-			_fadeImage.color = setColor;
+			targetColor.a = Mathf.Lerp(startAlpha, targetAlpha, t);
+			_fadeImage.color = targetColor;
 			// 1フレーム待ち
 			await UniTask.DelayFrame(1);
 		}
-
+		targetColor.a = targetAlpha;
+		_fadeImage.color = targetColor;
 	}
 
 }

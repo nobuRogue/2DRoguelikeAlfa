@@ -49,6 +49,8 @@ public class FloorProcessor {
 		SetPlayer();
 		// フロアを終了していない状態にする
 		_endReason = eFloorEndReason.Invalid;
+		// フェードイン
+		await FadeManager.instance.FadeIn();
 	}
 
 	private void SetPlayer() {
@@ -68,7 +70,8 @@ public class FloorProcessor {
 	}
 
 	private async UniTask TeardownFloor() {
-
+		// フェードアウト
+		await FadeManager.instance.FadeOut();
 	}
 
 	/// <summary>
