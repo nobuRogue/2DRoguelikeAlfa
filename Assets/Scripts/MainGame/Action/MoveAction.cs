@@ -20,15 +20,19 @@ public class MoveAction {
 
 	// フロアを終了させる処理
 	private static System.Action<eFloorEndReason> _EndFloor = null;
+	// ダンジョンを終了させる処理
+	private static System.Action<eDungeonEndReason> _EndDungeon = null;
 
 	/// <summary>
 	/// フロア終了時処理の受取処理
 	/// </summary>
 	/// <param name="SetEndFloor"></param>
-	public static void SetEndFloor(System.Action<eFloorEndReason> SetEndFloor) {
+	public static void SetEndProcess(
+		System.Action<eFloorEndReason> SetEndFloor,
+		System.Action<eDungeonEndReason> SetEndDungeon) {
 		_EndFloor = SetEndFloor;
+		_EndDungeon = SetEndDungeon;
 	}
-
 
 	/// <summary>
 	/// 階段に乗った時の処理
@@ -37,9 +41,17 @@ public class MoveAction {
 	private async UniTask ProcessStair(MapSquareData goalSquare) {
 		// 移動先が階段でなければ処理しない
 		if (goalSquare.terrain != eTerrain.Stair) return;
-		// フロア移動（終了要因Stairでフロアを終了させる）
+		// 次の階層が存在するか判定
+		int currentFloorCount = UserDataHolder.currentData.floorCount;
+		var floorMaster = FloorMasterUtility.GetFloorMaster(currentFloorCount + 1);
 		UniTask task = SoundManager.instance.PlaySE(5);
-		_EndFloor?.Invoke(eFloorEndReason.Stair);
+		if (floorMaster == null) {
+			// 最後の階層なのでクリア（終了要因Clearでダンジョンを終了させる）
+			_EndDungeon(eDungeonEndReason.Clear);
+		} else {
+			// 最後の階層でないのでフロア移動（終了要因Stairでフロアを終了させる）
+			_EndFloor?.Invoke(eFloorEndReason.Stair);
+		}
 		await UniTask.CompletedTask;
 	}
 

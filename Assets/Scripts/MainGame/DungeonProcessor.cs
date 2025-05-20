@@ -15,9 +15,12 @@ public class DungeonProcessor {
 
 	private eDungeonEndReason _endReason = eDungeonEndReason.Invalid;
 
+	/// <summary>
+	/// ‰Šú‰»
+	/// </summary>
 	public void Initialize() {
 		_floorProcessor = new FloorProcessor();
-		_floorProcessor.Initialize();
+		_floorProcessor.Initialize(EndDungeon);
 	}
 
 	public async UniTask<eDungeonEndReason> Execute() {
@@ -27,6 +30,14 @@ public class DungeonProcessor {
 			await _floorProcessor.Execute();
 		}
 		return _endReason;
+	}
+
+	/// <summary>
+	/// ƒ_ƒ“ƒWƒ‡ƒ“‚ğI—¹‚³‚¹‚é
+	/// </summary>
+	/// <param name="endReason"></param>
+	private void EndDungeon(eDungeonEndReason endReason) {
+		_endReason = endReason;
 	}
 
 }

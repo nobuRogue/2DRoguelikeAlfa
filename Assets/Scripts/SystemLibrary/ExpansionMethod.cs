@@ -65,4 +65,18 @@ public static class ExpansionMethod {
 		return result;
 	}
 
+	/// <summary>
+	/// ダンジョン終了要因からフロア終了要因を取得
+	/// </summary>
+	/// <param name="dEndReason"></param>
+	/// <returns></returns>
+	public static eFloorEndReason GetFloorEndReason(this eDungeonEndReason dEndReason) {
+		switch (dEndReason) {
+			case eDungeonEndReason.Dead:
+			return eFloorEndReason.Dead;
+			case eDungeonEndReason.Clear:
+			return eFloorEndReason.Stair;
+		}
+		return eFloorEndReason.Invalid;
+	}
 }

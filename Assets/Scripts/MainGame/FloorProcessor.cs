@@ -19,9 +19,13 @@ public class FloorProcessor {
 	// フロアの終了状態
 	private eFloorEndReason _endReason = eFloorEndReason.Invalid;
 
-	public void Initialize() {
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="SetEndDungeon"></param>
+	public void Initialize(System.Action<eDungeonEndReason> SetEndDungeon) {
 		_turnProcessor = new TurnProcessor();
-		_turnProcessor.Initialize(EndFloor);
+		_turnProcessor.Initialize(EndFloor, SetEndDungeon);
 	}
 
 	/// <summary>
@@ -80,5 +84,15 @@ public class FloorProcessor {
 	/// <param name="endReason"></param>
 	private void EndFloor(eFloorEndReason endReason) {
 		_endReason = endReason;
+		switch (_endReason) {
+			case eFloorEndReason.Dead:
+			break;
+			case eFloorEndReason.Stair:
+			// 階段で次の階層へ（階数+1する）
+			UserData currentData = UserDataHolder.currentData;
+			currentData.SetFloorCount(currentData.floorCount + 1);
+			break;
+		}
+
 	}
 }

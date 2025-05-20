@@ -22,20 +22,26 @@ public class TurnProcessor {
 	private bool _isContinueTurn = true;
 	// フロア終了処理
 	private System.Action<eFloorEndReason> _EndFloor = null;
+	// ダンジョン終了処理
+	private System.Action<eDungeonEndReason> _EndDungeon = null;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	public void Initialize(System.Action<eFloorEndReason> SetEndFloor) {
+	/// <param name="SetEndFloor"></param>
+	/// <param name="SetEndDungeon"></param>
+	public void Initialize(
+		System.Action<eFloorEndReason> SetEndFloor,
+		System.Action<eDungeonEndReason> SetEndDungeon) {
 		_moveActionList = new List<MoveAction>(FLOOR_ENEMY_MAX + 1);
 
 		_acceptPlayerAction = new AcceptPlayerAction();
 		_acceptPlayerAction.Initialize(moveAction => _moveActionList.Add(moveAction));
 
 		_EndFloor = SetEndFloor;
-
+		_EndDungeon = SetEndDungeon;
 		// 移動アクションにフロア終了処理を渡す
-		MoveAction.SetEndFloor(EndFloor);
+		MoveAction.SetEndProcess(EndFloor, EndDungeon);
 	}
 
 	/// <summary>
@@ -91,8 +97,15 @@ public class TurnProcessor {
 	/// </summary>
 	/// <param name="endReason"></param>
 	private void EndFloor(eFloorEndReason endReason) {
-		EndTurn();
 		_EndFloor?.Invoke(endReason);
+		EndTurn();
+	}
+
+	private void EndDungeon(eDungeonEndReason endReason) {
+		// ダンジョンを終了させる
+		_EndDungeon?.Invoke(endReason);
+		// フロアとターンを終了させる
+		EndFloor(endReason.GetFloorEndReason());
 	}
 
 }

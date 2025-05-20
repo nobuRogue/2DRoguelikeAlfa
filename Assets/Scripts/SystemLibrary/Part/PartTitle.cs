@@ -14,6 +14,7 @@ public class PartTitle : PartBase {
 	public override async UniTask Execute() {
 		// フェードアウト
 		await FadeManager.instance.FadeOut();
+		UserDataHolder.SetCurrentData(new UserData());
 		// メインパートへ遷移
 		UniTask task = PartManager.instance.TransitionPart(eGamePart.MainGame);
 		await UniTask.CompletedTask;

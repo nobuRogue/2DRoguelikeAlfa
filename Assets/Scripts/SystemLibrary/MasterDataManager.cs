@@ -7,18 +7,20 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class MasterDataManager {
 	// マスターデータのファイルパス
 	private static readonly string _DATA_PATH = "MasterData/";
 	// 読み込んだマスターデータ
-	public static List<List<Entity_FloorData>> floorData = null;
+	public static List<List<Entity_FloorData.Param>> floorData = null;
 
 	/// <summary>
 	/// 全てのマスターデータを読み込む
 	/// </summary>
 	public static void LoadAllData() {
+		floorData = Load<Entity_FloorData, Entity_FloorData.Sheet, Entity_FloorData.Param>("FloorData");
 
 	}
 
@@ -34,11 +36,17 @@ public class MasterDataManager {
 		// ファイルを読み込む
 		T1 sourceData = Resources.Load<T1>(_DATA_PATH + dataName);
 		// 名称指定でシートを取得
-		System.Reflection.FieldInfo sheetField = typeof(T1).GetField("sheets");
+		FieldInfo sheetField = typeof(T1).GetField("sheets");
+		List<T2> sheetListData = sheetField.GetValue(sourceData) as List<T2>;
 
 		// 名称指定でフィールドを取得
-
-		return null;
+		FieldInfo listField = typeof(T2).GetField("list");
+		List<List<T3>> paramList = new List<List<T3>>();
+		foreach (object elem in sheetListData) {
+			List<T3> param = listField.GetValue(elem) as List<T3>;
+			paramList.Add(param);
+		}
+		return paramList;
 	}
 
 }
