@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eaf44c91c476e3459fc84c9536365c6, type: 3}
+  m_Name: FloorData
+  m_EditorClassIdentifier: 
+  sheets:
+  - name: FloorData
+    list:
+    - floorCount: 1
+      spriteIndex: 0
+      enemyTableID: 0
+      itemTableID: 0
+    - floorCount: 2
+      spriteIndex: 1
+      enemyTableID: 0
+      itemTableID: 0
+    - floorCount: 3
+      spriteIndex: 2
+      enemyTableID: 0
+      itemTableID: 0

@@ -34,11 +34,13 @@ public class MoveAction {
 	/// 階段に乗った時の処理
 	/// </summary>
 	/// <param name="goalSquare">移動先のマス</param>
-	private void ProcessStair(MapSquareData goalSquare) {
+	private async UniTask ProcessStair(MapSquareData goalSquare) {
 		// 移動先が階段でなければ処理しない
 		if (goalSquare.terrain != eTerrain.Stair) return;
 		// フロア移動（終了要因Stairでフロアを終了させる）
+		UniTask task = SoundManager.instance.PlaySE(5);
 		_EndFloor?.Invoke(eFloorEndReason.Stair);
+		await UniTask.CompletedTask;
 	}
 
 	/// <summary>
@@ -77,7 +79,7 @@ public class MoveAction {
 		}
 		moveCharacter.SetPosition(goalPos);
 		// 移動後処理
-		AfterMoveProcess(moveCharacter, goalSquare);
+		await AfterMoveProcess(moveCharacter, goalSquare);
 	}
 
 	/// <summary>
@@ -85,11 +87,11 @@ public class MoveAction {
 	/// </summary>
 	/// <param name="moveCharacter"></param>
 	/// <param name="goalSquare"></param>
-	private void AfterMoveProcess(CharacterBase moveCharacter, MapSquareData goalSquare) {
+	private async UniTask AfterMoveProcess(CharacterBase moveCharacter, MapSquareData goalSquare) {
 		// プレイヤーでなければ移動後処理は行わない
 		if (!moveCharacter.IsPlayer()) return;
 		// 移動先に階段があったらフロア移動
-		ProcessStair(goalSquare);
+		await ProcessStair(goalSquare);
 	}
 
 

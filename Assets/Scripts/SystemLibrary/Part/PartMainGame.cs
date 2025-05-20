@@ -41,6 +41,7 @@ public class PartMainGame : PartBase {
 	}
 
 	public override async UniTask Execute() {
+		SoundManager.instance.PlayBGM(0);
 		// ダンジョンの実行
 		eDungeonEndReason endReason = await _dungeonProcessor.Execute();
 		// ダンジョン終了結果の処理

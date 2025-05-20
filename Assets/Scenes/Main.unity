@@ -359,6 +359,7 @@ MonoBehaviour:
   _systemObjectList:
   - {fileID: 1078821064592293366, guid: 222a46bafdc1ac64fa18adb7e4d166a1, type: 3}
   - {fileID: 8795483668482518700, guid: e87a46b6b6008e44c880874dd0b5731f, type: 3}
+  - {fileID: 5672941031528507126, guid: a1d9e7f9d9c892a4e9c49c45b495f4aa, type: 3}
 --- !u!4 &753228551
 Transform:
   m_ObjectHideFlags: 0
