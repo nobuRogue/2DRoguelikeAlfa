@@ -17,6 +17,7 @@ public class UserData {
 	/// コンストラクタ
 	/// </summary>
 	public UserData() {
+		// とりあえず1階で初期化
 		SetFloorCount(1);
 	}
 

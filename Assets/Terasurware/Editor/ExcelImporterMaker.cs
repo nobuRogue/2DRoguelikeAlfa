@@ -1,5 +1,7 @@
 ﻿#pragma warning disable 0219
 
+/* MIT License | https://github.com/tsubaki/Unity-Excel-Importer-Maker */
+
 using UnityEngine;
 using System.Collections;
 using UnityEditor;

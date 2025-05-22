@@ -47,5 +47,5 @@ MonoBehaviour:
   _partOriginList:
   - {fileID: 5719109756659302278, guid: db1caa9ece490a844abcfbdb8ddf40b3, type: 3}
   - {fileID: 3079081101859527264, guid: f46f926fc924bdf4baa930e56356f24d, type: 3}
-  - {fileID: 1065998368911477908, guid: c98f5688db8cb32428c31d2f2bd9f40c, type: 3}
+  - {fileID: 2092713585330348269, guid: c98f5688db8cb32428c31d2f2bd9f40c, type: 3}
   - {fileID: 8115254344498513290, guid: 9b00c88430af8d24888bb0104d5a889f, type: 3}
