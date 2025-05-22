@@ -46,16 +46,20 @@ public class PartMainGame : PartBase {
 		// BGM~‚ß‚é
 		SoundManager.instance.StopBGM();
 		// ƒ_ƒ“ƒWƒ‡ƒ“I—¹Œ‹‰Ê‚Ìˆ—
+		UniTask task;
 		switch (endReason) {
 			case eDungeonEndReason.Dead:
+			task = PartManager.instance.TransitionPart(eGamePart.Title);
 			break;
 			case eDungeonEndReason.Clear:
+			task = PartManager.instance.TransitionPart(eGamePart.Ending);
 			break;
 		}
 
 	}
 
 	public override async UniTask Teardown() {
+		CharacterManager.instance.UnusePlayer(CharacterUtility.GetPlayer() as PlayerCharacter);
 		await UniTask.CompletedTask;
 	}
 }

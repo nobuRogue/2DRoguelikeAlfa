@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static TerrainSpriteAssignor;
+using static FloorMasterUtility;
 using static MapSquareUtility;
 using static CharacterUtility;
 using static CommonModule;
@@ -47,6 +49,9 @@ public class FloorProcessor {
 	/// フロア生成
 	/// </summary>
 	private async UniTask SetupFloor() {
+		// マップ地形画像設定
+		var floorMaster = GetCurrentFloorMaster();
+		SetFloorSpriteTypeIndex(floorMaster.spriteIndex);
 		// マップ生成
 		MapCreater.CreateMap();
 		// プレイヤー配置

@@ -26,4 +26,12 @@ public class FloorMasterUtility {
 		return null;
 	}
 
+	/// <summary>
+	/// 現在の階数のフロアマスター取得
+	/// </summary>
+	/// <returns></returns>
+	public static Entity_FloorData.Param GetCurrentFloorMaster() {
+		int currentFloorCount = UserDataHolder.currentData.floorCount;
+		return GetFloorMaster(currentFloorCount);
+	}
 }

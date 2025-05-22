@@ -41,6 +41,14 @@ public class TerrainSpriteAssignor {
 	}
 
 	/// <summary>
+	/// フロア地形画像のタイプ番号指定
+	/// </summary>
+	/// <param name="setIndex"></param>
+	public static void SetFloorSpriteTypeIndex(int setIndex) {
+		_floorTypeIndex = setIndex;
+	}
+
+	/// <summary>
 	/// 地形に対応したスプライトを返す
 	/// </summary>
 	/// <param name="terrain"></param>
