@@ -65,7 +65,7 @@ public class CharacterManager : MonoBehaviour {
 	/// <param name="masterID"></param>
 	public void UsePlayer(MapSquareData squareData, int masterID) {
 		// キャラクター情報のインスタンスの取得
-		PlayerCharacter usePlayer = null;
+		PlayerCharacter usePlayer;
 		if (IsEmpty(_unusePlayerList)) {
 			// 未使用がないので生成
 			usePlayer = new PlayerCharacter();
@@ -76,6 +76,25 @@ public class CharacterManager : MonoBehaviour {
 		}
 		// 使用可能なIDを割り当て使用状態にする
 		UseCharacter(usePlayer, squareData, masterID);
+	}
+
+	/// <summary>
+	/// エネミーキャラクターの生成
+	/// </summary>
+	/// <param name="squareData"></param>
+	/// <param name="masterID"></param>
+	public void UseEnemy(MapSquareData squareData, int masterID) {
+		// エネミー情報のインスタンスの取得
+		EnemyCharacter useEnemy;
+		if (IsEmpty(_unuseEnemyList)) {
+			// 未使用がないので生成
+			useEnemy = new EnemyCharacter();
+		} else {
+			// 未使用リストから使う
+			useEnemy = _unuseEnemyList[0];
+			_unuseEnemyList.RemoveAt(0);
+		}
+		UseCharacter(useEnemy, squareData, masterID);
 	}
 
 	/// <summary>

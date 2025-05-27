@@ -10,6 +10,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CharacterUtility;
+using static MapSquareUtility;
+
 public class PartMainGame : PartBase {
 	[SerializeField]
 	private MapSquareManager _squareManager = null;
@@ -34,7 +37,7 @@ public class PartMainGame : PartBase {
 
 	public override async UniTask Setup() {
 		// ÉvÉåÉCÉÑÅ[ê∂ê¨
-		CharacterManager.instance.UsePlayer(MapSquareUtility.GetSquareData(0, 0), 0);
+		UsePlayer(GetSquareData(0, 0), 0);
 		await UniTask.CompletedTask;
 	}
 
@@ -59,7 +62,7 @@ public class PartMainGame : PartBase {
 	}
 
 	public override async UniTask Teardown() {
-		CharacterManager.instance.UnusePlayer(CharacterUtility.GetPlayer() as PlayerCharacter);
+		CharacterManager.instance.UnusePlayer(GetPlayer() as PlayerCharacter);
 		await UniTask.CompletedTask;
 	}
 }

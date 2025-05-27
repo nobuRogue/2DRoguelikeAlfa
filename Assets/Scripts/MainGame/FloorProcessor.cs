@@ -15,6 +15,7 @@ using static FloorMasterUtility;
 using static MapSquareUtility;
 using static CharacterUtility;
 using static CommonModule;
+using static GameConst;
 
 public class FloorProcessor {
 	private TurnProcessor _turnProcessor = null;
@@ -55,17 +56,25 @@ public class FloorProcessor {
 		// マップ生成
 		MapCreater.CreateMap();
 		// プレイヤー配置
-		SetPlayer();
+		SetCharacter();
 		// フロアを終了していない状態にする
 		_endReason = eFloorEndReason.Invalid;
 		// フェードイン
 		await FadeManager.instance.FadeIn();
 	}
 
-	private void SetPlayer() {
+	private void SetCharacter() {
 		// プレイヤー取得
 		CharacterBase player = GetPlayer();
 		if (player == null) return;
+		// 全ての部屋マスを集約（配置の候補マスリスト）
+		List<MapSquareData> roomSquareList = new List<MapSquareData>(MAP_SQUARE_COUNT);
+
+		// プレイヤーを配置
+
+		// エネミーを配置
+
+		//------------------------------------------------
 		// ランダムな部屋取得
 		RoomData roomData = GetRandomRoom();
 		if (roomData == null ||

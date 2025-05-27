@@ -7,17 +7,27 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class CharacterObject : MonoBehaviour {
+	private static StringBuilder _spriteNameBuilder = new StringBuilder();
+	private static readonly string _CHARACTER_SPRITE_PATH = "Design/Sprites/Character/";
+
 	[SerializeField]
 	private SpriteRenderer _characterSprite = null;
 
 	/// <summary>
 	/// égópëOÇÃèÄîı
 	/// </summary>
-	public void Setup() {
+	public void Setup(string spriteName) {
+		_spriteNameBuilder.Append(_CHARACTER_SPRITE_PATH);
+		_spriteNameBuilder.Append(spriteName);
+		_spriteNameBuilder.Append("wait");
+		Sprite[] characterSprite = Resources.LoadAll<Sprite>(_spriteNameBuilder.ToString());
+		_spriteNameBuilder.Clear();
 
+		_characterSprite.sprite = characterSprite[0];
 	}
 
 	/// <summary>

@@ -62,7 +62,7 @@ public class RouteSearcher {
 		public List<DistanceNodeManhattan> nodeList = null;
 
 		public DistanceNodeTableManahattan() {
-			nodeList = new List<DistanceNodeManhattan>(MAP_SQUARE_WIDTH_COUNT * MAP_SQUARE_HEIGHT_COUNT);
+			nodeList = new List<DistanceNodeManhattan>(MAP_SQUARE_COUNT);
 		}
 		/// <summary>
 		/// 初期化
@@ -108,7 +108,7 @@ public class RouteSearcher {
 		} else {
 			_nodeTableManhattan.Clear();
 		}
-		InitializeList(ref _manhattanOpenList, MAP_SQUARE_WIDTH_COUNT * MAP_SQUARE_HEIGHT_COUNT);
+		InitializeList(ref _manhattanOpenList, MAP_SQUARE_COUNT);
 		// スタートのノードを生成する
 		_manhattanOpenList.Add(new DistanceNodeManhattan(eDirectionFour.Invalid, null, 0, startSquareID));
 		// ゴールマスの位置を取得しておく

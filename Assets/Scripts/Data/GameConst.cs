@@ -13,6 +13,7 @@ public class GameConst {
 	// マップ関連
 	public static readonly int MAP_SQUARE_HEIGHT_COUNT = 32;
 	public static readonly int MAP_SQUARE_WIDTH_COUNT = 32;
+	public static int MAP_SQUARE_COUNT { get { return MAP_SQUARE_HEIGHT_COUNT * MAP_SQUARE_WIDTH_COUNT; } }
 	public static readonly int AREA_DEVIDE_COUNT = 8;
 	// 最小部屋サイズ
 	public static readonly int MIN_ROOM_SIZE = 3;

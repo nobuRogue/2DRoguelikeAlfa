@@ -15,6 +15,13 @@ public abstract class CharacterBase {
 	public int posX { get; protected set; } = -1;
 	public int posY { get; protected set; } = -1;
 
+	// マスターデータ依存の変数
+	public int nameID { get; protected set; } = -1;
+	public int maxHP { get; protected set; } = -1;
+	public int HP { get; protected set; } = -1;
+	public int rawAttack { get; protected set; } = -1;
+	public int rawDefense { get; protected set; } = -1;
+
 	/// <summary>
 	/// 使用前の準備
 	/// </summary>
@@ -24,10 +31,26 @@ public abstract class CharacterBase {
 	public virtual void Setup(int setID, MapSquareData squareData, int setMasterID) {
 		ID = setID;
 		masterID = setMasterID;
+		var characterMaster = CharacterMasterUtility.GetCharacterMaster(masterID);
+		SetupMaster(characterMaster);
 		// キャラクターをマスに置く
 		SetSquare(squareData);
 		// オブジェクトの準備
-		GetObject()?.Setup();
+		GetObject()?.Setup(characterMaster.spriteName);
+	}
+
+	/// <summary>
+	/// マスターデータ関連の準備
+	/// </summary>
+	/// <param name="setMasterID"></param>
+	protected virtual void SetupMaster(Entity_CharacterData.Param characterMaster) {
+		if (characterMaster == null) return;
+
+		nameID = characterMaster.nameID;
+		maxHP = characterMaster.HP;
+		HP = maxHP;
+		rawAttack = characterMaster.Attack;
+		rawDefense = characterMaster.Defense;
 	}
 
 	/// <summary>

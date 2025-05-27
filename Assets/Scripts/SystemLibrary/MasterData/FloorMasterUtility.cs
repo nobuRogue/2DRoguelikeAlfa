@@ -17,7 +17,8 @@ public class FloorMasterUtility {
 	/// <param name="floorCount"></param>
 	/// <returns></returns>
 	public static Entity_FloorData.Param GetFloorMaster(int floorCount) {
-		List<Entity_FloorData.Param> floorMasterList = MasterDataManager.floorData[0];
+		// フロアマスターデータ取得
+		var floorMasterList = MasterDataManager.floorData[0];
 		for (int i = 0, max = floorMasterList.Count; i < max; i++) {
 			if (floorMasterList[i].floorCount != floorCount) continue;
 			// フロア数が一致したら返す

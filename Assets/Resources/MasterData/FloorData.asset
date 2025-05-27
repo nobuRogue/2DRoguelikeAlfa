@@ -23,7 +23,3 @@ MonoBehaviour:
       spriteIndex: 1
       enemyTableID: 0
       itemTableID: 0
-    - floorCount: 3
-      spriteIndex: 2
-      enemyTableID: 0
-      itemTableID: 0

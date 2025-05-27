@@ -10,6 +10,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterUtility {
+
+	/// <summary>
+	/// プレイヤー生成
+	/// </summary>
+	/// <param name="squareData"></param>
+	/// <param name="masterID"></param>
+	public static void UsePlayer(MapSquareData squareData, int masterID) {
+		CharacterManager.instance.UsePlayer(squareData, masterID);
+	}
+
+	public static void UseEnemy(MapSquareData squareData, int masterID) {
+		CharacterManager.instance.UseEnemy(squareData, masterID);
+	}
+
 	/// <summary>
 	/// ID指定のキャラクターデータ取得
 	/// </summary>

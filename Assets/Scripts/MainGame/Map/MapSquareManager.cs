@@ -29,7 +29,7 @@ public class MapSquareManager : MonoBehaviour {
 	public void Initialize() {
 		instance = this;
 		// マスを必要な数だけ生成
-		int squareCount = MAP_SQUARE_HEIGHT_COUNT * MAP_SQUARE_WIDTH_COUNT;
+		int squareCount = MAP_SQUARE_COUNT;
 		_squareDataList = new List<MapSquareData>(squareCount);
 		_squareObjectList = new List<MapSquareObject>(squareCount);
 		// マスの生成
