@@ -172,6 +172,17 @@ public class CharacterManager : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// エネミーを未使用状態にする
+	/// </summary>
+	/// <param name="unuseEnemy"></param>
+	public void UnuseEnemy(EnemyCharacter unuseEnemy) {
+		if (unuseEnemy == null) return;
+		// 未使用リストに加える
+		_unuseEnemyList.Add(unuseEnemy);
+		UnuseCharacter(unuseEnemy);
+	}
+
+	/// <summary>
 	/// キャラクターを未使用状態にする
 	/// </summary>
 	/// <param name="unuseCharacter"></param>
@@ -203,6 +214,20 @@ public class CharacterManager : MonoBehaviour {
 			return _useList[i];
 		}
 		return null;
+	}
+
+	/// <summary>
+	/// 全てのキャラクターに指定処理実行
+	/// </summary>
+	/// <param name="action"></param>
+	public void ExecuteAllCharacter(System.Action<CharacterBase> action) {
+		if (action == null || IsEmpty(_useList)) return;
+
+		for (int i = 0, max = _useList.Count; i < max; i++) {
+			if (_useList[i] == null) continue;
+
+			action(_useList[i]);
+		}
 	}
 
 }

@@ -36,6 +36,7 @@ public class PartMainGame : PartBase {
 	}
 
 	public override async UniTask Setup() {
+		await base.Setup();
 		// ƒvƒŒƒCƒ„[¶¬
 		UsePlayer(GetSquareData(0, 0), 0);
 		await UniTask.CompletedTask;
@@ -62,7 +63,8 @@ public class PartMainGame : PartBase {
 	}
 
 	public override async UniTask Teardown() {
-		CharacterManager.instance.UnusePlayer(GetPlayer() as PlayerCharacter);
+		await base.Teardown();
+		UnusePlayer(GetPlayer() as PlayerCharacter);
 		await UniTask.CompletedTask;
 	}
 }

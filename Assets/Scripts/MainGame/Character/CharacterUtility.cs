@@ -20,8 +20,29 @@ public class CharacterUtility {
 		CharacterManager.instance.UsePlayer(squareData, masterID);
 	}
 
+	/// <summary>
+	/// エネミー生成
+	/// </summary>
+	/// <param name="squareData"></param>
+	/// <param name="masterID"></param>
 	public static void UseEnemy(MapSquareData squareData, int masterID) {
 		CharacterManager.instance.UseEnemy(squareData, masterID);
+	}
+
+	/// <summary>
+	/// プレイヤー削除
+	/// </summary>
+	/// <param name="unusePlayer"></param>
+	public static void UnusePlayer(PlayerCharacter unusePlayer) {
+		CharacterManager.instance.UnusePlayer(unusePlayer);
+	}
+
+	/// <summary>
+	/// エネミー削除
+	/// </summary>
+	/// <param name="unuseEnemy"></param>
+	public static void UnuseEnemy(EnemyCharacter unuseEnemy) {
+		CharacterManager.instance.UnuseEnemy(unuseEnemy);
 	}
 
 	/// <summary>
@@ -39,6 +60,14 @@ public class CharacterUtility {
 	/// <returns></returns>
 	public static CharacterBase GetPlayer() {
 		return CharacterManager.instance.GetPlayer();
+	}
+
+	/// <summary>
+	/// 全てのキャラクターに指定処理実行
+	/// </summary>
+	/// <param name="action"></param>
+	public static void ExecuteAllCharacter(System.Action<CharacterBase> action) {
+		CharacterManager.instance.ExecuteAllCharacter(action);
 	}
 
 }

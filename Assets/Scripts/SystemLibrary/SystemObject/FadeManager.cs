@@ -18,7 +18,7 @@ public class FadeManager : SystemObject {
 
 	public static FadeManager instance { get; private set; } = null;
 	// デフォルトのフェード時間
-	private const float _DEFAULT_FADE_DURAITION = 0.3f;
+	private const float _DEFAULT_FADE_DURAITION = 0.5f;
 
 	/// <summary>
 	/// 初期化

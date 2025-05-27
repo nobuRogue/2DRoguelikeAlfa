@@ -69,27 +69,49 @@ public class FloorProcessor {
 		if (player == null) return;
 		// 全ての部屋マスを集約（配置の候補マスリスト）
 		List<MapSquareData> roomSquareList = new List<MapSquareData>(MAP_SQUARE_COUNT);
+		ExecuteAllSquare(mapSquare => {
+			if (mapSquare.terrain != eTerrain.Room) return;
 
+			roomSquareList.Add(mapSquare);
+		});
 		// プレイヤーを配置
-
-		// エネミーを配置
-
-		//------------------------------------------------
-		// ランダムな部屋取得
-		RoomData roomData = GetRandomRoom();
-		if (roomData == null ||
-			IsEmpty(roomData.squareIDList)) return;
-		// 部屋のランダムなマス取得
-		List<int> squareList = roomData.squareIDList;
-		int squareID = squareList[Random.Range(0, squareList.Count)];
-		MapSquareData playerSquare = GetSquareData(squareID);
-		// プレイヤー配置
+		MapSquareData playerSquare = roomSquareList[Random.Range(0, roomSquareList.Count)];
 		player.SetSquare(playerSquare);
+		roomSquareList.Remove(playerSquare);
+		// エネミーを生成配置
+		//SpawnEnemy(4, roomSquareList);
 	}
 
+	/// <summary>
+	/// エネミーの生成、配置
+	/// </summary>
+	/// <param name="spawnCount"></param>
+	/// <param name="candidateSquareList"></param>
+	private void SpawnEnemy(int spawnCount, List<MapSquareData> candidateSquareList) {
+		for (int i = 0; i < spawnCount; i++) {
+			if (IsEmpty(candidateSquareList)) return;
+			// 候補マスからランダムに取得
+			MapSquareData spawnSquare = candidateSquareList[Random.Range(0, candidateSquareList.Count)];
+			// エネミー生成
+			UseEnemy(spawnSquare, 1);
+			candidateSquareList.Remove(spawnSquare);
+		}
+	}
+
+	/// <summary>
+	/// フロア終了時の処理
+	/// </summary>
+	/// <returns></returns>
 	private async UniTask TeardownFloor() {
 		// フェードアウト
 		await FadeManager.instance.FadeOut();
+		// エネミーの全削除
+		ExecuteAllCharacter(character => {
+			// エネミーなら削除
+			var enemy = character as EnemyCharacter;
+			if (enemy != null) UnuseEnemy(enemy);
+
+		});
 	}
 
 	/// <summary>

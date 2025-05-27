@@ -53,9 +53,9 @@ public class TurnProcessor {
 		// プレイヤーの入力受付、移動以外の行動実行
 		await AcceptPlayerAction();
 		// エネミーの思考
+
 		// 全キャラクターの移動
 		await MoveAllCharacter();
-
 		// 全エネミーの移動以外の行動
 
 		// ターン終了時の処理

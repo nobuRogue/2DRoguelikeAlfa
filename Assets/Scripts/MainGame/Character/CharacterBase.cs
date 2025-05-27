@@ -57,9 +57,12 @@ public abstract class CharacterBase {
 	/// 使用後の片付け
 	/// </summary>
 	public virtual void Teardown() {
-
+		// 今いるマスから取り除く
+		GetSquareData(posX, posY)?.RemoveCharacter();
+		posX = -1;
+		posY = -1;
 		// オブジェクトの片付け
-
+		GetObject()?.Teardown();
 	}
 
 	/// <summary>

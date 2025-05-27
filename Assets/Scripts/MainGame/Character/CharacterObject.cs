@@ -34,7 +34,7 @@ public class CharacterObject : MonoBehaviour {
 	/// Žg—pŒã‚Ì•Ð•t‚¯
 	/// </summary>
 	public void Teardown() {
-
+		_characterSprite.sprite = null;
 	}
 
 	/// <summary>
