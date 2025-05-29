@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CharacterUtility;
+
 using static CommonModule;
 using static GameConst;
 
@@ -42,6 +44,8 @@ public class TurnProcessor {
 		_EndDungeon = SetEndDungeon;
 		// 移動アクションにフロア終了処理を渡す
 		MoveAction.SetEndProcess(EndFloor, EndDungeon);
+		// AIに移動の追加処理を渡す
+		CharacterAIBase.SetAddMoveCallback(moveAction => _moveActionList.Add(moveAction));
 	}
 
 	/// <summary>
@@ -52,8 +56,8 @@ public class TurnProcessor {
 		_isContinueTurn = true;
 		// プレイヤーの入力受付、移動以外の行動実行
 		await AcceptPlayerAction();
-		// エネミーの思考
-
+		// 全エネミーの思考
+		ExecuteAllCharacter(character => character.ThinkAction());
 		// 全キャラクターの移動
 		await MoveAllCharacter();
 		// 全エネミーの移動以外の行動

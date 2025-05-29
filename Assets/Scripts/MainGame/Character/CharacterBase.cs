@@ -114,4 +114,11 @@ public abstract class CharacterBase {
 	/// </summary>
 	/// <returns></returns>
 	public abstract bool IsPlayer();
+
+	/// <summary>
+	/// s“®‚Ìvl
+	/// </summary>
+	public virtual void ThinkAction() {
+
+	}
 }

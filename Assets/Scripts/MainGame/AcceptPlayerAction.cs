@@ -49,6 +49,7 @@ public class AcceptPlayerAction {
 		MoveAction moveAction = new MoveAction();
 		MapSquareData sourceSquare = GetSquareData(player.posX, player.posY);
 		ChebyshevMoveData moveData = new ChebyshevMoveData(sourceSquare.ID, moveSquare.ID, inputDir);
+		// “à•”“I‚ÈˆÚ“®
 		moveAction.ExecuteData(player, moveData);
 		_AddMove?.Invoke(moveAction);
 		return true;

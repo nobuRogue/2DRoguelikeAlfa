@@ -8,7 +8,10 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+
+using static CommonModule;
 
 public class MapSquareUtility {
 
@@ -118,6 +121,51 @@ public class MapSquareUtility {
 				checkSquare.terrain == eTerrain.Wall) return false;
 		}
 		return true;
+	}
+
+	/// <summary>
+	/// キャラクターの視界マスリスト取得
+	/// </summary>
+	public static void GetVisbleArea(ref List<int> visibleArea, MapSquareData sourceSquare) {
+		InitializeList(ref visibleArea);
+		if (sourceSquare == null) return;
+		// 起点の周囲8マスを追加
+
+
+		// 周囲8マスに部屋があればキャッシュ
+
+
+		// キャッシュされた部屋マスの部屋全てのマスを追加
+
+	}
+
+	/// <summary>
+	/// 等チェビシェフ距離のマスを全て取得
+	/// </summary>
+	/// <param name="result"></param>
+	/// <param name="sourceSquare"></param>
+	/// <param name="distance"></param>
+	public static void GetChebyshevAroundSquare(ref List<int> result, MapSquareData sourceSquare, int distance = 1) {
+		InitializeList(ref result, distance * 8);
+		if (sourceSquare == null) return;
+
+		int countMax = distance * 2;
+		int sourceX = sourceSquare.posX, sourceY = sourceSquare.posY;
+		for (int count = 0; count < countMax; count++) {
+			MapSquareData 
+			targetSquare = GetSquareData(sourceX - distance + count, sourceY - distance);
+			if (targetSquare != null) result.Add(targetSquare.ID);
+
+			targetSquare = GetSquareData(sourceX + distance, sourceY - distance + count);
+			if (targetSquare != null) result.Add(targetSquare.ID);
+
+			targetSquare = GetSquareData(sourceX + distance - count, sourceY + distance);
+			if (targetSquare != null) result.Add(targetSquare.ID);
+
+			targetSquare = GetSquareData(sourceX - distance, sourceY + distance - count);
+			if (targetSquare != null) result.Add(targetSquare.ID);
+
+		}
 	}
 
 }
