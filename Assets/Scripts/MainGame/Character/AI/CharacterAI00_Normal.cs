@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static RouteSearcher;
 using static CharacterUtility;
 using static MapSquareUtility;
 using static CommonModule;
@@ -37,12 +38,31 @@ public class CharacterAI00_Normal : CharacterAIBase {
 			// 視界にプレイヤーが居るので可能な行動を探す
 
 			// 可能な行動が無ければプレイヤーに近づく
+			MapSquareData playerSquare = GetSquareData(player.posX, player.posY);
+			RouteSearchChebyshev(sourceSquare.ID, playerSquare.ID, CanPassCharacter);
 
 
 		} else {
 			// 視界にプレイヤーが居ないのでランダム移動
 			RandomMove();
 		}
+	}
+
+
+	/// <summary>
+	/// キャラクターの通行可否判定
+	/// </summary>
+	/// <param name="moveSquare"></param>
+	/// <param name="dir"></param>
+	/// <param name="distance"></param>
+	/// <returns></returns>
+	private bool CanPassCharacter(MapSquareData baseSquare, MapSquareData moveSquare, eDirectionEight dir, int distance) {
+		// 移動先のキャラクターが取得
+		CharacterBase squareCharacter = GetCharacterData(moveSquare.characterID);
+		// キャラクターがいなければ通常の通行可否判定
+		if (squareCharacter == null) return CanMove(baseSquare.posX, baseSquare.posY, moveSquare, dir);
+		// プレイヤーなら地形のみの通行可否判定
+		return squareCharacter.IsPlayer() && CanMoveTerrain(baseSquare.posX, baseSquare.posY, moveSquare, dir);
 	}
 
 	/// <summary>
