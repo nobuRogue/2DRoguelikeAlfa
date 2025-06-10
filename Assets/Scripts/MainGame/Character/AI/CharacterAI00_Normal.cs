@@ -27,9 +27,13 @@ public class CharacterAI00_Normal : CharacterAIBase {
 	/// </summary>
 	public override void ThinkAction() {
 		// 視界にプレイヤーが居るか判定
-
-
-		if (false) {
+		CharacterBase sourceCharacter = GetCharacterData(_sourceCharacterID);
+		MapSquareData sourceSquare = GetSquareData(sourceCharacter.posX, sourceCharacter.posY);
+		List<int> visibleArea = null;
+		GetVisbleArea(ref visibleArea, sourceSquare);
+		CharacterBase player = GetPlayer();
+		bool visiblePlayer = visibleArea.Exists(player.ExistMoveTrail);
+		if (visiblePlayer) {
 			// 視界にプレイヤーが居るので可能な行動を探す
 
 			// 可能な行動が無ければプレイヤーに近づく

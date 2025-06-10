@@ -22,12 +22,19 @@ public class MapSquareObject : MonoBehaviour {
 	[SerializeField]
 	private Transform _characterRoot = null;
 
+	/// <summary>
+	/// デバッグ用スプライト
+	/// </summary>
+	[SerializeField]
+	private SpriteRenderer _markSprite = null;
+
 	public void Setup(int setX, int setY) {
 		Vector3 position = transform.position;
 		position.x = setX * _SQUARE_SIZE_RARIO;
 		position.y = setY * _SQUARE_SIZE_RARIO;
 		position.z = setY * 0.1f;
 		transform.position = position;
+		HideMark();
 	}
 
 	/// <summary>
@@ -44,4 +51,20 @@ public class MapSquareObject : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public Transform GetCharacterRoot() { return _characterRoot; }
+
+	/// <summary>
+	/// デバッグ用スプライト表示
+	/// </summary>
+	/// <param name="color"></param>
+	public void ShowMark(Color color) {
+		_markSprite.color = color;
+		_markSprite.enabled = true;
+	}
+
+	/// <summary>
+	/// デバッグ用スプライト非表示
+	/// </summary>
+	public void HideMark() {
+		_markSprite.enabled = false;
+	}
 }

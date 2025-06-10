@@ -79,7 +79,7 @@ public class FloorProcessor {
 		player.SetSquare(playerSquare);
 		roomSquareList.Remove(playerSquare);
 		// エネミーを生成配置
-		SpawnEnemy(4, roomSquareList);
+		SpawnEnemy(1, roomSquareList);
 	}
 
 	/// <summary>
@@ -105,12 +105,17 @@ public class FloorProcessor {
 	private async UniTask TeardownFloor() {
 		// フェードアウト
 		await FadeManager.instance.FadeOut();
-		// エネミーの全削除
+		// キャラクターのフロア終了時処理
 		ExecuteAllCharacter(character => {
 			// エネミーなら削除
 			var enemy = character as EnemyCharacter;
-			if (enemy != null) UnuseEnemy(enemy);
-
+			if (enemy != null) {
+				// エネミーなら削除
+				UnuseEnemy(enemy);
+			} else {
+				// フロア終了時処理
+				character.OnEndFloor();
+			}
 		});
 	}
 

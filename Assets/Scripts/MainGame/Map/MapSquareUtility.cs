@@ -78,6 +78,15 @@ public class MapSquareUtility {
 	}
 
 	/// <summary>
+	/// 部屋情報取得
+	/// </summary>
+	/// <param name="roomID"></param>
+	/// <returns></returns>
+	public static RoomData GetRoom(int roomID) {
+		return MapSquareManager.instance.GetRoom(roomID);
+	}
+
+	/// <summary>
 	/// ランダムな部屋情報取得
 	/// </summary>
 	/// <returns></returns>
@@ -129,14 +138,26 @@ public class MapSquareUtility {
 	public static void GetVisbleArea(ref List<int> visibleArea, MapSquareData sourceSquare) {
 		InitializeList(ref visibleArea);
 		if (sourceSquare == null) return;
-		// 起点の周囲8マスを追加
-
-
+		// 起点と周囲8マスを追加
+		GetChebyshevAroundSquare(ref visibleArea, sourceSquare);
+		visibleArea.Add(sourceSquare.ID);
 		// 周囲8マスに部屋があればキャッシュ
+		List<int> aroundRoomIDList = new List<int>(visibleArea.Count);
+		for (int i = 0, max = visibleArea.Count; i < max; i++) {
+			MapSquareData square = GetSquareData(visibleArea[i]);
+			if (square == null || square.roomID < 0) continue;
+			// 既に同じIDがリストに含まれていたら処理しない
+			if (aroundRoomIDList.Contains(square.roomID)) continue;
 
-
+			aroundRoomIDList.Add(square.roomID);
+		}
 		// キャッシュされた部屋マスの部屋全てのマスを追加
+		for (int i = 0, max = aroundRoomIDList.Count; i < max; i++) {
+			RoomData roomData = GetRoom(aroundRoomIDList[i]);
+			if (roomData == null) continue;
 
+			MeargeList(ref visibleArea, roomData.squareIDList);
+		}
 	}
 
 	/// <summary>
@@ -152,7 +173,7 @@ public class MapSquareUtility {
 		int countMax = distance * 2;
 		int sourceX = sourceSquare.posX, sourceY = sourceSquare.posY;
 		for (int count = 0; count < countMax; count++) {
-			MapSquareData 
+			MapSquareData
 			targetSquare = GetSquareData(sourceX - distance + count, sourceY - distance);
 			if (targetSquare != null) result.Add(targetSquare.ID);
 

@@ -9,6 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MapSquareUtility;
+
 public class RoomData {
 	/// <summary>
 	/// 識別ID
@@ -27,12 +29,26 @@ public class RoomData {
 	public void Setup(int setID, List<int> setSquareIDList) {
 		roomID = setID;
 		squareIDList = setSquareIDList;
+		// マス情報に所属する部屋IDを設定
+		for (int i = 0, max = squareIDList.Count; i < max; i++) {
+			MapSquareData square = GetSquareData(squareIDList[i]);
+			if (square == null) continue;
+
+			square.SetRoomID(roomID);
+		}
 	}
 
 	/// <summary>
 	/// 使用後の片付け
 	/// </summary>
 	public void Teardown() {
+		// マス情報の部屋IDを初期化
+		for (int i = 0, max = squareIDList.Count; i < max; i++) {
+			MapSquareData square = GetSquareData(squareIDList[i]);
+			if (square == null) continue;
+
+			square.SetRoomID(-1);
+		}
 		roomID = -1;
 		squareIDList = null;
 	}

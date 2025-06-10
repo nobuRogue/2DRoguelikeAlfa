@@ -62,6 +62,26 @@ public class CommonModule {
 	}
 
 	/// <summary>
+	/// リストを重複なしでマージ
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="main"></param>
+	/// <param name="sub"></param>
+	public static void MeargeList<T>(ref List<T> main, List<T> sub) {
+		if (IsEmpty(sub)) return;
+
+		int meargeCount = sub.Count;
+		if (main == null) main = new List<T>(meargeCount);
+
+		for (int i = 0; i < meargeCount; i++) {
+			// 重複した要素は追加しない
+			if (main.Exists(mainElem => mainElem.Equals(sub[i]))) continue;
+
+			main.Add(sub[i]);
+		}
+	}
+
+	/// <summary>
 	/// 複数のタスクの終了を待つ
 	/// </summary>
 	/// <param name="taskList"></param>

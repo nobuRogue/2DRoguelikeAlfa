@@ -24,6 +24,11 @@ public class MapSquareData {
 	/// </summary>
 	public eTerrain terrain { get; private set; } = eTerrain.Invalid;
 	/// <summary>
+	/// 部屋ID
+	/// </summary>
+	public int roomID { get; private set; } = -1;
+
+	/// <summary>
 	/// マスにいるキャラクターのID
 	/// </summary>
 	public int characterID { get; private set; } = -1;
@@ -86,5 +91,28 @@ public class MapSquareData {
 	/// </summary>
 	public void RemoveCharacter() {
 		characterID = -1;
+	}
+
+	/// <summary>
+	/// 部屋IDの設定
+	/// </summary>
+	/// <param name="setRoomID"></param>
+	public void SetRoomID(int setRoomID) {
+		roomID = setRoomID;
+	}
+
+	/// <summary>
+	/// デバッグ用スプライト表示
+	/// </summary>
+	/// <param name="color"></param>
+	public void ShowMark(Color color) {
+		GetObject()?.ShowMark(color);
+	}
+
+	/// <summary>
+	/// デバッグ用スプライト非表示
+	/// </summary>
+	public void HideMark() {
+		GetObject()?.HideMark();
 	}
 }

@@ -7,9 +7,74 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
+using static MapSquareUtility;
+
 public class PlayerCharacter : CharacterBase {
+	private readonly int _PLAYER_MOVE_TRAIL_COUNT = 3;
+
+	// ˆÚ“®‚Ì‹OÕ‚Ìƒ}ƒXIDƒŠƒXƒg
+	private List<int> _moveTrailList = null;
+
+	public override void Setup(int setID, MapSquareData squareData, int setMasterID) {
+		_moveTrailList = new List<int>(_PLAYER_MOVE_TRAIL_COUNT);
+		base.Setup(setID, squareData, setMasterID);
+	}
+
+	public override void SetSquareData(MapSquareData squareData) {
+		if (squareData == null) return;
+
+		base.SetSquareData(squareData);
+		// ˆÚ“®‚Ì‹OÕ‚É’Ç‰Á
+		AddMoveTrail(squareData);
+	}
+
+	/// <summary>
+	/// ƒtƒƒAI—¹ˆ—
+	/// </summary>
+	public override void OnEndFloor() {
+		base.OnEndFloor();
+		ClearMoveTrail();
+	}
+
+	/// <summary>
+	/// ˆÚ“®‚Ì‹OÕ‚ÉŠÜ‚Ü‚ê‚Ä‚¢‚é‚©
+	/// </summary>
+	/// <param name="squareID"></param>
+	/// <returns></returns>
+	public override bool ExistMoveTrail(int squareID) {
+		return _moveTrailList.Contains(squareID);
+	}
+
+	/// <summary>
+	/// ˆÚ“®‚Ì‹OÕ‚ğ’Ç‰Á
+	/// </summary>
+	/// <param name="square"></param>
+	private void AddMoveTrail(MapSquareData square) {
+		// Šù‚É‹OÕ‚É‘¶İ‚µ‚Ä‚¢‚½‚çˆ—‚µ‚È‚¢
+		if (_moveTrailList.Contains(square.ID)) return;
+		// ‹OÕ‚ª3ƒ}ƒX•ª‚ ‚Á‚½‚çÅ‰‚Ì—v‘f‚ğæ‚èœ‚­
+		if (_moveTrailList.Count >= _PLAYER_MOVE_TRAIL_COUNT) {
+			GetSquareData(_moveTrailList[0])?.HideMark();
+			_moveTrailList.RemoveAt(0);
+		}
+		// ‹OÕ‚É’Ç‰Á
+		_moveTrailList.Add(square.ID);
+		square.ShowMark(Color.red);
+	}
+
+	/// <summary>
+	/// ˆÚ“®‚Ì‹OÕ‚ğƒNƒŠƒA
+	/// </summary>
+	private void ClearMoveTrail() {
+		for (int i = 0, max = _moveTrailList.Count; i < max; i++) {
+			GetSquareData(_moveTrailList[i])?.HideMark();
+		}
+		_moveTrailList.Clear();
+	}
+
 	public override bool IsPlayer() {
 		return true;
 	}

@@ -90,7 +90,7 @@ public abstract class CharacterBase {
 	/// 情報のみの変更
 	/// </summary>
 	/// <param name="squareData"></param>
-	public void SetSquareData(MapSquareData squareData) {
+	public virtual void SetSquareData(MapSquareData squareData) {
 		if (squareData == null) return;
 		// 今いるマスから取り除く
 		GetSquareData(posX, posY)?.RemoveCharacter();
@@ -120,5 +120,21 @@ public abstract class CharacterBase {
 	/// </summary>
 	public virtual void ThinkAction() {
 
+	}
+
+	/// <summary>
+	/// フロア終了時処理
+	/// </summary>
+	public virtual void OnEndFloor() {
+
+	}
+
+	/// <summary>
+	/// 移動の軌跡に含まれているか
+	/// </summary>
+	/// <param name="squareID"></param>
+	/// <returns></returns>
+	public virtual bool ExistMoveTrail(int squareID) {
+		return false;
 	}
 }
