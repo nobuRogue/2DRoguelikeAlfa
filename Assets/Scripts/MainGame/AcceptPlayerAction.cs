@@ -44,7 +44,10 @@ public class AcceptPlayerAction {
 		// ˆÚ“®‰Â”Û‚Ì”»’è
 		CharacterBase player = GetPlayer();
 		MapSquareData moveSquare = GetToDirSquare(player.posX, player.posY, inputDir);
-		if (!CanMove(player.posX, player.posY, moveSquare, inputDir)) return false;
+		if (!CanMove(player.posX, player.posY, moveSquare, inputDir)) {
+			player.SetDirection(inputDir);
+			return false;
+		}
 		// Žó‚¯•t‚¯‚½“ü—Í‚É‰ž‚¶‚ÄˆÚ“®
 		MoveAction moveAction = new MoveAction();
 		MapSquareData sourceSquare = GetSquareData(player.posX, player.posY);

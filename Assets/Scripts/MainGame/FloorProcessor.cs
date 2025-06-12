@@ -79,7 +79,7 @@ public class FloorProcessor {
 		player.SetSquare(playerSquare);
 		roomSquareList.Remove(playerSquare);
 		// エネミーを生成配置
-		SpawnEnemy(1, roomSquareList);
+		SpawnEnemy(8, roomSquareList);
 	}
 
 	/// <summary>

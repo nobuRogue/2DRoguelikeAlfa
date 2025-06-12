@@ -13,6 +13,7 @@ using static RouteSearcher;
 using static CharacterUtility;
 using static MapSquareUtility;
 using static CommonModule;
+using static Unity.VisualScripting.Member;
 
 public class CharacterAI00_Normal : CharacterAIBase {
 	/// <summary>
@@ -38,16 +39,29 @@ public class CharacterAI00_Normal : CharacterAIBase {
 			// 視界にプレイヤーが居るので可能な行動を探す
 
 			// 可能な行動が無ければプレイヤーに近づく
-			MapSquareData playerSquare = GetSquareData(player.posX, player.posY);
-			RouteSearchChebyshev(sourceSquare.ID, playerSquare.ID, CanPassCharacter);
-
-
+			CloseMoveToPlayer(player, sourceSquare, sourceCharacter);
 		} else {
 			// 視界にプレイヤーが居ないのでランダム移動
 			RandomMove();
 		}
 	}
 
+	/// <summary>
+	/// プレイヤーに近づく移動
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="sourceSquare"></param>
+	/// <param name="sourceCharacter"></param>
+	private void CloseMoveToPlayer(CharacterBase player, MapSquareData sourceSquare, CharacterBase sourceCharacter) {
+		MapSquareData playerSquare = GetSquareData(player.posX, player.posY);
+		List<ChebyshevMoveData> toPlayerRoute = RouteSearchChebyshev(sourceSquare.ID, playerSquare.ID, CanPassCharacter);
+		// 経路（toPlayerRoute）の要素1が有効なら（プレイヤーと隣接していなければ)プレイヤーに近づく移動を行う
+		if (!IsEnableIndex(toPlayerRoute, 1)) return;
+		// プレイヤーに近づく移動を行う
+		MoveAction moveAction = new MoveAction();
+		moveAction.ExecuteData(sourceCharacter, toPlayerRoute[0]);
+		_AddMove?.Invoke(moveAction);
+	}
 
 	/// <summary>
 	/// キャラクターの通行可否判定

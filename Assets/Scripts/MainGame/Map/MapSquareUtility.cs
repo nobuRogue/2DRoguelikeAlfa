@@ -133,6 +133,31 @@ public class MapSquareUtility {
 	}
 
 	/// <summary>
+	/// 攻撃可能なマスか判定
+	/// </summary>
+	/// <param name="startX"></param>
+	/// <param name="startY"></param>
+	/// <param name="attackSquare"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public static bool CanAttack(int startX, int startY, MapSquareData attackSquare, eDirectionEight dir) {
+		// 移動先の地形判定
+		if (attackSquare == null ||
+			attackSquare.terrain == eTerrain.Wall) return false;
+		// 斜め移動でなければ終わり
+		if (!dir.IsSlant()) return true;
+		// 斜め移動なら、方向を分割し各方向のマスの地形を判定
+		eDirectionFour[] separateDir = dir.Separate();
+		for (int i = 0, max = separateDir.Length; i < max; i++) {
+			// 分割した方向の隣接マスを取得
+			MapSquareData checkSquare = GetToDirSquare(startX, startY, separateDir[i]);
+			if (checkSquare == null ||
+				checkSquare.terrain == eTerrain.Wall) return false;
+		}
+		return true;
+	}
+
+	/// <summary>
 	/// キャラクターの視界マスリスト取得
 	/// </summary>
 	public static void GetVisbleArea(ref List<int> visibleArea, MapSquareData sourceSquare) {

@@ -62,6 +62,7 @@ public class MoveAction {
 		_moveCharacterID = moveCharacter.ID;
 		_moveData = moveData;
 
+		moveCharacter.SetDirection(_moveData.dir);
 		moveCharacter.SetSquareData(GetSquareData(_moveData.targetSquareID));
 	}
 

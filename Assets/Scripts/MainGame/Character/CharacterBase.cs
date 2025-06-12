@@ -14,7 +14,8 @@ public abstract class CharacterBase {
 	public int masterID { get; protected set; } = -1;
 	public int posX { get; protected set; } = -1;
 	public int posY { get; protected set; } = -1;
-
+	// キャラクターの向き
+	public eDirectionEight direction { get; protected set; } = eDirectionEight.Invalid;
 	// マスターデータ依存の変数
 	public int nameID { get; protected set; } = -1;
 	public int maxHP { get; protected set; } = -1;
@@ -37,6 +38,8 @@ public abstract class CharacterBase {
 		SetSquare(squareData);
 		// オブジェクトの準備
 		GetObject()?.Setup(characterMaster.spriteName);
+		// とりあえず下を向かせる
+		SetDirection(eDirectionEight.Down);
 	}
 
 	/// <summary>
@@ -136,5 +139,16 @@ public abstract class CharacterBase {
 	/// <returns></returns>
 	public virtual bool ExistMoveTrail(int squareID) {
 		return false;
+	}
+
+	/// <summary>
+	/// キャラの向き設定
+	/// </summary>
+	/// <param name="setDir"></param>
+	public void SetDirection(eDirectionEight setDir) {
+		if (direction == setDir) return;
+
+		direction = setDir;
+		GetObject()?.SetDirection(direction);
 	}
 }

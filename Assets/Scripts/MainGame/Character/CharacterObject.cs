@@ -44,4 +44,29 @@ public class CharacterObject : MonoBehaviour {
 	public void SetPosition(Vector3 position) {
 		transform.position = position;
 	}
+
+	/// <summary>
+	/// スプライトの向き変更
+	/// </summary>
+	/// <param name="setDir"></param>
+	public void SetDirection(eDirectionEight setDir) {
+		switch (setDir) {
+			case eDirectionEight.UpRight:
+			case eDirectionEight.Right:
+			case eDirectionEight.DownRight:
+			// 画像を右に向かせる
+			Vector3 scale = _characterSprite.transform.localScale;
+			scale.x = 1.0f;
+			_characterSprite.transform.localScale = scale;
+			break;
+			case eDirectionEight.DownLeft:
+			case eDirectionEight.Left:
+			case eDirectionEight.UpLeft:
+			// 画像を左に向かせる
+			scale = _characterSprite.transform.localScale;
+			scale.x = -1.0f;
+			_characterSprite.transform.localScale = scale;
+			break;
+		}
+	}
 }
