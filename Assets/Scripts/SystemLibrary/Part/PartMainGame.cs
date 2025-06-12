@@ -26,12 +26,14 @@ public class PartMainGame : PartBase {
 
 	public override async UniTask Initialize() {
 		TerrainSpriteAssignor.Initialize();
-
+		// ダンジョン実行クラス初期化
 		_dungeonProcessor = new DungeonProcessor();
 		_dungeonProcessor.Initialize();
-
+		// マス、キャラクター管理クラス初期化
 		_squareManager.Initialize();
 		_characterManager.Initialize();
+		// 射程管理クラス初期化
+		ActionRangeManager.Initialize();
 		await UniTask.CompletedTask;
 	}
 

@@ -27,4 +27,14 @@ public abstract class ActionRangeBase {
 	public virtual bool CanUse(CharacterBase sourceCharacter, ref eDirectionEight dir) {
 		return true;
 	}
+
+	/// <summary>
+	/// ‘Š‘Î“G‚©”Û‚©”»’è
+	/// </summary>
+	/// <param name="source"></param>
+	/// <param name="target"></param>
+	/// <returns></returns>
+	protected bool IsRelativeEnemy(CharacterBase source, CharacterBase target) {
+		return source.IsPlayer() != target.IsPlayer();
+	}
 }

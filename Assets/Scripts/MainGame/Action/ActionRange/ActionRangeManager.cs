@@ -1,6 +1,6 @@
 /**
  * @file ActionRangeManager.cs
- * @brief 行動の射程の基底
+ * @brief 行動の射程の管理
  * @author yao
  * @date 2025/6/12
  */
@@ -13,13 +13,14 @@ using static CommonModule;
 
 public class ActionRangeManager {
 	// 射程のリスト
-	private static List<ActionRangeBase> _actionRangeList = null;
+	private static List<ActionRangeBase> _rangeList = null;
 
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	public static void Initialize() {
-		_actionRangeList = new List<ActionRangeBase>();
+		_rangeList = new List<ActionRangeBase>();
+		_rangeList.Add(new ActionRange00_DirForward());
 
 	}
 
@@ -29,9 +30,9 @@ public class ActionRangeManager {
 	/// <param name="rangeType"></param>
 	/// <returns></returns>
 	public static ActionRangeBase GetRange(int rangeType) {
-		if (!IsEnableIndex(_actionRangeList, rangeType)) return null;
+		if (!IsEnableIndex(_rangeList, rangeType)) return null;
 
-		return _actionRangeList[rangeType];
+		return _rangeList[rangeType];
 	}
 
 }

@@ -9,14 +9,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CharacterUtility;
 using static MapSquareUtility;
-
 using static CommonModule;
 
 public class ActionRange00_DirForward : ActionRangeBase {
 
 	/// <summary>
-	/// 
+	/// 対象取得の実行処理
 	/// </summary>
 	/// <param name="sourceCharacter"></param>
 	public override void Execute(CharacterBase sourceCharacter) {
@@ -29,8 +29,11 @@ public class ActionRange00_DirForward : ActionRangeBase {
 		if (!targetSquare.existCharacter) return;
 		// 攻撃可否判定
 		if (!CanAttack(sourceX, sourceY, targetSquare, sourceDir)) return;
-		// プレイヤーはエネミーだけを対象に、エネミーはプレイヤーだけを対象にとるようにする。
-		// →相対的な敵か否かの判定
-		targetList.Add(targetSquare.characterID);
+		// 相対敵なら対象にとる
+		CharacterBase targetCharacter = GetCharacterData(targetSquare.characterID);
+		if (IsRelativeEnemy(sourceCharacter, targetCharacter)) targetList.Add(targetSquare.characterID);
+
 	}
+
+
 }

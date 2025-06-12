@@ -17,12 +17,19 @@ public class MasterDataManager {
 	public static List<List<Entity_FloorData.Param>> floorData = null;
 	public static List<List<Entity_CharacterData.Param>> characterData = null;
 
+	// 行動の効果関連
+	public static List<List<Entity_ActionData.Param>> actionData = null;
+	public static List<List<Entity_ActionEffectData.Param>> effectData = null;
+
 	/// <summary>
 	/// 全てのマスターデータを読み込む
 	/// </summary>
 	public static void LoadAllData() {
 		floorData = Load<Entity_FloorData, Entity_FloorData.Sheet, Entity_FloorData.Param>("FloorData");
 		characterData = Load<Entity_CharacterData, Entity_CharacterData.Sheet, Entity_CharacterData.Param>("CharacterData");
+
+		actionData = Load<Entity_ActionData, Entity_ActionData.Sheet, Entity_ActionData.Param>("ActionData");
+		effectData = Load<Entity_ActionEffectData, Entity_ActionEffectData.Sheet, Entity_ActionEffectData.Param>("ActionEffectData");
 	}
 
 	/// <summary>
