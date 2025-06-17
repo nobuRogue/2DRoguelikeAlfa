@@ -34,6 +34,7 @@ public class PartMainGame : PartBase {
 		_characterManager.Initialize();
 		// Ë’öŠÇ—ƒNƒ‰ƒX‰Šú‰»
 		ActionRangeManager.Initialize();
+		ActionManager.Initialize();
 		await UniTask.CompletedTask;
 	}
 

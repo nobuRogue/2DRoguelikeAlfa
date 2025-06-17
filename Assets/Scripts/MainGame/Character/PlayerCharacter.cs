@@ -13,10 +13,21 @@ using UnityEngine;
 using static MapSquareUtility;
 
 public class PlayerCharacter : CharacterBase {
+	// ダンジョン終了処理
+	private static System.Action<eDungeonEndReason> _EndDungeon = null;
+
 	private readonly int _PLAYER_MOVE_TRAIL_COUNT = 3;
 
 	// 移動の軌跡のマスIDリスト
 	private List<int> _moveTrailList = null;
+
+	/// <summary>
+	/// ダンジョン終了処理の受取
+	/// </summary>
+	/// <param name="setProcess"></param>
+	public static void SetEndDungeonProcess(System.Action<eDungeonEndReason> setProcess) {
+		_EndDungeon = setProcess;
+	}
 
 	public override void Setup(int setID, MapSquareData squareData, int setMasterID) {
 		_moveTrailList = new List<int>(_PLAYER_MOVE_TRAIL_COUNT);
@@ -77,5 +88,13 @@ public class PlayerCharacter : CharacterBase {
 
 	public override bool IsPlayer() {
 		return true;
+	}
+
+	/// <summary>
+	/// 死亡時処理
+	/// </summary>
+	public override void Dead() {
+		// プレイヤー死亡でダンジョン終了
+		_EndDungeon?.Invoke(eDungeonEndReason.Dead);
 	}
 }

@@ -10,6 +10,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static GameConst;
+using static ActionManager;
 using static MapSquareUtility;
 using static CharacterUtility;
 using static UnityEngine.Input;
@@ -28,6 +30,8 @@ public class AcceptPlayerAction {
 		while (true) {
 			// 移動の受付
 			if (AcceptMove()) break;
+			// 攻撃の受付
+			if (await AcceptAttack()) break;
 
 			await UniTask.DelayFrame(1);
 		}
@@ -83,6 +87,17 @@ public class AcceptPlayerAction {
 			}
 		}
 		return eDirectionEight.Invalid;
+	}
+
+	/// <summary>
+	/// 通常攻撃入力受付、処理
+	/// </summary>
+	/// <returns></returns>
+	private async UniTask<bool> AcceptAttack() {
+		if (!GetKeyDown(KeyCode.Z)) return false;
+
+		await ExecuteAction(GetPlayer(), NORMAL_ATTACK_ACTION_ID);
+		return true;
 	}
 
 }

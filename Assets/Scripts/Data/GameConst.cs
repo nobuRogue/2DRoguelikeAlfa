@@ -21,4 +21,8 @@ public class GameConst {
 	// フロア関連
 	// 1フロア内のキャラクターの最大数
 	public static readonly int FLOOR_ENEMY_MAX = 15;
+
+	// アクション関連
+	// 通常攻撃のアクションID
+	public static readonly int NORMAL_ATTACK_ACTION_ID = 0;
 }

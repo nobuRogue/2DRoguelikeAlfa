@@ -16,6 +16,24 @@ public abstract class ActionEffectBase {
 	/// 効果の実行処理
 	/// </summary>
 	/// <returns></returns>
-	public abstract UniTask Execute(CharacterBase sourceCharacter, List<int> targetList);
+	public abstract UniTask Execute(
+		CharacterBase sourceCharacter,
+		Entity_ActionEffectData.Param effectMaster,
+		ActionRangeBase range);
+
+	/// <summary>
+	/// 死亡判定付きのダメージ付与
+	/// </summary>
+	/// <param name="gamageValue"></param>
+	/// <param name="targetCharacter"></param>
+	protected void AddDamage(int gamageValue, CharacterBase targetCharacter) {
+		if (targetCharacter == null) return;
+		// ダメージの付与
+		targetCharacter.RemoveHP(gamageValue);
+		// 死亡の判定
+		if (!targetCharacter.isDead) return;
+		// 死亡処理
+		targetCharacter.Dead();
+	}
 
 }

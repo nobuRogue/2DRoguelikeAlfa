@@ -5,6 +5,7 @@
  * @date 2025/5/8
  */
 
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 using static MapSquareUtility;
@@ -20,6 +21,8 @@ public abstract class CharacterBase {
 	public int nameID { get; protected set; } = -1;
 	public int maxHP { get; protected set; } = -1;
 	public int HP { get; protected set; } = -1;
+	// €–S‚µ‚Ä‚¢‚é‚©
+	public bool isDead { get { return HP <= 0; } }
 	public int rawAttack { get; protected set; } = -1;
 	public int rawDefense { get; protected set; } = -1;
 
@@ -151,4 +154,51 @@ public abstract class CharacterBase {
 		direction = setDir;
 		GetObject()?.SetDirection(direction);
 	}
+
+	/// <summary>
+	/// UŒ‚—Íæ“¾
+	/// </summary>
+	/// <returns></returns>
+	public int GetAttack() {
+		return rawAttack;
+	}
+
+	/// <summary>
+	/// –hŒä—Íæ“¾
+	/// </summary>
+	/// <returns></returns>
+	public int GetDefense() {
+		return rawDefense;
+	}
+
+	/// <summary>
+	/// Œ»İHPİ’è
+	/// </summary>
+	/// <param name="setValue"></param>
+	public void SetHP(int setValue) {
+		// 0`Å‘å’l‚ÉŠÛ‚ß‚é
+		HP = Mathf.Clamp(setValue, 0, maxHP);
+	}
+
+	/// <summary>
+	/// HP‰ñ•œ
+	/// </summary>
+	/// <param name="addValue"></param>
+	public void AddHP(int addValue) {
+		SetHP(HP + addValue);
+	}
+
+	/// <summary>
+	/// HPŒ¸­
+	/// </summary>
+	/// <param name="removeValue"></param>
+	public void RemoveHP(int removeValue) {
+		SetHP(HP - removeValue);
+	}
+
+	/// <summary>
+	/// ƒLƒƒƒ‰ƒNƒ^[‚Ì€–S
+	/// </summary>
+	public abstract void Dead();
+
 }

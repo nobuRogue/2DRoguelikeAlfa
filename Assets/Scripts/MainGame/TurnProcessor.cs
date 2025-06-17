@@ -42,8 +42,10 @@ public class TurnProcessor {
 
 		_EndFloor = SetEndFloor;
 		_EndDungeon = SetEndDungeon;
-		// 移動アクションにフロア終了処理を渡す
+		// 移動アクションにフロア、ダンジョン終了処理を渡す
 		MoveAction.SetEndProcess(EndFloor, EndDungeon);
+		// プレイヤーにダンジョン終了処理を渡す
+		PlayerCharacter.SetEndDungeonProcess(EndDungeon);
 		// AIに移動の追加処理を渡す
 		CharacterAIBase.SetAddMoveCallback(moveAction => _moveActionList.Add(moveAction));
 	}

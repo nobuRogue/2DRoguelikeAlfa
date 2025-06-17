@@ -9,6 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CharacterUtility;
+
 public class EnemyCharacter : CharacterBase {
 	/// <summary>
 	/// s“®AI
@@ -29,5 +31,14 @@ public class EnemyCharacter : CharacterBase {
 	/// </summary>
 	public override void ThinkAction() {
 		_actionAI.ThinkAction();
+	}
+
+	/// <summary>
+	/// €–Sˆ—
+	/// </summary>
+	/// <exception cref="System.NotImplementedException"></exception>
+	public override void Dead() {
+		// ©g‚ğíœ
+		UnuseEnemy(this);
 	}
 }
