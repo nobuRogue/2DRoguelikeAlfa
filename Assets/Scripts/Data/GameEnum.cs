@@ -71,3 +71,15 @@ public enum eDungeonEndReason {
 	Dead,       // プレイヤー死亡
 	Clear,      // クリア
 }
+
+/// <summary>
+/// キャラのアニメーションの種類
+/// </summary>
+public enum eCharacterAnimation {
+	Invalid,
+	Wait,
+	Walk,
+	Attack,
+	Damage,
+	Max
+}

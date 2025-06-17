@@ -5,6 +5,7 @@
  * @date 2025/5/8
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -16,6 +17,13 @@ public class CharacterObject : MonoBehaviour {
 
 	[SerializeField]
 	private SpriteRenderer _characterSprite = null;
+
+	// アニメーション再生タスク
+	private UniTask _animTask;
+	// 現在再生中のアニメーション
+	public eCharacterAnimation currentAnim { get; private set; } = eCharacterAnimation.Invalid;
+	// 現在のスプライトのインデクス
+	private int _animIndex = -1;
 
 	/// <summary>
 	/// 使用前の準備
@@ -67,6 +75,19 @@ public class CharacterObject : MonoBehaviour {
 			scale.x = -1.0f;
 			_characterSprite.transform.localScale = scale;
 			break;
+		}
+	}
+
+	private async UniTask PlayAnimationTask() {
+		while (true) {
+			// 現在のアニメーション取得
+
+			// ループ判定、処理
+
+			// スプライトの設定
+
+			// 規定ミリ秒待ち、インデックス増加
+
 		}
 	}
 }
