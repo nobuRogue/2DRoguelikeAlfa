@@ -47,6 +47,8 @@ public class ActionEffect000_Attack : ActionEffectBase {
 		// 基本ダメージ : 攻撃力×(15/16)^防御力
 		int targetDefense = targetCharacter.GetDefense();
 		int damage = (int)(sourceAttack * Mathf.Pow(15.0f / 16.0f, targetDefense));
+		// ログの追加
+		MenuManager.instance.Get<MenuRogueLog>().AddLog(damage + " のダメージ");
 		// 被ダメージモーションの終了待ち
 		while (targetCharacter.GetCurrentAnimation() == eCharacterAnimation.Damage) {
 			await UniTask.DelayFrame(1);
