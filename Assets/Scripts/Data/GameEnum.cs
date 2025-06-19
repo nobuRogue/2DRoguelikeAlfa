@@ -63,20 +63,16 @@ public enum eFloorEndReason {
 	Stair,          // 階段で移動
 }
 
-/// <summary>
 /// ダンジョン終了要因
-/// </summary>
 public enum eDungeonEndReason {
-	Invalid,    // 終了していない
-	Dead,       // プレイヤー死亡
-	Clear,      // クリア
+	Invalid = -1,    // 終了していない
+	Dead,           // プレイヤー死亡
+	Clear,          // クリア
 }
 
-/// <summary>
 /// キャラのアニメーションの種類
-/// </summary>
 public enum eCharacterAnimation {
-	Invalid,
+	Invalid = -1,   // 不正値
 	Wait,
 	Walk,
 	Attack,

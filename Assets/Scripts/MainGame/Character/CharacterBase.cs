@@ -201,4 +201,23 @@ public abstract class CharacterBase {
 	/// </summary>
 	public abstract void Dead();
 
+	/// <summary>
+	/// アニメーションの再生
+	/// </summary>
+	/// <param name="setAnim"></param>
+	public void SetAnimation(eCharacterAnimation setAnim) {
+		GetObject()?.SetAnimation(setAnim);
+	}
+
+	/// <summary>
+	/// 再生中のアニメーション取得
+	/// </summary>
+	/// <returns></returns>
+	public eCharacterAnimation GetCurrentAnimation() {
+		CharacterObject characterObject = GetObject();
+		if (characterObject == null) return eCharacterAnimation.Invalid;
+
+		return characterObject.currentAnim;
+	}
+
 }

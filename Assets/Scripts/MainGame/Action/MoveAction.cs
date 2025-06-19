@@ -78,6 +78,9 @@ public class MoveAction {
 
 		Vector3 startPos = startSquare.GetCharacterRoot().position;
 		Vector3 goalPos = goalSquare.GetCharacterRoot().position;
+		// 歩行アニメーション再生
+		moveCharacter.SetAnimation(eCharacterAnimation.Walk);
+
 		// 移動処理
 		float elapsedTime = 0.0f;// 経過時間
 		while (elapsedTime < duration) {

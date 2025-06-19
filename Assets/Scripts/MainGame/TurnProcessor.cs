@@ -73,6 +73,10 @@ public class TurnProcessor {
 	/// </summary>
 	/// <returns></returns>
 	private async UniTask AcceptPlayerAction() {
+		// 継続移動があるか判定
+		if (_acceptPlayerAction.AcceptMove()) return;
+		// 全てのキャラクター全てのキャラクターを待機アニメーションにする(ラムダ式を使う)
+		ExecuteAllCharacter(character => character.SetAnimation(eCharacterAnimation.Wait));
 		await _acceptPlayerAction.AcceptInput();
 	}
 
