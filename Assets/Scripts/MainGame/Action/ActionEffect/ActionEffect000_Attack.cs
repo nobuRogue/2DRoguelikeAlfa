@@ -10,10 +10,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MessageMasterUtility;
 using static CharacterUtility;
 using static CommonModule;
 
 public class ActionEffect000_Attack : ActionEffectBase {
+	// ダメージを与えるログメッセージのID
+	private readonly int _DAMAGE_LOG_ID = 14000;
+
+	/// <summary>
+	/// 効果処理実行
+	/// </summary>
+	/// <param name="sourceCharacter"></param>
+	/// <param name="effectMaster"></param>
+	/// <param name="range"></param>
+	/// <returns></returns>
 	public override async UniTask Execute(
 		CharacterBase sourceCharacter,
 		Entity_ActionEffectData.Param effectMaster,
@@ -48,7 +59,7 @@ public class ActionEffect000_Attack : ActionEffectBase {
 		int targetDefense = targetCharacter.GetDefense();
 		int damage = (int)(sourceAttack * Mathf.Pow(15.0f / 16.0f, targetDefense));
 		// ログの追加
-		MenuManager.instance.Get<MenuRogueLog>().AddLog(damage + " のダメージ");
+		MenuManager.instance.Get<MenuRogueLog>().AddLog(string.Format(_DAMAGE_LOG_ID.ToMessage(), damage));
 		// 被ダメージモーションの終了待ち
 		while (targetCharacter.GetCurrentAnimation() == eCharacterAnimation.Damage) {
 			await UniTask.DelayFrame(1);

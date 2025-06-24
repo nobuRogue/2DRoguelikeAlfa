@@ -5,6 +5,7 @@
  * @date 2025/5/13
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -68,6 +69,15 @@ public class CharacterUtility {
 	/// <param name="action"></param>
 	public static void ExecuteAllCharacter(System.Action<CharacterBase> action) {
 		CharacterManager.instance.ExecuteAllCharacter(action);
+	}
+
+	/// <summary>
+	/// 全てのキャラクターに指定タスク実行
+	/// </summary>
+	/// <param name="task"></param>
+	/// <returns></returns>
+	public static async UniTask ExecuteTaskAllCharacter(System.Func<CharacterBase, UniTask> task) {
+		await CharacterManager.instance.ExecuteTaskAllCharacter(task);
 	}
 
 }

@@ -5,6 +5,8 @@
  * @date 2025/5/8
  */
 
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.CompilerServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -227,6 +229,21 @@ public class CharacterManager : MonoBehaviour {
 			if (_useList[i] == null) continue;
 
 			action(_useList[i]);
+		}
+	}
+
+	/// <summary>
+	/// 全てのキャラクターに指定タスク実行
+	/// </summary>
+	/// <param name="task"></param>
+	/// <returns></returns>
+	public async UniTask ExecuteTaskAllCharacter(System.Func<CharacterBase, UniTask> task) {
+		if (task == null || IsEmpty(_useList)) return;
+
+		for (int i = 0, max = _useList.Count; i < max; i++) {
+			if (_useList[i] == null) continue;
+
+			await task(_useList[i]);
 		}
 	}
 

@@ -63,7 +63,7 @@ public class TurnProcessor {
 		// 全キャラクターの移動
 		await MoveAllCharacter();
 		// 全エネミーの移動以外の行動
-
+		await ActionAllCharacter();
 		// ターン終了時の処理
 
 	}
@@ -93,6 +93,27 @@ public class TurnProcessor {
 		// 終了待ち
 		await WaitTask(taskList);
 		_moveActionList.Clear();
+	}
+
+	/// <summary>
+	/// 全てのキャラクターの予定行動実行
+	/// </summary>
+	/// <returns></returns>
+	private async UniTask ActionAllCharacter() {
+		await ExecuteTaskAllCharacter(ExecuteScheduleAction);
+	}
+
+	/// <summary>
+	/// ターンが継続中なら予定行動を実行
+	/// </summary>
+	/// <param name="character"></param>
+	/// <returns></returns>
+	private async UniTask ExecuteScheduleAction(CharacterBase character) {
+		if (_isContinueTurn) {
+			await character.ExecuteScheduleAction();
+		} else {
+			character.ResetScheduleAction();
+		}
 	}
 
 	/// <summary>

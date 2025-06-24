@@ -220,4 +220,16 @@ public abstract class CharacterBase {
 		return characterObject.currentAnim;
 	}
 
+	/// <summary>
+	/// 予定行動の実行
+	/// </summary>
+	/// <returns></returns>
+	public virtual async UniTask ExecuteScheduleAction() {
+		await UniTask.CompletedTask;
+	}
+
+	/// <summary>
+	/// 予定行動のリセット
+	/// </summary>
+	public virtual void ResetScheduleAction() { }
 }

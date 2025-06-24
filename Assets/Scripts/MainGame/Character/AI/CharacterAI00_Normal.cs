@@ -12,6 +12,10 @@ using UnityEngine;
 using static RouteSearcher;
 using static CharacterUtility;
 using static MapSquareUtility;
+using static ActionRangeManager;
+using static ActionMasterUtility;
+
+using static GameConst;
 using static CommonModule;
 using static Unity.VisualScripting.Member;
 
@@ -29,7 +33,7 @@ public class CharacterAI00_Normal : CharacterAIBase {
 	/// </summary>
 	public override void ThinkAction() {
 		// 視界にプレイヤーが居るか判定
-		CharacterBase sourceCharacter = GetCharacterData(_sourceCharacterID);
+		CharacterBase sourceCharacter = GetSourceCharacter();
 		MapSquareData sourceSquare = GetSquareData(sourceCharacter.posX, sourceCharacter.posY);
 		List<int> visibleArea = null;
 		GetVisbleArea(ref visibleArea, sourceSquare);
@@ -37,13 +41,29 @@ public class CharacterAI00_Normal : CharacterAIBase {
 		bool visiblePlayer = visibleArea.Exists(player.ExistMoveTrail);
 		if (visiblePlayer) {
 			// 視界にプレイヤーが居るので可能な行動を探す
-
+			CheckCanUseAction(sourceCharacter);
+			if (_scheduleActionID >= 0) return;
 			// 可能な行動が無ければプレイヤーに近づく
 			CloseMoveToPlayer(player, sourceSquare, sourceCharacter);
 		} else {
 			// 視界にプレイヤーが居ないのでランダム移動
 			RandomMove();
 		}
+	}
+
+	/// <summary>
+	/// 使用可能な行動があれば予定行動に設定する
+	/// </summary>
+	private void CheckCanUseAction(CharacterBase sourceCharacter) {
+		// 通常攻撃の使用可否判定
+		Entity_ActionData.Param actionMaster = GetActionMaster(NORMAL_ATTACK_ACTION_ID);
+		if (actionMaster == null) return;
+
+		ActionRangeBase range = GetRange(actionMaster.rangeType);
+		eDirectionEight canUseDir = eDirectionEight.Invalid;
+		if (range == null || !range.CanUse(sourceCharacter, ref canUseDir)) return;
+		// 予定行動に設定
+		SetScheduleAction(NORMAL_ATTACK_ACTION_ID);
 	}
 
 	/// <summary>

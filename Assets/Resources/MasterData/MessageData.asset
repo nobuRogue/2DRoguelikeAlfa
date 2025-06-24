@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff1d878c3ba11e94299a5324ee4def2d, type: 3}
+  m_Name: MessageData
+  m_EditorClassIdentifier: 
+  sheets:
+  - name: Menu
+    list:
+    - ID: 0
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 1
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 2
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 3
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 9999
+      text:
+      - 
+      - 
+      - 
+      - 
+  - name: Character
+    list:
+    - ID: 10000
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 10001
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 10002
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 10003
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 11999
+      text:
+      - 
+      - 
+      - 
+      - 
+  - name: Item
+    list:
+    - ID: 12000
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 12001
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 12002
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 12003
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 13999
+      text:
+      - 
+      - 
+      - 
+      - 
+  - name: Log
+    list:
+    - ID: 14000
+      text:
+      - "{0} \u306E\u30C0\u30E1\u30FC\u30B8\uFF01"
+      - 
+      - 
+      - 
+    - ID: 14001
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 14002
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 14003
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 15999
+      text:
+      - 
+      - 
+      - 
+      - 

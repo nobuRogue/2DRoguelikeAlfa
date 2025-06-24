@@ -26,7 +26,7 @@ public class ActionRange00_DirForward : ActionRangeBase {
 		eDirectionEight sourceDir = sourceCharacter.direction;
 		MapSquareData targetSquare = GetToDirSquare(sourceX, sourceY, sourceDir);
 		// ↑のマスにキャラがいたら追加
-		if (!targetSquare.existCharacter) return;
+		if (targetSquare == null || !targetSquare.existCharacter) return;
 		// 攻撃可否判定
 		if (!CanAttack(sourceX, sourceY, targetSquare, sourceDir)) return;
 		// 相対敵なら対象にとる
@@ -35,5 +35,30 @@ public class ActionRange00_DirForward : ActionRangeBase {
 
 	}
 
+	/// <summary>
+	/// 使用可否判定
+	/// </summary>
+	/// <param name="sourceCharacter"></param>
+	/// <param name="dir"></param>
+	/// <returns></returns>
+	public override bool CanUse(CharacterBase sourceCharacter, ref eDirectionEight dir) {
+		int sourceX = sourceCharacter.posX, sourceY = sourceCharacter.posY;
+		// 8方向の前方1マスで判定
+		for (int i = 0, max = (int)eDirectionEight.Max; i < max; i++) {
+			eDirectionEight checkDir = (eDirectionEight)i;
+			MapSquareData targetSquare = GetToDirSquare(sourceX, sourceY, checkDir);
+			if (targetSquare == null || !targetSquare.existCharacter) continue;
+			// 攻撃可否判定
+			if (!CanAttack(sourceX, sourceY, targetSquare, checkDir)) continue;
+			// 相対敵でなければ使用不可能
+			CharacterBase targetCharacter = GetCharacterData(targetSquare.characterID);
+			if (!IsRelativeEnemy(sourceCharacter, targetCharacter)) continue;
+			// 使用可能な向きを設定して使用可で返す
+			dir = checkDir;
+			return true;
+		}
+		// 使用不可能
+		return false;
+	}
 
 }

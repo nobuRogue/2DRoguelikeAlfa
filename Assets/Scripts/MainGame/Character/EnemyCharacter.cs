@@ -5,6 +5,7 @@
  * @date 2025/5/8
  */
 
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,5 +41,23 @@ public class EnemyCharacter : CharacterBase {
 	public override void Dead() {
 		// 自身を削除
 		UnuseEnemy(this);
+	}
+
+	/// <summary>
+	/// 予定行動の実行
+	/// </summary>
+	/// <returns></returns>
+	public override async UniTask ExecuteScheduleAction() {
+		if (_actionAI == null) return;
+
+		await _actionAI.ExecuteScheduleAction();
+		_actionAI.ResetScheduleAction();
+	}
+
+	/// <summary>
+	/// 予定行動のリセット
+	/// </summary>
+	public override void ResetScheduleAction() {
+		_actionAI?.ResetScheduleAction();
 	}
 }

@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+using static MessageMasterUtility;
+
 public static class ExpansionMethod {
 
 	/// <summary>
@@ -78,5 +80,14 @@ public static class ExpansionMethod {
 			return eFloorEndReason.Stair;
 		}
 		return eFloorEndReason.Invalid;
+	}
+
+	/// <summary>
+	/// IDからメッセージ取得
+	/// </summary>
+	/// <param name="messageID"></param>
+	/// <returns></returns>
+	public static string ToMessage(this int messageID) {
+		return GetMessageData(messageID, 0);
 	}
 }
