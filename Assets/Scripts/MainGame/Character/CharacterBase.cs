@@ -202,6 +202,46 @@ public abstract class CharacterBase {
 	public abstract void Dead();
 
 	/// <summary>
+	/// 表示用満腹度取得
+	/// </summary>
+	/// <returns></returns>
+	public virtual int GetShowStamina() {
+		return 0;
+	}
+
+	/// <summary>
+	/// 満腹度取得
+	/// </summary>
+	/// <returns></returns>
+	public virtual int GetStamina() {
+		return 0;
+	}
+
+	/// <summary>
+	/// 満腹度設定
+	/// </summary>
+	/// <param name="setValue"></param>
+	public virtual void SetStamina(int setValue) {
+
+	}
+
+	/// <summary>
+	/// 満腹度増加
+	/// </summary>
+	/// <param name="addValue"></param>
+	public void AddStamina(int addValue) {
+		SetStamina(GetStamina() + addValue);
+	}
+
+	/// <summary>
+	/// 満腹度減少
+	/// </summary>
+	/// <param name="removeValue"></param>
+	public void RemoveStamina(int removeValue) {
+		SetStamina(GetStamina() - removeValue);
+	}
+
+	/// <summary>
 	/// アニメーションの再生
 	/// </summary>
 	/// <param name="setAnim"></param>

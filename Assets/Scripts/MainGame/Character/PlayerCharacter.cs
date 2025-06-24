@@ -15,11 +15,19 @@ using static MapSquareUtility;
 public class PlayerCharacter : CharacterBase {
 	// ダンジョン終了処理
 	private static System.Action<eDungeonEndReason> _EndDungeon = null;
-
-	private readonly int _PLAYER_MOVE_TRAIL_COUNT = 3;
+	private const int _PLAYER_MOVE_TRAIL_COUNT = 3;
 
 	// 移動の軌跡のマスIDリスト
 	private List<int> _moveTrailList = null;
+
+	// 満腹度関連の定数
+	// readonly:コンストラクタの終了まで変更可
+	// const:コンパイル時に確定
+	private const int _MAX_STAMINA = 10000;
+	private const int _SHOW_STAMINA_RATIO = 100;
+	private const int _TURN_DECREASE_STAMINA = 10;
+	// 満腹度
+	private int _stamina = 0;
 
 	/// <summary>
 	/// ダンジョン終了処理の受取
@@ -31,6 +39,7 @@ public class PlayerCharacter : CharacterBase {
 
 	public override void Setup(int setID, MapSquareData squareData, int setMasterID) {
 		_moveTrailList = new List<int>(_PLAYER_MOVE_TRAIL_COUNT);
+		SetStamina(_MAX_STAMINA);
 		base.Setup(setID, squareData, setMasterID);
 	}
 
@@ -96,5 +105,30 @@ public class PlayerCharacter : CharacterBase {
 	public override void Dead() {
 		// プレイヤー死亡でダンジョン終了
 		_EndDungeon?.Invoke(eDungeonEndReason.Dead);
+	}
+
+	/// <summary>
+	/// 表示満腹度取得
+	/// </summary>
+	/// <returns></returns>
+	public override int GetShowStamina() {
+		return (_stamina + _SHOW_STAMINA_RATIO - 1) / _SHOW_STAMINA_RATIO;
+	}
+
+	/// <summary>
+	/// 満腹度取得
+	/// </summary>
+	/// <returns></returns>
+	public override int GetStamina() {
+		return _stamina;
+	}
+
+	/// <summary>
+	/// 満腹度設定
+	/// </summary>
+	/// <param name="setValue"></param>
+	public override void SetStamina(int setValue) {
+		// 0～最大値に丸める
+		_stamina = Mathf.Clamp(setValue, 0, _MAX_STAMINA);
 	}
 }

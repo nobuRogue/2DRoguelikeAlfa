@@ -17,19 +17,19 @@ MonoBehaviour:
     list:
     - ID: 0
       text:
-      - 
+      - '{0}F'
       - 
       - 
       - 
     - ID: 1
       text:
-      - 
+      - '{0}/{1}'
       - 
       - 
       - 
     - ID: 2
       text:
-      - 
+      - '{0}%'
       - 
       - 
       - 

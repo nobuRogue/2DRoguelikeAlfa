@@ -53,8 +53,8 @@ public class ActionEffectData_importer : AssetPostprocessor {
 					cell = row.GetCell(0); p.ID = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(2); p.effectType = (int)(cell == null ? 0 : cell.NumericCellValue);
 					p.param = new int[2];
-					cell = row.GetCell(3); p.param[0] = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(4); p.param[1] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(4); p.param[0] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(5); p.param[1] = (int)(cell == null ? 0 : cell.NumericCellValue);
 						s.list.Add (p);
 					}
 					data.sheets.Add(s);
