@@ -65,7 +65,7 @@ public class TurnProcessor {
 		// 全エネミーの移動以外の行動
 		await ActionAllCharacter();
 		// ターン終了時の処理
-
+		await OnEndTurn();
 	}
 
 	/// <summary>
@@ -114,6 +114,16 @@ public class TurnProcessor {
 		} else {
 			character.ResetScheduleAction();
 		}
+	}
+
+	/// <summary>
+	/// ターン終了時処理
+	/// </summary>
+	/// <returns></returns>
+	private async UniTask OnEndTurn() {
+		// 全てのキャラクターにターン終了時処理を行わせる
+		ExecuteAllCharacter(character => character.OnEndTurn());
+		await UniTask.CompletedTask;
 	}
 
 	/// <summary>

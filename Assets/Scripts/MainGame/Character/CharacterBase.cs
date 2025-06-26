@@ -110,7 +110,7 @@ public abstract class CharacterBase {
 	/// 見た目のみの位置変更
 	/// </summary>
 	/// <param name="position"></param>
-	public void SetPosition(Vector3 position) {
+	public virtual void SetPosition(Vector3 position) {
 		// キャラクターオブジェクトを取得し位置変更する
 		GetObject()?.SetPosition(position);
 	}
@@ -296,4 +296,11 @@ public abstract class CharacterBase {
 	/// 予定行動のリセット
 	/// </summary>
 	public virtual void ResetScheduleAction() { }
+
+	/// <summary>
+	/// ターン終了時の処理
+	/// </summary>
+	public virtual void OnEndTurn() {
+
+	}
 }

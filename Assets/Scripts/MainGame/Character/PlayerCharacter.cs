@@ -16,6 +16,8 @@ public class PlayerCharacter : CharacterBase {
 	// ダンジョン終了処理
 	private static System.Action<eDungeonEndReason> _EndDungeon = null;
 	private const int _PLAYER_MOVE_TRAIL_COUNT = 3;
+	// キャラにフォーカスされたカメラをどれだけ引くか
+	private const float _CAMERA_DISTANCE = -10.0f;
 
 	// 移動の軌跡のマスIDリスト
 	private List<int> _moveTrailList = null;
@@ -43,12 +45,27 @@ public class PlayerCharacter : CharacterBase {
 		base.Setup(setID, squareData, setMasterID);
 	}
 
+	/// <summary>
+	/// 情報のみのマス位置変更
+	/// </summary>
+	/// <param name="squareData"></param>
 	public override void SetSquareData(MapSquareData squareData) {
 		if (squareData == null) return;
 
 		base.SetSquareData(squareData);
 		// 移動の軌跡に追加
 		AddMoveTrail(squareData);
+	}
+
+	/// <summary>
+	/// 見た目の位置変更
+	/// </summary>
+	/// <param name="position"></param>
+	public override void SetPosition(Vector3 position) {
+		base.SetPosition(position);
+		// カメラの追従
+		position.z += _CAMERA_DISTANCE;
+		CameraManager.instance.MoveCamera(position);
 	}
 
 	/// <summary>
@@ -168,5 +185,26 @@ public class PlayerCharacter : CharacterBase {
 		_stamina = Mathf.Clamp(setValue, 0, _MAX_STAMINA);
 		// UI
 		MenuManager.instance.Get<MenuRogueMain>().SetStamina(GetShowStamina());
+	}
+
+	/// <summary>
+	/// ターン終了時の処理
+	/// </summary>
+	public override void OnEndTurn() {
+		base.OnEndTurn();
+		// 満腹度を減らす、0ならHPを減らす
+		if (_stamina <= 0) {
+			// 満腹度0なのでHPを減らす
+			RemoveHP(1);
+			// 死亡判定
+			if (isDead) Dead();
+
+		} else {
+			// 満腹度を減らす
+			RemoveStamina(_TURN_DECREASE_STAMINA);
+			// 死亡していなければ自然回復
+			if (!isDead) AddHP(1);
+
+		}
 	}
 }
