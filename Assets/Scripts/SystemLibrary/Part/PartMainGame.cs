@@ -27,6 +27,7 @@ public class PartMainGame : PartBase {
 	public override async UniTask Initialize() {
 		// メニューの初期化
 		await MenuManager.instance.Get<MenuRogueLog>("Prefabs/Menu/CanvasRogueLog").Initialize();
+		await MenuManager.instance.Get<MenuRogueMain>("Prefabs/Menu/CanvasRogueMain").Initialize();
 
 		TerrainSpriteAssignor.Initialize();
 		// ダンジョン実行クラス初期化
@@ -52,14 +53,18 @@ public class PartMainGame : PartBase {
 		// ログメニューオープン
 		MenuRogueLog logMenu = MenuManager.instance.Get<MenuRogueLog>();
 		await logMenu.Open();
+		// メインUI表示
+		MenuRogueMain mainUI = MenuManager.instance.Get<MenuRogueMain>();
+		await mainUI.Open();
 		// BGM再生
 		SoundManager.instance.PlayBGM(_MAIN_BGM_ID);
 		// ダンジョンの実行
 		eDungeonEndReason endReason = await _dungeonProcessor.Execute();
 		// BGM止める
 		SoundManager.instance.StopBGM();
-		// ログメニュークローズ
+		// メニュークローズ
 		await logMenu.Close();
+		await mainUI.Close();
 		// ダンジョン終了結果の処理
 		UniTask task;
 		switch (endReason) {

@@ -76,3 +76,4 @@ public class MenuRogueMain : MenuBase {
 		_defenseText.text = defense.ToString();
 	}
 }
+

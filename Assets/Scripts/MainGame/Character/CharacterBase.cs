@@ -53,10 +53,10 @@ public abstract class CharacterBase {
 		if (characterMaster == null) return;
 
 		nameID = characterMaster.nameID;
-		maxHP = characterMaster.HP;
-		HP = maxHP;
-		rawAttack = characterMaster.Attack;
-		rawDefense = characterMaster.Defense;
+		SetMaxHP(characterMaster.HP);
+		SetHP(maxHP);
+		SetRawAttack(characterMaster.Attack);
+		SetRawDefense(characterMaster.Defense);
 	}
 
 	/// <summary>
@@ -164,6 +164,14 @@ public abstract class CharacterBase {
 	}
 
 	/// <summary>
+	/// ‘f‚ÌUŒ‚—Íİ’è
+	/// </summary>
+	/// <param name="setValue"></param>
+	public virtual void SetRawAttack(int setValue) {
+		rawAttack = setValue;
+	}
+
+	/// <summary>
 	/// –hŒä—Íæ“¾
 	/// </summary>
 	/// <returns></returns>
@@ -172,10 +180,26 @@ public abstract class CharacterBase {
 	}
 
 	/// <summary>
+	/// ‘f‚Ì–hŒä—Íİ’è
+	/// </summary>
+	/// <param name="setValue"></param>
+	public virtual void SetRawDefense(int setValue) {
+		rawDefense = setValue;
+	}
+
+	/// <summary>
+	/// Å‘åHPİ’è
+	/// </summary>
+	/// <param name="setValue"></param>
+	public virtual void SetMaxHP(int setValue) {
+		maxHP = setValue;
+	}
+
+	/// <summary>
 	/// Œ»İHPİ’è
 	/// </summary>
 	/// <param name="setValue"></param>
-	public void SetHP(int setValue) {
+	public virtual void SetHP(int setValue) {
 		// 0`Å‘å’l‚ÉŠÛ‚ß‚é
 		HP = Mathf.Clamp(setValue, 0, maxHP);
 	}

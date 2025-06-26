@@ -27,6 +27,7 @@ public class UserData {
 	/// <param name="setCount"></param>
 	public void SetFloorCount(int setCount) {
 		floorCount = setCount;
+		MenuManager.instance.Get<MenuRogueMain>()?.SetFloorCount(floorCount);
 	}
 
 }

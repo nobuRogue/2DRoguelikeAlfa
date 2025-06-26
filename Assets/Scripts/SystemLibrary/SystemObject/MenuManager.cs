@@ -53,7 +53,8 @@ public class MenuManager : SystemObject {
 		// メニューの生成
 		T createMenu = Instantiate(menu, transform);
 		if (createMenu == null) return null;
-
+		// 生成したメニューは非表示にしておく
+		createMenu.gameObject.SetActive(false);
 		_menuList.Add(createMenu);
 		return createMenu;
 	}

@@ -100,6 +100,42 @@ public class PlayerCharacter : CharacterBase {
 	}
 
 	/// <summary>
+	/// 素の攻撃力設定
+	/// </summary>
+	/// <param name="setValue"></param>
+	public override void SetRawAttack(int setValue) {
+		base.SetRawAttack(setValue);
+		// UI更新
+		MenuManager.instance.Get<MenuRogueMain>().SetAttack(GetAttack());
+	}
+
+	public override void SetRawDefense(int setValue) {
+		base.SetRawDefense(setValue);
+		// UI更新
+		MenuManager.instance.Get<MenuRogueMain>().SetDefense(GetDefense());
+	}
+
+	/// <summary>
+	/// 最大HP設定
+	/// </summary>
+	/// <param name="setValue"></param>
+	public override void SetMaxHP(int setValue) {
+		base.SetMaxHP(setValue);
+		// UI更新
+		MenuManager.instance.Get<MenuRogueMain>().SetHP(HP, maxHP);
+	}
+
+	/// <summary>
+	/// HP更新
+	/// </summary>
+	/// <param name="setValue"></param>
+	public override void SetHP(int setValue) {
+		base.SetHP(setValue);
+		// UI更新
+		MenuManager.instance.Get<MenuRogueMain>().SetHP(HP, maxHP);
+	}
+
+	/// <summary>
 	/// 死亡時処理
 	/// </summary>
 	public override void Dead() {
@@ -130,5 +166,7 @@ public class PlayerCharacter : CharacterBase {
 	public override void SetStamina(int setValue) {
 		// 0～最大値に丸める
 		_stamina = Mathf.Clamp(setValue, 0, _MAX_STAMINA);
+		// UI
+		MenuManager.instance.Get<MenuRogueMain>().SetStamina(GetShowStamina());
 	}
 }
