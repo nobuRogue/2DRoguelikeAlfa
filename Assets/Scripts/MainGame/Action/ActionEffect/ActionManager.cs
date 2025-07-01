@@ -12,11 +12,15 @@ using UnityEngine;
 
 using static ActionMasterUtility;
 using static ActionRangeManager;
+using static RogueLogUtility;
 using static CommonModule;
+
 
 public class ActionManager {
 	// 効果のリスト
 	private static List<ActionEffectBase> _effectList = null;
+	// 行動ログのメッセージID
+	private static readonly int _USE_ACTION_LOG_ID = 14010;
 
 	public static void Initialize() {
 		_effectList = new List<ActionEffectBase>();
@@ -34,6 +38,10 @@ public class ActionManager {
 		// 行動のマスター取得
 		Entity_ActionData.Param actionMaster = GetActionMaster(actionID);
 		if (actionMaster == null) return;
+		// ログ追加
+		string characterName = sourceCharacter.nameID.ToMessage();
+		string actionName = actionMaster.nameID.ToMessage();
+		AddLog(string.Format(_USE_ACTION_LOG_ID.ToMessage(), characterName, actionName));
 		// 射程クラス取得、実行
 		ActionRangeBase range = GetRange(actionMaster.rangeType);
 		range.Execute(sourceCharacter);

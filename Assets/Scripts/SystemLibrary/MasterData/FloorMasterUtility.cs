@@ -9,6 +9,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CommonModule;
+
 public class FloorMasterUtility {
 
 	/// <summary>
@@ -35,4 +37,37 @@ public class FloorMasterUtility {
 		int currentFloorCount = UserDataHolder.currentData.floorCount;
 		return GetFloorMaster(currentFloorCount);
 	}
+
+	/// <summary>
+	/// エネミーテーブル取得
+	/// </summary>
+	/// <param name="ID"></param>
+	/// <returns></returns>
+	public static List<int> GetEnemyTable(int ID) {
+		var enemyTableMasterList = MasterDataManager.enemyTableData[0];
+		for (int i = 0, max = enemyTableMasterList.Count; i < max; i++) {
+			if (enemyTableMasterList[i].ID != ID) continue;
+			// 指定IDのデータが見つかったので-1を取り除いて返す
+			return CreateEnableEnemyTable(enemyTableMasterList[i].enemyID);
+		}
+		return null;
+	}
+
+	/// <summary>
+	/// 使用可能なエネミーテーブルを生成
+	/// </summary>
+	/// <returns></returns>
+	private static List<int> CreateEnableEnemyTable(int[] origin) {
+		if (IsEmpty(origin)) return null;
+
+		int tableCount = origin.Length;
+		List<int> result = new List<int>(tableCount);
+		for (int i = 0; i < tableCount; i++) {
+			if (origin[i] < 0) continue;
+
+			result.Add(origin[i]);
+		}
+		return result;
+	}
+
 }

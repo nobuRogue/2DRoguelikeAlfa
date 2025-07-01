@@ -9,13 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60ee44f2ae36bdc41bb2683906c4bf64, type: 3}
-  m_Name: ActionData
+  m_Script: {fileID: 11500000, guid: 9833daeb7567fae4eb102429886d3851, type: 3}
+  m_Name: EnemyTable
   m_EditorClassIdentifier: 
   sheets:
-  - name: ActionData
+  - name: EnemyTable
     list:
     - ID: 0
-      nameID: 16000
-      rangeType: 0
-      effectID: 00000000ffffffffffffffffffffffff
+      enemyID: 0100000002000000ffffffffffffffff
+    - ID: 1
+      enemyID: 0200000003000000ffffffffffffffff
+    - ID: 2
+      enemyID: 020000000300000004000000ffffffff

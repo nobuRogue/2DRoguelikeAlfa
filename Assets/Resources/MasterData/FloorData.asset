@@ -21,5 +21,9 @@ MonoBehaviour:
       itemTableID: 0
     - floorCount: 2
       spriteIndex: 1
-      enemyTableID: 0
+      enemyTableID: 1
+      itemTableID: 0
+    - floorCount: 3
+      spriteIndex: 1
+      enemyTableID: 2
       itemTableID: 0

@@ -55,15 +55,15 @@ public class FloorProcessor {
 		SetFloorSpriteTypeIndex(floorMaster.spriteIndex);
 		// マップ生成
 		MapCreater.CreateMap();
-		// プレイヤー配置
-		SetCharacter();
+		// キャラクター配置
+		SetCharacter(floorMaster.enemyTableID);
 		// フロアを終了していない状態にする
 		_endReason = eFloorEndReason.Invalid;
 		// フェードイン
 		await FadeManager.instance.FadeIn();
 	}
 
-	private void SetCharacter() {
+	private void SetCharacter(int enemyTableID) {
 		// プレイヤー取得
 		CharacterBase player = GetPlayer();
 		if (player == null) return;
@@ -79,7 +79,7 @@ public class FloorProcessor {
 		player.SetSquare(playerSquare);
 		roomSquareList.Remove(playerSquare);
 		// エネミーを生成配置
-		SpawnEnemy(4, roomSquareList);
+		SpawnEnemy(8, roomSquareList, enemyTableID);
 	}
 
 	/// <summary>
@@ -87,13 +87,19 @@ public class FloorProcessor {
 	/// </summary>
 	/// <param name="spawnCount"></param>
 	/// <param name="candidateSquareList"></param>
-	private void SpawnEnemy(int spawnCount, List<MapSquareData> candidateSquareList) {
+	private void SpawnEnemy(int spawnCount, List<MapSquareData> candidateSquareList, int enemyTableID) {
+		// 現在フロアのエネミーテーブルを取得
+		List<int> enemyTable = GetEnemyTable(enemyTableID);
+		if (IsEmpty(enemyTable)) return;
+
 		for (int i = 0; i < spawnCount; i++) {
 			if (IsEmpty(candidateSquareList)) return;
 			// 候補マスからランダムに取得
 			MapSquareData spawnSquare = candidateSquareList[Random.Range(0, candidateSquareList.Count)];
+			// テーブルからランダムに出現エネミーのマスターIDを取得
+			int enemyID = enemyTable[Random.Range(0, enemyTable.Count)];
 			// エネミー生成
-			UseEnemy(spawnSquare, 1);
+			UseEnemy(spawnSquare, enemyID);
 			candidateSquareList.Remove(spawnSquare);
 		}
 	}

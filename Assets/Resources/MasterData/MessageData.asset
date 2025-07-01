@@ -49,23 +49,35 @@ MonoBehaviour:
     list:
     - ID: 10000
       text:
-      - 
+      - "\u30D7\u30EC\u30A4\u3084\u30FC"
       - 
       - 
       - 
     - ID: 10001
       text:
-      - 
+      - "\u30A8\u30CD\u30DF\u30FC1"
       - 
       - 
       - 
     - ID: 10002
       text:
-      - 
+      - "\u6575A"
       - 
       - 
       - 
     - ID: 10003
+      text:
+      - Enemy
+      - 
+      - 
+      - 
+    - ID: 10004
+      text:
+      - "\u6575B"
+      - 
+      - 
+      - 
+    - ID: 10005
       text:
       - 
       - 
@@ -113,29 +125,61 @@ MonoBehaviour:
     list:
     - ID: 14000
       text:
-      - "{0} \u306E\u30C0\u30E1\u30FC\u30B8\uFF01"
+      - "{0} \u306B {1} \u306E\u30C0\u30E1\u30FC\u30B8\uFF01"
       - 
       - 
       - 
-    - ID: 14001
+    - ID: 14010
+      text:
+      - "{0} \u306E {1}"
+      - 
+      - 
+      - 
+    - ID: 14011
       text:
       - 
       - 
       - 
       - 
-    - ID: 14002
-      text:
-      - 
-      - 
-      - 
-      - 
-    - ID: 14003
+    - ID: 14012
       text:
       - 
       - 
       - 
       - 
     - ID: 15999
+      text:
+      - 
+      - 
+      - 
+      - 
+  - name: Action
+    list:
+    - ID: 16000
+      text:
+      - "\u653B\u6483"
+      - 
+      - 
+      - 
+    - ID: 16001
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 16002
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 16003
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 17999
       text:
       - 
       - 

@@ -12,6 +12,7 @@ using UnityEngine;
 
 using static MessageMasterUtility;
 using static CharacterUtility;
+using static RogueLogUtility;
 using static CommonModule;
 
 public class ActionEffect000_Attack : ActionEffectBase {
@@ -59,7 +60,8 @@ public class ActionEffect000_Attack : ActionEffectBase {
 		int targetDefense = targetCharacter.GetDefense();
 		int damage = (int)(sourceAttack * Mathf.Pow(15.0f / 16.0f, targetDefense));
 		// ログの追加
-		MenuManager.instance.Get<MenuRogueLog>().AddLog(string.Format(_DAMAGE_LOG_ID.ToMessage(), damage));
+		string targetName = targetCharacter.nameID.ToMessage();
+		AddLog(string.Format(_DAMAGE_LOG_ID.ToMessage(), targetName, damage));
 		// 被ダメージモーションの終了待ち
 		while (targetCharacter.GetCurrentAnimation() == eCharacterAnimation.Damage) {
 			await UniTask.DelayFrame(1);

@@ -6,7 +6,6 @@
  */
 
 using Cysharp.Threading.Tasks;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -110,5 +109,15 @@ public class MenuRogueLog : MenuBase {
 		unuseLog.Teardown();
 		_unuseList.Add(unuseLog);
 		unuseLog.transform.SetParent(_unuseRoot);
+	}
+}
+
+public class RogueLogUtility {
+	/// <summary>
+	/// ÉçÉOÇÃí«â¡
+	/// </summary>
+	/// <param name="addLog"></param>
+	public static void AddLog(string addLog) {
+		MenuManager.instance.Get<MenuRogueLog>().AddLog(addLog);
 	}
 }

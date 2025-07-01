@@ -32,6 +32,7 @@ public class AcceptPlayerAction {
 			if (AcceptMove()) break;
 			// 攻撃の受付
 			if (await AcceptAttack()) break;
+			// 方向転換入力の受付処理
 
 			await UniTask.DelayFrame(1);
 		}
@@ -100,4 +101,22 @@ public class AcceptPlayerAction {
 		return true;
 	}
 
+	/// <summary>
+	/// 方向転換入力の受付、処理
+	/// </summary>
+	/// <returns></returns>
+	private async UniTask AcceptDirChange() {
+		// 方向転換キー入力のトリガーを受け付け、隣接エネミーの方を自動的に向く
+
+		// 方向転換キー入力が離されるまでループ
+		while (GetKey(KeyCode.LeftShift)) {
+			// 8方向の入力を受け付ける
+
+			// 入力に応じて向きを変え、向いている方向のマスの色を変える
+
+			await UniTask.DelayFrame(1);
+		}
+		// 向いている方向のマスの色を消す
+
+	}
 }
