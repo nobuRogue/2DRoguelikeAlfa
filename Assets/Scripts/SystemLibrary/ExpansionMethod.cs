@@ -90,4 +90,19 @@ public static class ExpansionMethod {
 	public static string ToMessage(this int messageID) {
 		return GetMessageData(messageID, 0);
 	}
+
+	/// <summary>
+	/// ®”‚ğ8•ûŒü‚ÌŒü‚«‚É•ÏŠ·
+	/// </summary>
+	/// <param name="index"></param>
+	/// <returns></returns>
+	public static eDirectionEight ToDirEight(this int index) {
+		int maxIndex = (int)eDirectionEight.Max;
+		// ‰ºŒÀ‚ğ”ÍˆÍ‚Éû‚ß‚é
+		while (index < 0) index += maxIndex;
+		// ãŒÀ‚ğ”ÍˆÍ‚Éû‚ß‚é
+		while (index >= maxIndex) index -= maxIndex;
+
+		return (eDirectionEight)index;
+	}
 }

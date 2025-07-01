@@ -15,6 +15,7 @@ using static ActionManager;
 using static MapSquareUtility;
 using static CharacterUtility;
 using static UnityEngine.Input;
+using UnityEngine.TextCore.Text;
 
 public class AcceptPlayerAction {
 
@@ -33,7 +34,7 @@ public class AcceptPlayerAction {
 			// 攻撃の受付
 			if (await AcceptAttack()) break;
 			// 方向転換入力の受付処理
-
+			await AcceptDirChange();
 			await UniTask.DelayFrame(1);
 		}
 	}
@@ -106,17 +107,59 @@ public class AcceptPlayerAction {
 	/// </summary>
 	/// <returns></returns>
 	private async UniTask AcceptDirChange() {
-		// 方向転換キー入力のトリガーを受け付け、隣接エネミーの方を自動的に向く
+		if (!GetKey(KeyCode.LeftShift)) return;
 
+		CharacterBase player = GetPlayer();
+		// 方向転換キー入力のトリガーを受け付け、隣接エネミーの方を自動的に向く
+		if (GetKeyDown(KeyCode.LeftShift)) ChangeDirToEnemy(player);
 		// 方向転換キー入力が離されるまでループ
 		while (GetKey(KeyCode.LeftShift)) {
 			// 8方向の入力を受け付ける
-
+			eDirectionEight inputDir = AcceptDirInput();
 			// 入力に応じて向きを変え、向いている方向のマスの色を変える
-
+			ChangeCharacterDir(player, inputDir);
 			await UniTask.DelayFrame(1);
 		}
 		// 向いている方向のマスの色を消す
+		GetToDirSquare(player.posX, player.posY, player.direction)?.HideMark();
+	}
 
+	/// <summary>
+	/// キャラクターの向きを変え、前方のマスに色を付ける
+	/// </summary>
+	/// <param name="character"></param>
+	/// <param name="inputDir"></param>
+	private void ChangeCharacterDir(CharacterBase character, eDirectionEight inputDir) {
+		if (inputDir == eDirectionEight.Invalid) return;
+		// 今向いているマスの色を消す
+		GetToDirSquare(character.posX, character.posY, character.direction)?.HideMark();
+		// キャラクターの向きを変える
+		character.SetDirection(inputDir);
+		// キャラクターが向いている先1マスを取得して色を点ける
+		GetToDirSquare(character.posX, character.posY, character.direction)?.ShowMark(Color.red);
+	}
+
+	/// <summary>
+	/// 隣接エネミーにキャラクターを向かせる
+	/// </summary>
+	/// <param name="character"></param>
+	private void ChangeDirToEnemy(CharacterBase character) {
+		// スタート方向を決める
+		int startIndex = (int)character.direction + 1;
+		int basePosX = character.posX, basePosY = character.posY;
+		// 8方向の隣接マスで走査、エネミーを探し、向きを変えマスの色を変える
+		for (int i = 0, max = (int)eDirectionEight.Max; i < max; i++) {
+			eDirectionEight dir = (startIndex + i).ToDirEight();
+			MapSquareData square = GetToDirSquare(basePosX, basePosY, dir);
+			if (square == null || !square.existCharacter) continue;
+
+			ChangeCharacterDir(character, dir);
+			return;
+		}
+		// エネミーが見つからなかったら、現在の向きのマスの色を変える
+		MapSquareData dirSquare = GetToDirSquare(basePosX, basePosY, character.direction);
+		if (dirSquare == null) return;
+
+		dirSquare.ShowMark(Color.red);
 	}
 }
