@@ -11,6 +11,8 @@ using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
+using System.Threading;
+using UnityEditor;
 
 public class RogueLog : MonoBehaviour {
 	// ログ１行分の移動にかかる時間[秒]
@@ -22,6 +24,8 @@ public class RogueLog : MonoBehaviour {
 	// 自身の矩形
 	[SerializeField]
 	private RectTransform _rectTransform = null;
+
+	CancellationToken _token;
 
 	/// <summary>
 	/// 使用前の準備
@@ -42,6 +46,7 @@ public class RogueLog : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public async UniTask FlowLog() {
+		_token = this.GetCancellationTokenOnDestroy();
 		// スタートと目的地の決定
 		float flowValue = _rectTransform.sizeDelta.y;
 		Vector3 startPos = transform.position;
@@ -53,7 +58,7 @@ public class RogueLog : MonoBehaviour {
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / _FLOW_DURATION_SEC;
 			transform.position = Vector3.Lerp(startPos, goalPos, t);
-			await UniTask.DelayFrame(1);
+			await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
 		}
 		transform.position = goalPos;
 	}

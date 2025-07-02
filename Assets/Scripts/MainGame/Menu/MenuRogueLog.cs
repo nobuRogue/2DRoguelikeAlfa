@@ -6,7 +6,10 @@
  */
 
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 using static CommonModule;
@@ -36,6 +39,8 @@ public class MenuRogueLog : MenuBase {
 	// ログ移動タスクのリスト
 	private List<UniTask> _taskList = null;
 
+	CancellationToken _token;
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -62,14 +67,14 @@ public class MenuRogueLog : MenuBase {
 	}
 
 	private async UniTask ShowLogTask() {
+		_token = this.GetCancellationTokenOnDestroy();
 		while (true) {
-			// 待機中のログメッセージがあり、使用可能なログオブジェクトがあるか判定
-			while (IsEmpty(_standbyTextList) || IsEmpty(_unuseList)) await UniTask.DelayFrame(1);
+			while (IsEmpty(_standbyTextList)) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
 			// スタンバイリストの要素0をオブジェクトとして生成
 			string showText = _standbyTextList[0];
 			_standbyTextList.RemoveAt(0);
 			UseLogObject(showText);
-			// 表示中のログオブジェクトを全て１行分移動させる
+			// 表示中のログオブジェクトを全て1行分移動させる
 			int showLogCount = _useList.Count;
 			InitializeList(ref _taskList, showLogCount);
 			for (int i = 0; i < showLogCount; i++) {

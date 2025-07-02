@@ -88,16 +88,13 @@ public class CommonModule {
 	/// <returns></returns>
 	public static async UniTask WaitTask(List<UniTask> taskList) {
 		// 終了したタスクをリストから除き、リストが空になるまで待つ
-		while (true) {
+		while (!IsEmpty(taskList)) {
 			// 途中で要素が抜ける可能性があるので末尾から走査
 			for (int i = taskList.Count - 1; i >= 0; i--) {
 				if (!taskList[i].Status.IsCompleted()) continue;
 				// タスクが終了していたらリストから抜く
 				taskList.RemoveAt(i);
 			}
-			// リストが空ならループを抜ける
-			if (IsEmpty(taskList)) break;
-
 			await UniTask.DelayFrame(1);
 		}
 	}
