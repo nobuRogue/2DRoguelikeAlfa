@@ -1,6 +1,6 @@
 /**
  * @file ItemBase.cs
- * @brief アイテム情報の基底
+ * @brief アイテムデータの基底
  * @author yao
  * @date 2025/7/3
  */
@@ -8,6 +8,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using static ItemUtility;
 
 public abstract class ItemBase {
 	// ユニークID
@@ -33,7 +35,7 @@ public abstract class ItemBase {
 	public void SetupSquare(int setID, int setMasterID, MapSquareData square) {
 		Setup(setID, setMasterID);
 		// マスに置く
-
+		SetSquare(square);
 	}
 
 	/// <summary>
@@ -46,6 +48,45 @@ public abstract class ItemBase {
 		masterID = setMasterID;
 		// マスターデータ関連のセットアップ
 
+	}
+
+	/// <summary>
+	/// 使用後の片付け
+	/// </summary>
+	public void Teardown() {
+		RemoveCurrentPlace();
+		ID = -1;
+		masterID = -1;
+		nameID = -1;
+	}
+
+	/// <summary>
+	/// アイテムをマスに置く
+	/// </summary>
+	/// <param name="square"></param>
+	public void SetSquare(MapSquareData square) {
+		if (square == null) return;
+		// 現在の場所から取り除く
+		RemoveCurrentPlace();
+		// 座標の設定
+		posX = square.posX;
+		posY = square.posY;
+		// オブジェクトの処理
+		ItemObject itemObject = GetItemObject(ID);
+		if (itemObject == null) {
+			// オブジェクトを生成する
+			itemObject = UseItemObject(ID);
+		}
+		itemObject.SetSquare(square);
+	}
+
+	/// <summary>
+	/// アイテムを現在の場所から取り除く
+	/// </summary>
+	private void RemoveCurrentPlace() {
+		posX = -1;
+		posY = -1;
+		possessCharacterID = -1;
 	}
 
 }
