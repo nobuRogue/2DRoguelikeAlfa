@@ -38,6 +38,8 @@ public class MenuRogueLog : MenuBase {
 	private readonly int _STANDBY_LOG_COUNT = 256;
 	// ログ移動タスクのリスト
 	private List<UniTask> _taskList = null;
+	// ログ移動のタスクを中断するためのトークン
+	private CancellationToken _token;
 
 	/// <summary>
 	/// 初期化
@@ -65,8 +67,10 @@ public class MenuRogueLog : MenuBase {
 	}
 
 	private async UniTask ShowLogTask() {
+		// オブジェクト破棄時に処理されるタスク中断用トークンを取得
+		_token = this.GetCancellationTokenOnDestroy();
 		while (true) {
-			while (IsEmpty(_standbyTextList)) await UniTask.DelayFrame(1);
+			while (IsEmpty(_standbyTextList)) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
 			// スタンバイリストの要素0をオブジェクトとして生成
 			string showText = _standbyTextList[0];
 			_standbyTextList.RemoveAt(0);
@@ -77,7 +81,7 @@ public class MenuRogueLog : MenuBase {
 			for (int i = 0; i < showLogCount; i++) {
 				_taskList.Add(_useList[i].FlowLog());
 			}
-			await WaitTask(_taskList);
+			await WaitTask(_taskList, _token);
 			// 表示範囲外のログオブジェクトを未使用状態にする
 			while (_useList.Count >= _SHOW_LOG_COUNT) UnuseLogObject(_useList[0]);
 

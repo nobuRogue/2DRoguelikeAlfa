@@ -79,3 +79,15 @@ public enum eCharacterAnimation {
 	Damage,
 	Max
 }
+
+public enum eItemCategory {
+	Potion,     // 薬
+	Food,       // 食べ物
+	Wand,       // 杖
+	Scroll,     // 巻物
+	Bag,        // バッグ
+	Throwing,   // 投げモノ
+	Weapon,     // 武器
+	Armor,      // 防具
+	Max,
+}

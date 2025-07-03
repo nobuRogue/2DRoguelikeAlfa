@@ -15,7 +15,7 @@ using static CommonModule;
 using static GameConst;
 
 public class CharacterManager : MonoBehaviour {
-	/// 自身への参照
+	// 自身への参照
 	public static CharacterManager instance { get; private set; } = null;
 
 	// 使用中キャラクターオブジェクトの親オブジェクト

@@ -7,6 +7,7 @@
 
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Threading;
 
 public class CommonModule {
 
@@ -99,5 +100,22 @@ public class CommonModule {
 		}
 	}
 
+	/// <summary>
+	/// 複数のタスクの終了を待つ
+	/// </summary>
+	/// <param name="taskList"></param>
+	/// <returns></returns>
+	public static async UniTask WaitTask(List<UniTask> taskList, CancellationToken token) {
+		// 終了したタスクをリストから除き、リストが空になるまで待つ
+		while (!IsEmpty(taskList)) {
+			// 途中で要素が抜ける可能性があるので末尾から走査
+			for (int i = taskList.Count - 1; i >= 0; i--) {
+				if (!taskList[i].Status.IsCompleted()) continue;
+				// タスクが終了していたらリストから抜く
+				taskList.RemoveAt(i);
+			}
+			await UniTask.DelayFrame(1, PlayerLoopTiming.Update, token);
+		}
+	}
 
 }
