@@ -39,8 +39,6 @@ public class MenuRogueLog : MenuBase {
 	// ログ移動タスクのリスト
 	private List<UniTask> _taskList = null;
 
-	CancellationToken _token;
-
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -67,9 +65,8 @@ public class MenuRogueLog : MenuBase {
 	}
 
 	private async UniTask ShowLogTask() {
-		_token = this.GetCancellationTokenOnDestroy();
 		while (true) {
-			while (IsEmpty(_standbyTextList)) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
+			while (IsEmpty(_standbyTextList)) await UniTask.DelayFrame(1);
 			// スタンバイリストの要素0をオブジェクトとして生成
 			string showText = _standbyTextList[0];
 			_standbyTextList.RemoveAt(0);

@@ -25,8 +25,6 @@ public class RogueLog : MonoBehaviour {
 	[SerializeField]
 	private RectTransform _rectTransform = null;
 
-	CancellationToken _token;
-
 	/// <summary>
 	/// 使用前の準備
 	/// </summary>
@@ -46,7 +44,6 @@ public class RogueLog : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public async UniTask FlowLog() {
-		_token = this.GetCancellationTokenOnDestroy();
 		// スタートと目的地の決定
 		float flowValue = _rectTransform.sizeDelta.y;
 		Vector3 startPos = transform.position;
@@ -58,7 +55,7 @@ public class RogueLog : MonoBehaviour {
 			elapsedTime += Time.deltaTime;
 			float t = elapsedTime / _FLOW_DURATION_SEC;
 			transform.position = Vector3.Lerp(startPos, goalPos, t);
-			await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
+			await UniTask.DelayFrame(1);
 		}
 		transform.position = goalPos;
 	}
