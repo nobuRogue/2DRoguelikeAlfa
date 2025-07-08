@@ -6,6 +6,7 @@
  */
 
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 using static MapSquareUtility;
@@ -25,6 +26,10 @@ public abstract class CharacterBase {
 	public bool isDead { get { return HP <= 0; } }
 	public int rawAttack { get; protected set; } = -1;
 	public int rawDefense { get; protected set; } = -1;
+	// 所持アイテムIDリスト
+	public List<int> possessItemList { get; private set; } = null;
+	// 所持アイテムの最大数
+	private static readonly int _POSSESS_ITEM_MAX = 3;
 
 	/// <summary>
 	/// 使用前の準備
@@ -43,6 +48,8 @@ public abstract class CharacterBase {
 		GetObject()?.Setup(characterMaster.spriteName);
 		// とりあえず下を向かせる
 		SetDirection(eDirectionEight.Down);
+		// 所持アイテム初期化
+		possessItemList = new List<int>(_POSSESS_ITEM_MAX);
 	}
 
 	/// <summary>
@@ -302,5 +309,27 @@ public abstract class CharacterBase {
 	/// </summary>
 	public virtual void OnEndTurn() {
 
+	}
+
+	/// <summary>
+	/// アイテムが入手可能か否か
+	/// </summary>
+	/// <returns></returns>
+	public bool CanAddItem() {
+		return possessItemList.Count < _POSSESS_ITEM_MAX;
+	}
+	/// <summary>
+	/// アイテム入手
+	/// </summary>
+	/// <param name="addItemID"></param>
+	public void AddItem(int addItemID) {
+		possessItemList.Add(addItemID);
+	}
+	/// <summary>
+	/// アイテム除去
+	/// </summary>
+	/// <param name="removeItemID"></param>
+	public void RemoveItem(int removeItemID) {
+		possessItemList.Remove(removeItemID);
 	}
 }

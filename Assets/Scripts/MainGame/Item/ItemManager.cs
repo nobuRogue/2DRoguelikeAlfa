@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static ItemMasterUtility;
 using static CommonModule;
 
 public class ItemManager : MonoBehaviour {
@@ -114,20 +115,21 @@ public class ItemManager : MonoBehaviour {
 	/// <param name="square"></param>
 	public void CreateFloorItem(int masterID, MapSquareData square) {
 		// 使用可能なインスタンス取得
-		eItemCategory createItemCategory = eItemCategory.Potion;
+		var itemMaster = GetItemMaster(masterID);
+		if (itemMaster == null) return;
 		// データを使用状態にする
-		int useID = UseItemData(createItemCategory);
+		int useID = UseItemData(itemMaster.category);
 		GetItemData(useID)?.SetupSquare(useID, masterID, square);
 	}
 
 	/// <summary>
 	/// アイテムを使用状態にする
 	/// </summary>
-	/// <param name="useItemCategory"></param>
+	/// <param name="itemCategoryIndex"></param>
 	/// <returns></returns>
-	private int UseItemData(eItemCategory useItemCategory) {
+	private int UseItemData(int itemCategoryIndex) {
 		// 使用可能なアイテムデータのインスタンス取得
-		ItemBase useItem = GetUsableItemData((int)useItemCategory);
+		ItemBase useItem = GetUsableItemData(itemCategoryIndex);
 		// 使用可能なIDを取得して使用リストに追加
 		int useID = -1;
 		for (int i = 0, max = _useList.Count; i < max; i++) {

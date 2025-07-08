@@ -121,7 +121,7 @@ public class FloorProcessor {
 			// Œó•âƒ}ƒX‚©‚çƒ‰ƒ“ƒ_ƒ€‚ÉŽæ“¾
 			MapSquareData itemSquare = roomSquareList[Random.Range(0, roomSquareList.Count)];
 			roomSquareList.Remove(itemSquare);
-			CreateFloorItem(0, itemSquare);
+			CreateFloorItem(200, itemSquare);
 		}
 	}
 

@@ -9,8 +9,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static CharacterUtility;
 using static MapSquareUtility;
 using static ItemUtility;
+using static ItemMasterUtility;
 
 public abstract class ItemBase {
 	// ユニークID
@@ -23,7 +25,7 @@ public abstract class ItemBase {
 	// 所持キャラクターID
 	public int possessCharacterID { get; private set; } = -1;
 	// 名前ID
-	public int nameID { get; private set; } = -1;
+	private int _nameID = -1;
 	// アイテムカテゴリ取得
 	public abstract eItemCategory GetCategory();
 
@@ -48,7 +50,8 @@ public abstract class ItemBase {
 		ID = setID;
 		masterID = setMasterID;
 		// マスターデータ関連のセットアップ
-
+		var itemMaster = GetItemMaster(masterID);
+		_nameID = itemMaster.nameID;
 	}
 
 	/// <summary>
@@ -58,7 +61,7 @@ public abstract class ItemBase {
 		RemoveCurrentPlace();
 		ID = -1;
 		masterID = -1;
-		nameID = -1;
+		_nameID = -1;
 	}
 
 	/// <summary>
@@ -83,13 +86,41 @@ public abstract class ItemBase {
 	}
 
 	/// <summary>
+	/// キャラクターの手持ちに追加
+	/// </summary>
+	/// <param name="character"></param>
+	public void AddCharacter(CharacterBase character) {
+		if (character == null) return;
+		// 現在の場所から取り除く
+		RemoveCurrentPlace();
+		character.AddItem(ID);
+		possessCharacterID = character.ID;
+	}
+
+	/// <summary>
 	/// アイテムを現在の場所から取り除く
 	/// </summary>
 	private void RemoveCurrentPlace() {
-		GetSquareData(posX, posY)?.RemoveItem();
-		posX = -1;
-		posY = -1;
+		// 床落ちアイテム除去
+		MapSquareData itemSuqare = GetSquareData(posX, posY);
+		if (itemSuqare != null) {
+			itemSuqare.RemoveItem();
+			posX = -1;
+			posY = -1;
+			// オブジェクト非表示
+			GetItemObject(ID).UnuseSelf();
+		}
+		// キャラ手持ちアイテム除去
+		GetCharacterData(possessCharacterID)?.RemoveItem(ID);
 		possessCharacterID = -1;
+	}
+
+	/// <summary>
+	/// 名前の取得
+	/// </summary>
+	/// <returns></returns>
+	public string GetName() {
+		return _nameID.ToMessage();
 	}
 
 }

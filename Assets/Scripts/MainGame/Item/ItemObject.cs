@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static ItemUtility;
 using static GameConst;
 
 public class ItemObject : MonoBehaviour {
@@ -49,7 +50,7 @@ public class ItemObject : MonoBehaviour {
 	/// é©êgÇñ¢égópèÛë‘Ç…Ç∑ÇÈ
 	/// </summary>
 	public void UnuseSelf() {
-
+		RemoveItemObject(this);
 	}
 
 }

@@ -10,10 +10,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static ItemUtility;
+using static RogueLogUtility;
 using static CharacterUtility;
 using static MapSquareUtility;
 
 public class MoveAction {
+	// アイテム関連ログのメッセージID
+	private static readonly int _ADD_ITEM_LOG_ID = 14020;
+	private static readonly int _CANNOT_ADD_ITEM_LOG_ID = 14021;
 
 	private int _moveCharacterID = -1;
 	private ChebyshevMoveData _moveData = null;
@@ -48,7 +53,8 @@ public class MoveAction {
 		if (floorMaster == null) {
 			// 最後の階層なのでクリア（終了要因Clearでダンジョンを終了させる）
 			_EndDungeon(eDungeonEndReason.Clear);
-		} else {
+		}
+		else {
 			// 最後の階層でないのでフロア移動（終了要因Stairでフロアを終了させる）
 			_EndFloor?.Invoke(eFloorEndReason.Stair);
 		}
@@ -106,8 +112,26 @@ public class MoveAction {
 	private async UniTask AfterMoveProcess(CharacterBase moveCharacter, MapSquareData goalSquare) {
 		// プレイヤーでなければ移動後処理は行わない
 		if (!moveCharacter.IsPlayer()) return;
+		// 移動先にアイテムがあったら拾得処理
+		AddPossessItem(moveCharacter, goalSquare);
 		// 移動先に階段があったらフロア移動
 		await ProcessStair(goalSquare);
+	}
+
+	private void AddPossessItem(CharacterBase moveCharacter, MapSquareData moveSquare) {
+		// 移動先マスにアイテムがなければ終了
+		if (!moveSquare.existItem) return;
+		ItemBase squareItem = GetItemData(moveSquare.itemID);
+		if (squareItem == null) return;
+		// キャラクタ－が拾えなければログを出して終了
+		if (!moveCharacter.CanAddItem()) {
+			AddLog(string.Format(_CANNOT_ADD_ITEM_LOG_ID.ToMessage(), squareItem.GetName()));
+			return;
+		}
+		// キャラクターの所持アイテムに追加
+		squareItem.AddCharacter(moveCharacter);
+		// ログを表示
+		AddLog(string.Format(_ADD_ITEM_LOG_ID.ToMessage(), squareItem.GetName()));
 	}
 
 
