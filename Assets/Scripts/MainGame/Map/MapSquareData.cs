@@ -10,32 +10,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapSquareData {
-	/// <summary>
 	/// ユニークID
-	/// </summary>
 	public int ID { get; private set; } = -1;
-	/// <summary>
 	/// マス基準の座標
-	/// </summary>
 	public int posX { get; private set; } = -1;
 	public int posY { get; private set; } = -1;
-	/// <summary>
 	/// 地形
-	/// </summary>
 	public eTerrain terrain { get; private set; } = eTerrain.Invalid;
-	/// <summary>
 	/// 部屋ID
-	/// </summary>
 	public int roomID { get; private set; } = -1;
 
-	/// <summary>
 	/// マスにいるキャラクターのID
-	/// </summary>
 	public int characterID { get; private set; } = -1;
-	/// <summary>
 	/// マスにキャラクターが存在するか
-	/// </summary>
 	public bool existCharacter { get { return characterID >= 0; } }
+	/// マスにあるアイテムのID
+	public int itemID { get; private set; } = -1;
+	/// マスにアイテムがあるか
+	public bool existItem { get { return itemID >= 0; } }
 
 	/// <summary>
 	/// 使用前の準備
@@ -77,6 +69,13 @@ public class MapSquareData {
 	public Transform GetCharacterRoot() {
 		return GetObject()?.GetCharacterRoot();
 	}
+	/// <summary>
+	/// アイテム基準位置取得
+	/// </summary>
+	/// <returns></returns>
+	public Transform GetObjectRoot() {
+		return GetObject()?.GetObjectRoot();
+	}
 
 	/// <summary>
 	/// マスにキャラクターを設定する
@@ -87,10 +86,24 @@ public class MapSquareData {
 	}
 
 	/// <summary>
-	/// マスからキャラクターを取り除
+	/// マスからキャラクターを取り除く
 	/// </summary>
 	public void RemoveCharacter() {
 		characterID = -1;
+	}
+
+	/// <summary>
+	/// マスにアイテム設定
+	/// </summary>
+	/// <param name="setItemID"></param>
+	public void SetItem(int setItemID) {
+		itemID = setItemID;
+	}
+	/// <summary>
+	/// マスからアイテムを取り除く
+	/// </summary>
+	public void RemoveItem() {
+		itemID = -1;
 	}
 
 	/// <summary>

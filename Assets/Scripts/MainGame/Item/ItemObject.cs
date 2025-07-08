@@ -42,7 +42,7 @@ public class ItemObject : MonoBehaviour {
 	/// </summary>
 	/// <param name="square"></param>
 	public void SetSquare(MapSquareData square) {
-		transform.position = square.GetCharacterRoot().position;
+		transform.position = square.GetObjectRoot().position;
 	}
 
 	/// <summary>

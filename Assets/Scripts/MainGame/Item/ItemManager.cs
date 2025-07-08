@@ -66,21 +66,21 @@ public class ItemManager : MonoBehaviour {
 	private ItemBase CreateCategoryItem(eItemCategory category) {
 		switch (category) {
 			case eItemCategory.Potion:
-			return new ItemPotion();
+				return new ItemPotion();
 			case eItemCategory.Food:
-			return new ItemFood();
+				return new ItemFood();
 			case eItemCategory.Wand:
-			return new ItemWand();
+				return new ItemWand();
 			case eItemCategory.Scroll:
-			return new ItemScroll();
+				return new ItemScroll();
 			case eItemCategory.Bag:
-			return new ItemBag();
+				return new ItemBag();
 			case eItemCategory.Throwing:
-			return new ItemThrowing();
+				return new ItemThrowing();
 			case eItemCategory.Weapon:
-			return new ItemWeapon();
+				return new ItemWeapon();
 			case eItemCategory.Armor:
-			return new ItemArmor();
+				return new ItemArmor();
 		}
 		return null;
 	}
@@ -216,6 +216,19 @@ public class ItemManager : MonoBehaviour {
 		unuseObject.Teardown();
 		_unuseObjectList.Add(unuseObject);
 		unuseObject.transform.SetParent(_unuseObjectRoot);
+	}
+	/// <summary>
+	/// 全てのアイテムに指定処理実行
+	/// </summary>
+	/// <param name="action"></param>
+	public void ExecuteAllItem(System.Action<ItemBase> action) {
+		if (action == null || IsEmpty(_useList)) return;
+
+		for (int i = 0, max = _useList.Count; i < max; i++) {
+			if (_useList[i] == null) continue;
+
+			action(_useList[i]);
+		}
 	}
 
 }

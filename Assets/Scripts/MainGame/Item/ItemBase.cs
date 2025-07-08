@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MapSquareUtility;
 using static ItemUtility;
 
 public abstract class ItemBase {
@@ -71,6 +72,7 @@ public abstract class ItemBase {
 		// 座標の設定
 		posX = square.posX;
 		posY = square.posY;
+		square.SetItem(ID);
 		// オブジェクトの処理
 		ItemObject itemObject = GetItemObject(ID);
 		if (itemObject == null) {
@@ -84,6 +86,7 @@ public abstract class ItemBase {
 	/// アイテムを現在の場所から取り除く
 	/// </summary>
 	private void RemoveCurrentPlace() {
+		GetSquareData(posX, posY)?.RemoveItem();
 		posX = -1;
 		posY = -1;
 		possessCharacterID = -1;

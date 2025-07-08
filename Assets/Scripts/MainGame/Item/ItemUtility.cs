@@ -63,4 +63,12 @@ public class ItemUtility {
 		ItemManager.instance.UnuseItemObject(removeObject);
 	}
 
+	/// <summary>
+	/// 全てのアイテムに指定処理実行
+	/// </summary>
+	/// <param name="action"></param>
+	public static void ExecuteAllItem(System.Action<ItemBase> action) {
+		ItemManager.instance.ExecuteAllItem(action);
+	}
+
 }

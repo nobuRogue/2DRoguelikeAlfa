@@ -21,7 +21,11 @@ public class MapSquareObject : MonoBehaviour {
 	/// </summary>
 	[SerializeField]
 	private Transform _characterRoot = null;
-
+	/// <summary>
+	/// マスにアイテム等を置く際の位置
+	/// </summary>
+	[SerializeField]
+	private Transform _objectRoot = null;
 	/// <summary>
 	/// デバッグ用スプライト
 	/// </summary>
@@ -51,6 +55,11 @@ public class MapSquareObject : MonoBehaviour {
 	/// </summary>
 	/// <returns></returns>
 	public Transform GetCharacterRoot() { return _characterRoot; }
+	/// <summary>
+	/// アイテム基準位置取得
+	/// </summary>
+	/// <returns></returns>
+	public Transform GetObjectRoot() { return _objectRoot; }
 
 	/// <summary>
 	/// デバッグ用スプライト表示

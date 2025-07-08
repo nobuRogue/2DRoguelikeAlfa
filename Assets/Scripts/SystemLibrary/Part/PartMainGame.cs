@@ -14,11 +14,15 @@ using static CharacterUtility;
 using static MapSquareUtility;
 
 public class PartMainGame : PartBase {
+	// マス管理
 	[SerializeField]
 	private MapSquareManager _squareManager = null;
-
+	// キャラクター管理
 	[SerializeField]
 	private CharacterManager _characterManager = null;
+	// アイテム管理
+	[SerializeField]
+	private ItemManager _itemManager = null;
 
 	private DungeonProcessor _dungeonProcessor = null;
 
@@ -33,9 +37,10 @@ public class PartMainGame : PartBase {
 		// ダンジョン実行クラス初期化
 		_dungeonProcessor = new DungeonProcessor();
 		_dungeonProcessor.Initialize();
-		// マス、キャラクター管理クラス初期化
+		// マス、キャラクター、アイテム管理クラス初期化
 		_squareManager.Initialize();
 		_characterManager.Initialize();
+		_itemManager.Initialize();
 		// 射程管理クラス初期化
 		ActionRangeManager.Initialize();
 		ActionManager.Initialize();
@@ -69,11 +74,11 @@ public class PartMainGame : PartBase {
 		UniTask task;
 		switch (endReason) {
 			case eDungeonEndReason.Dead:
-			task = PartManager.instance.TransitionPart(eGamePart.Title);
-			break;
+				task = PartManager.instance.TransitionPart(eGamePart.Title);
+				break;
 			case eDungeonEndReason.Clear:
-			task = PartManager.instance.TransitionPart(eGamePart.Ending);
-			break;
+				task = PartManager.instance.TransitionPart(eGamePart.Ending);
+				break;
 		}
 
 	}
