@@ -11,6 +11,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using static ItemUtility;
+using static GameConst;
+
 public class MenuItemListItem : MenuListItem {
 	// アイテムのアイコン画像
 	[SerializeField]
@@ -18,5 +21,25 @@ public class MenuItemListItem : MenuListItem {
 	// アイテム名テキスト
 	[SerializeField]
 	private TextMeshProUGUI _itemNameText = null;
+	// 装備アイコン
+	[SerializeField]
+	private GameObject _equipIcon = null;
+
+	// アイテムID
+	public int itemID { get; private set; } = -1;
+
+	/// <summary>
+	/// 使用前の準備
+	/// </summary>
+	public void Setup(int setItemID, bool isEquip) {
+		itemID = setItemID;
+		// アイテムアイコンの設定
+		ItemBase itemData = GetItemData(itemID);
+		_itemIconImage.sprite = Resources.LoadAll<Sprite>(ITEM_SPRITE_FILE_NAME)[(int)itemData.GetCategory()];
+		// アイテム名の設定
+		_itemNameText.text = itemData.GetName();
+		// 装備アイコンの設定
+		_equipIcon.SetActive(isEquip);
+	}
 
 }

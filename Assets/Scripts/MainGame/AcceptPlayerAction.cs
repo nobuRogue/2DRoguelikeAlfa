@@ -10,21 +10,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static MenuList;
 using static GameConst;
 using static ActionManager;
 using static MapSquareUtility;
 using static CharacterUtility;
 using static UnityEngine.Input;
-using UnityEngine.TextCore.Text;
 
 public class AcceptPlayerAction {
 
 	private System.Action<MoveAction> _AddMove = null;
 
+	// アイテムリスト用コールバック集
+	private MenuListCallbackFormat _itemListCallbackFormat = null;
 
 	public void Initialize(System.Action<MoveAction> SetAddMove) {
 		// MoveActionをターン処理に積むコールバックをキャッシュしておく
 		_AddMove = SetAddMove;
+
+		_itemListCallbackFormat = new MenuListCallbackFormat();
+		_itemListCallbackFormat.OnCancel = OnItemListCancel;
+	}
+
+	/// <summary>
+	/// アイテムリストでキャンセルされた際の処理
+	/// </summary>
+	/// <param name="currentItem"></param>
+	/// <returns></returns>
+	private async UniTask<bool> OnItemListCancel(MenuListItem currentItem) {
+		await UniTask.CompletedTask;
+		return false;
 	}
 
 	public async UniTask AcceptInput() {
@@ -33,6 +48,8 @@ public class AcceptPlayerAction {
 			if (AcceptMove()) break;
 			// 攻撃の受付
 			if (await AcceptAttack()) break;
+			// アイテムリストの入力受付
+			await AcceptItemList();
 			// 方向転換入力の受付処理
 			await AcceptDirChange();
 			await UniTask.DelayFrame(1);
@@ -68,23 +85,30 @@ public class AcceptPlayerAction {
 		if (GetKey(KeyCode.UpArrow)) {
 			if (GetKey(KeyCode.RightArrow)) {
 				return eDirectionEight.UpRight; // 右上
-			} else if (GetKey(KeyCode.LeftArrow)) {
+			}
+			else if (GetKey(KeyCode.LeftArrow)) {
 				return eDirectionEight.UpLeft;  // 左上
-			} else {
+			}
+			else {
 				return eDirectionEight.Up;      // 上
 			}
-		} else if (GetKey(KeyCode.DownArrow)) {
+		}
+		else if (GetKey(KeyCode.DownArrow)) {
 			if (GetKey(KeyCode.RightArrow)) {
 				return eDirectionEight.DownRight;// 右下
-			} else if (GetKey(KeyCode.LeftArrow)) {
+			}
+			else if (GetKey(KeyCode.LeftArrow)) {
 				return eDirectionEight.DownLeft;// 左下
-			} else {
+			}
+			else {
 				return eDirectionEight.Down;    // 下
 			}
-		} else {
+		}
+		else {
 			if (GetKey(KeyCode.RightArrow)) {
 				return eDirectionEight.Right;   // 右
-			} else if (GetKey(KeyCode.LeftArrow)) {
+			}
+			else if (GetKey(KeyCode.LeftArrow)) {
 				return eDirectionEight.Left;    // 左
 			}
 		}
@@ -162,4 +186,19 @@ public class AcceptPlayerAction {
 
 		dirSquare.ShowMark(Color.red);
 	}
+
+	/// <summary>
+	/// アイテムリスト入力の受付
+	/// </summary>
+	/// <returns></returns>
+	private async UniTask AcceptItemList() {
+		if (!GetKeyDown(KeyCode.C)) return;
+		// アイテムリストを開く
+		var itemList = MenuManager.instance.Get<MenuItemList>();
+		await itemList.Setup(GetPlayer().possessItemList, _itemListCallbackFormat);
+		await itemList.Open();
+		await itemList.AcceptInput();
+		await itemList.Close();
+	}
+
 }

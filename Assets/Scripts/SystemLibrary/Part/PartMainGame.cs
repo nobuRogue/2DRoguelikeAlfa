@@ -32,6 +32,7 @@ public class PartMainGame : PartBase {
 		// メニューの初期化
 		await MenuManager.instance.Get<MenuRogueLog>("Prefabs/Menu/CanvasRogueLog").Initialize();
 		await MenuManager.instance.Get<MenuRogueMain>("Prefabs/Menu/CanvasRogueMain").Initialize();
+		await MenuManager.instance.Get<MenuItemList>("Prefabs/Menu/ItemList/CanvasItemList").Initialize();
 
 		TerrainSpriteAssignor.Initialize();
 		// ダンジョン実行クラス初期化

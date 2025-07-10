@@ -92,6 +92,7 @@ public abstract class MenuList : MenuBase {
 		}
 		// 使用リストに追加
 		_useList.Add(addItem);
+		addItem.Deselect();
 		return addItem;
 	}
 
