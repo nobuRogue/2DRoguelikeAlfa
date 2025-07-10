@@ -41,17 +41,17 @@ MonoBehaviour:
       actionID: -1
     - ID: 400
       nameID: 12400
-      category: 0
+      category: 4
       actionID: -1
     - ID: 500
       nameID: 12500
-      category: 0
+      category: 5
       actionID: -1
     - ID: 600
       nameID: 12600
-      category: 0
+      category: 6
       actionID: -1
     - ID: 700
       nameID: 12700
-      category: 0
+      category: 7
       actionID: -1

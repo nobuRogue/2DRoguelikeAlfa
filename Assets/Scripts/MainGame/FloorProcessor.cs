@@ -66,7 +66,7 @@ public class FloorProcessor {
 		// キャラクター配置
 		SetCharacter(floorMaster.enemyTableID, roomSquareList);
 		// アイテム配置
-		SetFloorItem(8, roomSquareList);
+		SetFloorItem(floorMaster.itemTableID, 8, roomSquareList);
 		// フロアを終了していない状態にする
 		_endReason = eFloorEndReason.Invalid;
 		// フェードイン
@@ -96,7 +96,7 @@ public class FloorProcessor {
 	/// <param name="spawnCount"></param>
 	/// <param name="candidateSquareList"></param>
 	private void SpawnEnemy(int spawnCount, List<MapSquareData> candidateSquareList, int enemyTableID) {
-		// 現在フロアのエネミーテーブルを取得
+		// エネミーテーブルを取得
 		List<int> enemyTable = GetEnemyTable(enemyTableID);
 		if (IsEmpty(enemyTable)) return;
 
@@ -115,13 +115,18 @@ public class FloorProcessor {
 	/// <summary>
 	/// 床落ちアイテムの生成
 	/// </summary>
-	private void SetFloorItem(int createCount, List<MapSquareData> roomSquareList) {
+	private void SetFloorItem(int itemDropTableID, int createCount, List<MapSquareData> roomSquareList) {
+		// アイテムドロップテーブル取得
+		List<int> itemDropTable = GetItemDropTable(itemDropTableID);
+		if (IsEmpty(itemDropTable)) return;
+
 		for (int i = 0; i < createCount; i++) {
 			if (IsEmpty(roomSquareList)) break;
 			// 候補マスからランダムに取得
 			MapSquareData itemSquare = roomSquareList[Random.Range(0, roomSquareList.Count)];
 			roomSquareList.Remove(itemSquare);
-			CreateFloorItem(200, itemSquare);
+			int itemID = itemDropTable[Random.Range(0, itemDropTable.Count)];
+			CreateFloorItem(itemID, itemSquare);
 		}
 	}
 

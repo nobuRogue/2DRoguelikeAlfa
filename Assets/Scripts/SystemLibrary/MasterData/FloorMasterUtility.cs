@@ -48,7 +48,7 @@ public class FloorMasterUtility {
 		for (int i = 0, max = enemyTableMasterList.Count; i < max; i++) {
 			if (enemyTableMasterList[i].ID != ID) continue;
 			// 指定IDのデータが見つかったので-1を取り除いて返す
-			return CreateEnableEnemyTable(enemyTableMasterList[i].enemyID);
+			return CreateEnableTable(enemyTableMasterList[i].enemyID);
 		}
 		return null;
 	}
@@ -57,7 +57,7 @@ public class FloorMasterUtility {
 	/// 使用可能なエネミーテーブルを生成
 	/// </summary>
 	/// <returns></returns>
-	private static List<int> CreateEnableEnemyTable(int[] origin) {
+	private static List<int> CreateEnableTable(int[] origin) {
 		if (IsEmpty(origin)) return null;
 
 		int tableCount = origin.Length;
@@ -68,6 +68,21 @@ public class FloorMasterUtility {
 			result.Add(origin[i]);
 		}
 		return result;
+	}
+
+	/// <summary>
+	/// ID指定のアイテムドロップマスターデータ取得
+	/// </summary>
+	/// <param name="ID"></param>
+	/// <returns></returns>
+	public static List<int> GetItemDropTable(int ID) {
+		var itemTableMasterList = MasterDataManager.itemDropTableData[0];
+		for (int i = 0, max = itemTableMasterList.Count; i < max; i++) {
+			if (itemTableMasterList[i].ID != ID) continue;
+			// 指定IDのデータが見つかったので-1を取り除いて返す
+			return CreateEnableTable(itemTableMasterList[i].itemID);
+		}
+		return null;
 	}
 
 }

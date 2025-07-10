@@ -16,6 +16,7 @@ public class MasterDataManager {
 	// 読み込んだマスターデータ
 	public static List<List<Entity_FloorData.Param>> floorData = null;
 	public static List<List<Entity_EnemyTable.Param>> enemyTableData = null;
+	public static List<List<Entity_ItemDropTable.Param>> itemDropTableData = null;
 	public static List<List<Entity_CharacterData.Param>> characterData = null;
 	public static List<List<Entity_MessageData.Param>> messageData = null;
 
@@ -31,6 +32,7 @@ public class MasterDataManager {
 	public static void LoadAllData() {
 		floorData = Load<Entity_FloorData, Entity_FloorData.Sheet, Entity_FloorData.Param>("FloorData");
 		enemyTableData = Load<Entity_EnemyTable, Entity_EnemyTable.Sheet, Entity_EnemyTable.Param>("EnemyTable");
+		itemDropTableData = Load<Entity_ItemDropTable, Entity_ItemDropTable.Sheet, Entity_ItemDropTable.Param>("ItemDropTable");
 		characterData = Load<Entity_CharacterData, Entity_CharacterData.Sheet, Entity_CharacterData.Param>("CharacterData");
 		messageData = Load<Entity_MessageData, Entity_MessageData.Sheet, Entity_MessageData.Param>("MessageData");
 
