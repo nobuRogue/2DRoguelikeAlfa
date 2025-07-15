@@ -39,6 +39,42 @@ MonoBehaviour:
       - 
       - 
       - 
+    - ID: 20
+      text:
+      - "\u4F7F\u3046"
+      - 
+      - 
+      - 
+    - ID: 21
+      text:
+      - "\u7F6E\u304F"
+      - 
+      - 
+      - 
+    - ID: 22
+      text:
+      - "\u88C5\u5099"
+      - 
+      - 
+      - 
+    - ID: 23
+      text:
+      - "\u5916\u3059"
+      - 
+      - 
+      - 
+    - ID: 24
+      text:
+      - 
+      - 
+      - 
+      - 
+    - ID: 25
+      text:
+      - 
+      - 
+      - 
+      - 
     - ID: 9999
       text:
       - 

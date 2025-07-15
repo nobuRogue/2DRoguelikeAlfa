@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class MenuListItem : MonoBehaviour {
+public abstract class ListItem : MonoBehaviour {
 	// €–Ú‚ª‘I‘ğ‚³‚ê‚½‚Æ‚«‚Ì•\¦‰æ‘œ
 	[SerializeField]
 	private Image _selectImage = null;

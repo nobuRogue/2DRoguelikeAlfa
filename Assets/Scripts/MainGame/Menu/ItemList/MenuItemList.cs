@@ -27,7 +27,7 @@ public class MenuItemList : MenuList {
 		if (IsEmpty(itemIDList)) return;
 		// €–Ú‚Ì¶¬
 		for (int i = 0, max = itemIDList.Count; i < max; i++) {
-			var createItem = AddListItem() as MenuItemListItem;
+			var createItem = AddListItem() as ItemListItem;
 			if (createItem == null) continue;
 
 			createItem.Setup(itemIDList[i], false);

@@ -14,7 +14,7 @@ using TMPro;
 using static ItemUtility;
 using static GameConst;
 
-public class MenuItemListItem : MenuListItem {
+public class ItemListItem : ListItem {
 	// アイテムのアイコン画像
 	[SerializeField]
 	private Image _itemIconImage = null;

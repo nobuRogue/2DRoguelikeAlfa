@@ -17,7 +17,7 @@ using static CommonModule;
 public abstract class MenuList : MenuBase {
 	// リスト項目のオリジナル
 	[SerializeField]
-	private MenuListItem _itemOrigin = null;
+	private ListItem _itemOrigin = null;
 
 	// 表示項目の親オブジェクト
 	[SerializeField]
@@ -28,8 +28,8 @@ public abstract class MenuList : MenuBase {
 	private Transform _unuseRoot = null;
 
 	// 使用、未使用項目のリスト
-	private List<MenuListItem> _useList = null;
-	private List<MenuListItem> _unuseList = null;
+	private List<ListItem> _useList = null;
+	private List<ListItem> _unuseList = null;
 	// 現在の選択項目インデックス
 	private int _currentIndex = -1;
 
@@ -41,13 +41,13 @@ public abstract class MenuList : MenuBase {
 	/// </summary>
 	public class MenuListCallbackFormat {
 		// 決定された際の処理
-		public System.Func<MenuListItem, UniTask<bool>> OnDecide = null;
+		public System.Func<ListItem, UniTask<bool>> OnDecide = null;
 		// キャンセルされた際の処理
-		public System.Func<MenuListItem, UniTask<bool>> OnCancel = null;
+		public System.Func<ListItem, UniTask<bool>> OnCancel = null;
 		// カーソルが移動した際の処理
-		public System.Func<MenuListItem, MenuListItem, UniTask> OnMoveCursor = null;
+		public System.Func<ListItem, ListItem, UniTask> OnMoveCursor = null;
 		// 自由な受付処理
-		public System.Func<MenuListItem, UniTask<bool>> FreeAccept = null;
+		public System.Func<ListItem, UniTask<bool>> FreeAccept = null;
 	}
 	// 現在のコールバックフォーマット
 	private MenuListCallbackFormat _currentFormat = null;
@@ -60,8 +60,8 @@ public abstract class MenuList : MenuBase {
 	/// <returns></returns>
 	public override async UniTask Initialize() {
 		await base.Initialize();
-		_useList = new List<MenuListItem>();
-		_unuseList = new List<MenuListItem>();
+		_useList = new List<ListItem>();
+		_unuseList = new List<ListItem>();
 	}
 
 	/// <summary>
@@ -79,8 +79,8 @@ public abstract class MenuList : MenuBase {
 	/// リスト項目の生成
 	/// </summary>
 	/// <returns></returns>
-	public MenuListItem AddListItem() {
-		MenuListItem addItem;
+	public ListItem AddListItem() {
+		ListItem addItem;
 		// 未使用リストが空なら生成、空でなければそこから使う
 		if (IsEmpty(_unuseList)) {
 			addItem = Instantiate(_itemOrigin, _contentRoot);
@@ -103,7 +103,7 @@ public abstract class MenuList : MenuBase {
 	public void RemoveListItem(int removeIndex) {
 		if (!IsEnableIndex(_useList, removeIndex)) return;
 		// 使用リストから取り除く
-		MenuListItem removeItem = _useList[removeIndex];
+		ListItem removeItem = _useList[removeIndex];
 		_useList.RemoveAt(removeIndex);
 		// 未使用リストへ追加
 		_unuseList.Add(removeItem);
@@ -174,14 +174,14 @@ public abstract class MenuList : MenuBase {
 	public async UniTask SetIndex(int setIndex) {
 		if (_currentIndex == setIndex) return;
 		// 現在の項目を未選択状態にする
-		MenuListItem prevItem = null;
+		ListItem prevItem = null;
 		if (IsEnableIndex(_useList, _currentIndex)) {
 			prevItem = _useList[_currentIndex];
 			prevItem.Deselect();
 		}
 		_currentIndex = setIndex;
 		// 移動後の項目を選択状態にする
-		MenuListItem currentItem = null;
+		ListItem currentItem = null;
 		if (IsEnableIndex(_useList, _currentIndex)) {
 			currentItem = _useList[_currentIndex];
 			currentItem.Select();
@@ -251,7 +251,7 @@ public abstract class MenuList : MenuBase {
 	/// 現在選択中の項目を取得
 	/// </summary>
 	/// <returns></returns>
-	private MenuListItem GetCurrentItem() {
+	private ListItem GetCurrentItem() {
 		return IsEnableIndex(_useList, _currentIndex) ? _useList[_currentIndex] : null;
 	}
 

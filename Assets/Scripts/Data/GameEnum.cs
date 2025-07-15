@@ -91,3 +91,12 @@ public enum eItemCategory {
 	Armor,      // 防具
 	Max,
 }
+
+// アイテムのコマンド
+public enum eItemCommand {
+	Invalid = -1,
+	Use,        // 使う
+	Puton,      // 置く
+	SetEquip,   // 装備
+	RemoveEquip,// 外す
+}
