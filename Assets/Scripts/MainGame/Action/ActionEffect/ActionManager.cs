@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static ItemMasterUtility;
 using static ActionMasterUtility;
 using static ActionRangeManager;
 using static RogueLogUtility;
@@ -21,11 +22,34 @@ public class ActionManager {
 	private static List<ActionEffectBase> _effectList = null;
 	// 行動ログのメッセージID
 	private static readonly int _USE_ACTION_LOG_ID = 14010;
+	private static readonly int _USE_ITEM_LOG_ID = 14011;
 
 	public static void Initialize() {
 		_effectList = new List<ActionEffectBase>();
 		_effectList.Add(new ActionEffect000_Attack());
+		_effectList.Add(new ActionEffect001_RecoveryHP());
+		_effectList.Add(new ActionEffect002_RecoveryStamina());
 
+	}
+
+	/// <summary>
+	/// アイテムの使用効果発動
+	/// </summary>
+	/// <param name="sourceCharacter"></param>
+	/// <param name="useItem"></param>
+	/// <returns></returns>
+	public static async UniTask UseItem(CharacterBase sourceCharacter, ItemBase useItem) {
+		// アイテムマスターから行動のマスタ－取得
+		var itemMaster = GetItemMaster(useItem.masterID);
+		if (itemMaster == null) return;
+
+		var actionMaster = GetActionMaster(itemMaster.actionID);
+		if (actionMaster == null) return;
+		// ログ追加
+		string characterName = sourceCharacter.GetName();
+		string itemName = useItem.GetName();
+		AddLog(string.Format(_USE_ITEM_LOG_ID.ToMessage(), characterName, itemName));
+		await ExecuteAction(sourceCharacter, actionMaster);
 	}
 
 	/// <summary>
@@ -34,14 +58,26 @@ public class ActionManager {
 	/// <param name="sourceCharacter"></param>
 	/// <param name="actionID"></param>
 	/// <returns></returns>
-	public static async UniTask ExecuteAction(CharacterBase sourceCharacter, int actionID) {
+	public static async UniTask UseAction(CharacterBase sourceCharacter, int actionID) {
 		// 行動のマスター取得
 		Entity_ActionData.Param actionMaster = GetActionMaster(actionID);
 		if (actionMaster == null) return;
 		// ログ追加
-		string characterName = sourceCharacter.nameID.ToMessage();
+		string characterName = sourceCharacter.GetName();
 		string actionName = actionMaster.nameID.ToMessage();
 		AddLog(string.Format(_USE_ACTION_LOG_ID.ToMessage(), characterName, actionName));
+		await ExecuteAction(sourceCharacter, actionMaster);
+	}
+
+	/// <summary>
+	/// アクションの実行
+	/// </summary>
+	/// <param name="sourceCharacter"></param>
+	/// <param name="actionMaster"></param>
+	/// <returns></returns>
+	private static async UniTask ExecuteAction(
+		CharacterBase sourceCharacter,
+		Entity_ActionData.Param actionMaster) {
 		// 射程クラス取得、実行
 		ActionRangeBase range = GetRange(actionMaster.rangeType);
 		range.Execute(sourceCharacter);

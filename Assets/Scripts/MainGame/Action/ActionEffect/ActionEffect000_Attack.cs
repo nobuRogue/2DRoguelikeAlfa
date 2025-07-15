@@ -16,8 +16,12 @@ using static RogueLogUtility;
 using static CommonModule;
 
 public class ActionEffect000_Attack : ActionEffectBase {
+	private enum eParamIndex {
+		Percentage, // 攻撃力割合
+	}
+
 	// ダメージを与えるログメッセージのID
-	private readonly int _DAMAGE_LOG_ID = 14000;
+	private const int _DAMAGE_LOG_ID = 14000;
 
 	/// <summary>
 	/// 効果処理実行
@@ -37,7 +41,7 @@ public class ActionEffect000_Attack : ActionEffectBase {
 		// 行動者の攻撃アニメーション再生
 		sourceCharacter.SetAnimation(eCharacterAnimation.Attack);
 		// 攻撃力の取得
-		int sourceAttack = sourceCharacter.GetAttack() * effectMaster.param[0];
+		int sourceAttack = sourceCharacter.GetAttack() * effectMaster.param[(int)eParamIndex.Percentage];
 		sourceAttack /= 100;
 		// 対象ごとにダメージ付与
 		for (int i = 0, max = targetList.Count; i < max; i++) {
@@ -51,22 +55,21 @@ public class ActionEffect000_Attack : ActionEffectBase {
 		await WaitTask(taskList);
 	}
 
-	private async UniTask ExecuteAttackDamage(int sourceAttack, CharacterBase targetCharacter) {
-		if (targetCharacter == null) return;
+	private async UniTask ExecuteAttackDamage(int sourceAttack, CharacterBase target) {
+		if (target == null) return;
 		// 対象の被ダメージモーション
-		targetCharacter.SetAnimation(eCharacterAnimation.Damage);
+		target.SetAnimation(eCharacterAnimation.Damage);
 		// ダメージ計算
 		// 基本ダメージ : 攻撃力×(15/16)^防御力
-		int targetDefense = targetCharacter.GetDefense();
+		int targetDefense = target.GetDefense();
 		int damage = (int)(sourceAttack * Mathf.Pow(15.0f / 16.0f, targetDefense));
 		// ログの追加
-		string targetName = targetCharacter.nameID.ToMessage();
-		AddLog(string.Format(_DAMAGE_LOG_ID.ToMessage(), targetName, damage));
+		AddLog(string.Format(_DAMAGE_LOG_ID.ToMessage(), target.GetName(), damage));
 		// 被ダメージモーションの終了待ち
-		while (targetCharacter.GetCurrentAnimation() == eCharacterAnimation.Damage) {
+		while (target.GetCurrentAnimation() == eCharacterAnimation.Damage) {
 			await UniTask.DelayFrame(1);
 		}
-		AddDamage(damage, targetCharacter);
+		AddDamage(damage, target);
 	}
 
 }

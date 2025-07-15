@@ -18,19 +18,19 @@ MonoBehaviour:
     - ID: 0
       nameID: 12000
       category: 0
-      actionID: -1
+      actionID: 100
     - ID: 1
       nameID: 12001
       category: 0
-      actionID: -1
+      actionID: 101
     - ID: 100
       nameID: 12100
       category: 1
-      actionID: -1
+      actionID: 102
     - ID: 101
       nameID: 12101
       category: 1
-      actionID: -1
+      actionID: 103
     - ID: 200
       nameID: 12200
       category: 2

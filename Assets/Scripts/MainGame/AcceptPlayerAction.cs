@@ -10,7 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using static MenuList;
 using static GameConst;
 using static ActionManager;
 using static MapSquareUtility;
@@ -21,25 +20,13 @@ public class AcceptPlayerAction {
 
 	private System.Action<MoveAction> _AddMove = null;
 
-	// アイテムリスト用コールバック集
-	private MenuListCallbackFormat _itemListCallbackFormat = null;
+	// アイテムリスト処理クラス
+	private AcceptItemList _acceptItemList = null;
 
 	public void Initialize(System.Action<MoveAction> SetAddMove) {
 		// MoveActionをターン処理に積むコールバックをキャッシュしておく
 		_AddMove = SetAddMove;
-
-		_itemListCallbackFormat = new MenuListCallbackFormat();
-		_itemListCallbackFormat.OnCancel = OnItemListCancel;
-	}
-
-	/// <summary>
-	/// アイテムリストでキャンセルされた際の処理
-	/// </summary>
-	/// <param name="currentItem"></param>
-	/// <returns></returns>
-	private async UniTask<bool> OnItemListCancel(MenuListItem currentItem) {
-		await UniTask.CompletedTask;
-		return false;
+		_acceptItemList = new AcceptItemList();
 	}
 
 	public async UniTask AcceptInput() {
@@ -49,7 +36,7 @@ public class AcceptPlayerAction {
 			// 攻撃の受付
 			if (await AcceptAttack()) break;
 			// アイテムリストの入力受付
-			await AcceptItemList();
+			if (await AcceptItemList()) break;
 			// 方向転換入力の受付処理
 			await AcceptDirChange();
 			await UniTask.DelayFrame(1);
@@ -122,7 +109,7 @@ public class AcceptPlayerAction {
 	private async UniTask<bool> AcceptAttack() {
 		if (!GetKeyDown(KeyCode.Z)) return false;
 
-		await ExecuteAction(GetPlayer(), NORMAL_ATTACK_ACTION_ID);
+		await UseAction(GetPlayer(), NORMAL_ATTACK_ACTION_ID);
 		return true;
 	}
 
@@ -191,14 +178,10 @@ public class AcceptPlayerAction {
 	/// アイテムリスト入力の受付
 	/// </summary>
 	/// <returns></returns>
-	private async UniTask AcceptItemList() {
-		if (!GetKeyDown(KeyCode.C)) return;
-		// アイテムリストを開く
-		var itemList = MenuManager.instance.Get<MenuItemList>();
-		await itemList.Setup(GetPlayer().possessItemList, _itemListCallbackFormat);
-		await itemList.Open();
-		await itemList.AcceptInput();
-		await itemList.Close();
+	private async UniTask<bool> AcceptItemList() {
+		if (!GetKeyDown(KeyCode.C)) return false;
+		// アイテムリストの入力受付、決定時処理
+		return await _acceptItemList.Accept();
 	}
 
 }

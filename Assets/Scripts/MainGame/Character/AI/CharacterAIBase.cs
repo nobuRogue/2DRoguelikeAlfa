@@ -71,7 +71,7 @@ public abstract class CharacterAIBase {
 		// 使用可能な向きに設定
 		if (canUseDir != eDirectionEight.Invalid) sourceCharacter.SetDirection(canUseDir);
 		// アクション実行
-		await ExecuteAction(sourceCharacter, _scheduleActionID);
+		await UseAction(sourceCharacter, _scheduleActionID);
 	}
 
 	/// <summary>

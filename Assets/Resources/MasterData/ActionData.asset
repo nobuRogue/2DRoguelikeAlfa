@@ -19,3 +19,19 @@ MonoBehaviour:
       nameID: 16000
       rangeType: 0
       effectID: 00000000ffffffffffffffffffffffff
+    - ID: 100
+      nameID: 16100
+      rangeType: 1
+      effectID: 01000000ffffffffffffffffffffffff
+    - ID: 101
+      nameID: 16101
+      rangeType: 1
+      effectID: 02000000ffffffffffffffffffffffff
+    - ID: 102
+      nameID: 16102
+      rangeType: 1
+      effectID: 0300000002000000ffffffffffffffff
+    - ID: 103
+      nameID: 16103
+      rangeType: 1
+      effectID: 04000000ffffffffffffffffffffffff

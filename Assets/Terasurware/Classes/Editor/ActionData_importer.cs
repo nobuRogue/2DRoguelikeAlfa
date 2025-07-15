@@ -54,10 +54,10 @@ public class ActionData_importer : AssetPostprocessor {
 					cell = row.GetCell(1); p.nameID = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(3); p.rangeType = (int)(cell == null ? 0 : cell.NumericCellValue);
 					p.effectID = new int[4];
-					cell = row.GetCell(4); p.effectID[0] = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(5); p.effectID[1] = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(6); p.effectID[2] = (int)(cell == null ? 0 : cell.NumericCellValue);
-					cell = row.GetCell(7); p.effectID[3] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(5); p.effectID[0] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(6); p.effectID[1] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(7); p.effectID[2] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(8); p.effectID[3] = (int)(cell == null ? 0 : cell.NumericCellValue);
 						s.list.Add (p);
 					}
 					data.sheets.Add(s);

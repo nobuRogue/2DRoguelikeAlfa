@@ -18,3 +18,15 @@ MonoBehaviour:
     - ID: 0
       effectType: 0
       param: 6400000000000000
+    - ID: 1
+      effectType: 1
+      param: 0100000000000000
+    - ID: 2
+      effectType: 1
+      param: 1400000000000000
+    - ID: 3
+      effectType: 2
+      param: 1e00000000000000
+    - ID: 4
+      effectType: 2
+      param: 6400000000000000

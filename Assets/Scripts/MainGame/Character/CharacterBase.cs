@@ -29,7 +29,7 @@ public abstract class CharacterBase {
 	// 所持アイテムIDリスト
 	public List<int> possessItemList { get; private set; } = null;
 	// 所持アイテムの最大数
-	private static readonly int _POSSESS_ITEM_MAX = 3;
+	private static readonly int _POSSESS_ITEM_MAX = 10;
 
 	/// <summary>
 	/// 使用前の準備
@@ -331,5 +331,13 @@ public abstract class CharacterBase {
 	/// <param name="removeItemID"></param>
 	public void RemoveItem(int removeItemID) {
 		possessItemList.Remove(removeItemID);
+	}
+
+	/// <summary>
+	/// 名前の取得
+	/// </summary>
+	/// <returns></returns>
+	public string GetName() {
+		return nameID.ToMessage();
 	}
 }
