@@ -24,6 +24,9 @@ public class ItemListItem : ListItem {
 	// 装備アイコン
 	[SerializeField]
 	private GameObject _equipIcon = null;
+	// アイテムコマンドの表示基準位置
+	[SerializeField]
+	private Transform _commandRoot = null;
 
 	// アイテムID
 	public int itemID { get; private set; } = -1;
@@ -40,6 +43,14 @@ public class ItemListItem : ListItem {
 		_itemNameText.text = itemData.GetName();
 		// 装備アイコンの設定
 		_equipIcon.SetActive(isEquip);
+	}
+
+	/// <summary>
+	/// アイテムコマンドリストの表示基準位置取得
+	/// </summary>
+	/// <returns></returns>
+	public Vector3 GetCommandRootPos() {
+		return _commandRoot.transform.position;
 	}
 
 }

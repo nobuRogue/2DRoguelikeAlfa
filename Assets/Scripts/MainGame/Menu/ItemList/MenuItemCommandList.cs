@@ -13,6 +13,9 @@ using UnityEngine;
 using static ItemUtility;
 
 public class MenuItemCommandList : MenuList {
+	[SerializeField]
+	private Transform _listRoot = null;
+
 
 	/// <summary>
 	/// リスト項目とコールバックの設定
@@ -20,7 +23,8 @@ public class MenuItemCommandList : MenuList {
 	/// <param name="itemID"></param>
 	/// <param name="setFormat"></param>
 	/// <returns></returns>
-	public async Task Setup(int itemID, MenuListCallbackFormat setFormat) {
+	public async Task Setup(int itemID, MenuListCallbackFormat setFormat, Vector3 position) {
+		_listRoot.position = position;
 		// コールバックの設定
 		SetCallbackFortmat(setFormat);
 		// 全ての項目削除

@@ -123,4 +123,14 @@ public abstract class ItemBase {
 		return _nameID.ToMessage();
 	}
 
+	/// <summary>
+	/// マスターID変更
+	/// </summary>
+	/// <param name="changeID"></param>
+	public void ChangeMasterID(int changeID) {
+		masterID = changeID;
+		var itemMaster = GetItemMaster(masterID);
+		_nameID = itemMaster.nameID;
+	}
+
 }

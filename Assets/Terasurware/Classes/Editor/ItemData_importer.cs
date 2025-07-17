@@ -54,6 +54,8 @@ public class ItemData_importer : AssetPostprocessor {
 					cell = row.GetCell(2); p.nameID = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(3); p.category = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(5); p.actionID = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(6); p.burnID = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(7); p.lotID = (int)(cell == null ? 0 : cell.NumericCellValue);
 						s.list.Add (p);
 					}
 					data.sheets.Add(s);

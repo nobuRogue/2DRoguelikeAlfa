@@ -29,6 +29,7 @@ public class ActionManager {
 		_effectList.Add(new ActionEffect000_Attack());
 		_effectList.Add(new ActionEffect001_RecoveryHP());
 		_effectList.Add(new ActionEffect002_RecoveryStamina());
+		_effectList.Add(null);// TODO:ŒÅ’èƒ_ƒ[ƒWŒø‰Ê
 
 	}
 

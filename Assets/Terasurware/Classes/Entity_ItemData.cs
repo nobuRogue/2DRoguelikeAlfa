@@ -21,6 +21,8 @@ public class Entity_ItemData : ScriptableObject
 		public int nameID;
 		public int category;
 		public int actionID;
+		public int burnID;
+		public int lotID;
 	}
 }
 

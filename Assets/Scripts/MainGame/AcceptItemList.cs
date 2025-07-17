@@ -10,7 +10,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+using static PutonAction;
 using static ActionManager;
+using static MapSquareUtility;
 using static ItemUtility;
 using static CharacterUtility;
 using static MenuList;
@@ -56,7 +59,7 @@ public class AcceptItemList {
 		// アイテムコマンドリストの入力受付
 		var commandList = MenuManager.instance.Get<MenuItemCommandList>();
 		// 決定したアイテムからどのコマンドを表示するか設定
-		await commandList.Setup(_decideItemID, _commandListCallbackFormat);
+		await commandList.Setup(_decideItemID, _commandListCallbackFormat, itemListItem.GetCommandRootPos());
 		await commandList.Open();
 		await commandList.AcceptInput();
 		await commandList.Close();
@@ -123,23 +126,25 @@ public class AcceptItemList {
 	/// アイテムリスト選択の結果を処理する
 	/// </summary>
 	/// <returns></returns>
-	private async UniTask<bool> ProcessItemListResult(CharacterBase useItemCharacter) {
+	private async UniTask<bool> ProcessItemListResult(CharacterBase sourceCharacter) {
 		// アイテムリストのキャンセル判定
 		if (_decideItemID < 0 || _decideCommand == eItemCommand.Invalid) return false;
 		// 選択したアイテムの使用効果を実行
 		ItemBase itemData = GetItemData(_decideItemID);
-		_decideItemID = -1;
+
 		if (itemData == null) return false;
 		// コマンド毎のアクション実行
 		switch (_decideCommand) {
 			case eItemCommand.Use:
 				// アクションマネージャーからアクション実行
-				await UseItem(useItemCharacter, itemData);
+				await UseItem(sourceCharacter, itemData);
 				// アイテムを消す
 				RemoveItem(itemData);
 				break;
 			case eItemCommand.Puton:
 				// アイテムを置く処理
+				MapSquareData sourceSquare = GetSquareData(sourceCharacter.posX, sourceCharacter.posY);
+				await ExecutePuton(sourceSquare, _decideItemID);
 				break;
 			case eItemCommand.SetEquip:
 				// 装備処理
@@ -148,6 +153,7 @@ public class AcceptItemList {
 				// 装備を外す処理
 				break;
 		}
+		_decideItemID = -1;
 		_decideCommand = eItemCommand.Invalid;
 		return true;
 	}
