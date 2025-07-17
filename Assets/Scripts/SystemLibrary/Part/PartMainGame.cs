@@ -8,6 +8,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 using static CharacterUtility;
@@ -33,6 +34,7 @@ public class PartMainGame : PartBase {
 		await MenuManager.instance.Get<MenuRogueLog>("Prefabs/Menu/CanvasRogueLog").Initialize();
 		await MenuManager.instance.Get<MenuRogueMain>("Prefabs/Menu/CanvasRogueMain").Initialize();
 		await MenuManager.instance.Get<MenuItemList>("Prefabs/Menu/ItemList/CanvasItemList").Initialize();
+		await MenuManager.instance.Get<MenuItemCommandList>("Prefabs/Menu/ItemList/CanvasItemCommandList").Initialize();
 
 		TerrainSpriteAssignor.Initialize();
 		// ダンジョン実行クラス初期化

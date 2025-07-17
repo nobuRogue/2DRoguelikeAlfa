@@ -8,6 +8,7 @@
 using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 using static CommonModule;
@@ -29,8 +30,13 @@ public class SoundManager : SystemObject {
 
 	public static SoundManager instance { get; private set; } = null;
 
+	// 入力受付タスク中断用トークン
+	private CancellationToken _token;
+
 	public override async UniTask Initialize() {
 		instance = this;
+		// オブジェクト破棄時に処理されるタスク中断用トークンを取得
+		_token = this.GetCancellationTokenOnDestroy();
 		await UniTask.CompletedTask;
 	}
 
@@ -67,7 +73,7 @@ public class SoundManager : SystemObject {
 			audioSource.clip = _seAssign.seArray[seID];
 			audioSource.Play();
 			// SEの終了待ち
-			while (audioSource.isPlaying) await UniTask.DelayFrame(1);
+			while (audioSource.isPlaying) await UniTask.DelayFrame(1, PlayerLoopTiming.Update, _token);
 
 			return;
 		}

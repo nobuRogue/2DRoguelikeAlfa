@@ -22,8 +22,8 @@ public class MenuItemList : MenuList {
 		SetCallbackFortmat(setFortmat);
 		// 全ての項目削除
 		RemoveAllItem();
-		// アイテムリストが空なら-1番目の項目を選択して終了
 		await SetIndex(-1);
+		// アイテムリストが空なら終了
 		if (IsEmpty(itemIDList)) return;
 		// 項目の生成
 		for (int i = 0, max = itemIDList.Count; i < max; i++) {

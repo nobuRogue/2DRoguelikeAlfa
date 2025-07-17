@@ -41,13 +41,13 @@ public abstract class MenuList : MenuBase {
 	/// </summary>
 	public class MenuListCallbackFormat {
 		// 決定された際の処理
-		public System.Func<ListItem, UniTask<bool>> OnDecide = null;
+		public System.Func<ListItem, CancellationToken, UniTask<bool>> OnDecide = null;
 		// キャンセルされた際の処理
-		public System.Func<ListItem, UniTask<bool>> OnCancel = null;
+		public System.Func<ListItem, CancellationToken, UniTask<bool>> OnCancel = null;
 		// カーソルが移動した際の処理
-		public System.Func<ListItem, ListItem, UniTask> OnMoveCursor = null;
+		public System.Func<ListItem, ListItem, CancellationToken, UniTask> OnMoveCursor = null;
 		// 自由な受付処理
-		public System.Func<ListItem, UniTask<bool>> FreeAccept = null;
+		public System.Func<ListItem, CancellationToken, UniTask<bool>> FreeAccept = null;
 	}
 	// 現在のコールバックフォーマット
 	private MenuListCallbackFormat _currentFormat = null;
@@ -62,6 +62,9 @@ public abstract class MenuList : MenuBase {
 		await base.Initialize();
 		_useList = new List<ListItem>();
 		_unuseList = new List<ListItem>();
+
+		// オブジェクト破棄時に処理されるタスク中断用トークンを取得
+		_token = this.GetCancellationTokenOnDestroy();
 	}
 
 	/// <summary>
@@ -125,8 +128,6 @@ public abstract class MenuList : MenuBase {
 	/// </summary>
 	/// <returns></returns>
 	public async UniTask AcceptInput() {
-		// オブジェクト破棄時に処理されるタスク中断用トークンを取得
-		_token = this.GetCancellationTokenOnDestroy();
 		while (true) {
 			// カーソル移動の受付
 			await AcceptMoveCursor();
@@ -190,7 +191,7 @@ public abstract class MenuList : MenuBase {
 		if (_currentFormat == null ||
 			_currentFormat.OnMoveCursor == null) return;
 
-		await _currentFormat.OnMoveCursor(prevItem, currentItem);
+		await _currentFormat.OnMoveCursor(prevItem, currentItem, _token);
 	}
 
 	/// <summary>
@@ -219,7 +220,7 @@ public abstract class MenuList : MenuBase {
 		if (_currentFormat == null ||
 			_currentFormat.OnDecide == null) return true;
 		// 決定処理のコールバック実行
-		return await _currentFormat.OnDecide(GetCurrentItem());
+		return await _currentFormat.OnDecide(GetCurrentItem(), _token);
 	}
 
 	/// <summary>
@@ -232,7 +233,7 @@ public abstract class MenuList : MenuBase {
 		if (_currentFormat == null ||
 			_currentFormat.OnCancel == null) return true;
 		// キャンセル処理のコールバック実行
-		return await _currentFormat.OnCancel(GetCurrentItem());
+		return await _currentFormat.OnCancel(GetCurrentItem(), _token);
 	}
 
 	/// <summary>
@@ -244,7 +245,7 @@ public abstract class MenuList : MenuBase {
 		if (_currentFormat == null ||
 			_currentFormat.FreeAccept == null) return true;
 		// 自由受付のコールバック実行
-		return await _currentFormat.FreeAccept(GetCurrentItem());
+		return await _currentFormat.FreeAccept(GetCurrentItem(), _token);
 	}
 
 	/// <summary>

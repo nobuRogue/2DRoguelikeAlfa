@@ -14,6 +14,8 @@ using static ItemUtility;
 using static RogueLogUtility;
 using static CharacterUtility;
 using static MapSquareUtility;
+using System.Threading;
+using Unity.VisualScripting;
 
 public class MoveAction {
 	// アイテム関連ログのメッセージID
