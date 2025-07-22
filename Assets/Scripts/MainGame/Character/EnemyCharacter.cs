@@ -20,7 +20,7 @@ public class EnemyCharacter : CharacterBase {
 
 	public override void Setup(int setID, MapSquareData squareData, int setMasterID) {
 		base.Setup(setID, squareData, setMasterID);
-		_actionAI = new CharacterAI00_Normal(ID);
+		_actionAI = new CharacterAI00_Normal(this);
 	}
 
 	public override bool IsPlayer() {

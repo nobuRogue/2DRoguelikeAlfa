@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using static ActionManager;
+using static CharacterMasterUtility;
 using static CharacterUtility;
 using static ActionRangeManager;
 using static ActionMasterUtility;
@@ -18,12 +19,12 @@ using static ActionMasterUtility;
 public abstract class CharacterAIBase {
 	// 移動アクションの追加
 	protected static System.Action<MoveAction> _AddMove = null;
-
 	// 持ち主のキャラクターのID
 	protected int _sourceCharacterID = -1;
-
 	// 予定行動のID
 	protected int _scheduleActionID { get; private set; } = -1;
+	// 行動のリスト
+	protected List<int> _actionList = null;
 
 	/// <summary>
 	/// 移動アクション追加処理の設定
@@ -36,9 +37,21 @@ public abstract class CharacterAIBase {
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="sourceCharacterID"></param>
-	public CharacterAIBase(int sourceCharacterID) {
-		_sourceCharacterID = sourceCharacterID;
+	/// <param name="sourceCharacter"></param>
+	public CharacterAIBase(CharacterBase sourceCharacter) {
+		_sourceCharacterID = sourceCharacter.ID;
+		// キャラクターのマスターデータから行動のリストを取得
+		var characterMaster = GetCharacterMaster(sourceCharacter.masterID);
+		if (characterMaster == null) return;
+		// マスターの行動のリストから-1を除いてキャッシュしておく
+		int[] masterActionList = characterMaster.ActionID;
+		int masterActionCount = masterActionList.Length;
+		_actionList = new List<int>(masterActionCount);
+		for (int i = 0; i < masterActionCount; i++) {
+			if (masterActionList[i] < 0) continue;
+
+			_actionList.Add(masterActionList[i]);
+		}
 	}
 
 	/// <summary>

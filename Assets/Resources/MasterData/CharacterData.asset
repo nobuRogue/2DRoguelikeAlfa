@@ -21,27 +21,32 @@ MonoBehaviour:
       HP: 20
       Attack: 100
       Defense: 1
+      ActionID: ffffffffffffffffffffffffffffffff
     - ID: 1
       nameID: 10001
       spriteName: rogue_sand_enemy1_
       HP: 10
       Attack: 2
       Defense: 1
+      ActionID: 0000000001000000ffffffffffffffff
     - ID: 2
       nameID: 10002
       spriteName: rogue_sand_enemy2_
       HP: 15
       Attack: 3
       Defense: 2
+      ActionID: 0000000002000000ffffffffffffffff
     - ID: 3
       nameID: 10003
       spriteName: rogue_snow_enemy1_
       HP: 20
       Attack: 4
       Defense: 2
+      ActionID: 00000000ffffffffffffffffffffffff
     - ID: 4
       nameID: 10004
       spriteName: rogue_urban_enemy1_
       HP: 17
       Attack: 5
       Defense: 1
+      ActionID: 00000000ffffffffffffffffffffffff

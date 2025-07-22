@@ -23,6 +23,7 @@ public class Entity_CharacterData : ScriptableObject
 		public int HP;
 		public int Attack;
 		public int Defense;
+		public int[] ActionID;
 	}
 }
 

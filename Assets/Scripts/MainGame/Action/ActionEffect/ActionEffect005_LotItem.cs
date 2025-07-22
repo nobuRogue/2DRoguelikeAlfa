@@ -1,8 +1,8 @@
 /**
- * @file ActionEffect004_BurnItem.cs
- * @brief 対象の所持アイテムを全て焼く
+ * @file ActionEffect005_LotItem.cs
+ * @brief 対象の所持アイテムを全て腐らせる
  * @author yao
- * @date 2025/7/17
+ * @date 2025/7/22
  */
 
 using Cysharp.Threading.Tasks;
@@ -16,9 +16,9 @@ using static ItemUtility;
 using static CharacterUtility;
 using static CommonModule;
 
-public class ActionEffect004_BurnItem : ActionEffectBase {
-	// アイテムが焼けたときのログメッセージID
-	private const int _BURN_ITEM_LOG_ID = 14003;
+public class ActionEffect005_LotItem : ActionEffectBase {
+	// アイテムが腐ったときのログメッセージID
+	private const int _LOT_ITEM_LOG_ID = 14004;
 
 	public override async UniTask Execute(
 		CharacterBase sourceCharacter,
@@ -28,18 +28,18 @@ public class ActionEffect004_BurnItem : ActionEffectBase {
 		for (int i = 0, max = targetIDList.Count; i < max; i++) {
 			CharacterBase target = GetCharacterData(targetIDList[i]);
 			if (target == null) continue;
-			// 所持アイテムを全て焼く
-			BurnListItem(target.possessItemList);
+			// 所持アイテムを全て腐らせる
+			LotListItem(target.possessItemList);
 		}
 		// 適当に待つ
 		await UniTask.Delay(500);
 	}
 
 	/// <summary>
-	/// リストのIDのアイテムを全て焼く
+	/// リストのIDのアイテムを全て腐らせる
 	/// </summary>
 	/// <param name="itemIDList"></param>
-	private void BurnListItem(List<int> itemIDList) {
+	private void LotListItem(List<int> itemIDList) {
 		if (IsEmpty(itemIDList)) return;
 
 		for (int i = 0, max = itemIDList.Count; i < max; i++) {
@@ -50,14 +50,14 @@ public class ActionEffect004_BurnItem : ActionEffectBase {
 			var itemMaster = GetItemMaster(itemData.masterID);
 			if (itemMaster == null) continue;
 
-			int burnID = itemMaster.burnID;
-			if (burnID < 0) continue;
-			// 焼ける前のアイテム名をキャッシュ
+			int lotID = itemMaster.lotID;
+			if (lotID < 0) continue;
+			// 腐る前のアイテム名をキャッシュ
 			string beforeName = itemData.GetName();
 			// アイテムを変化させる
-			itemData.ChangeMasterID(burnID);
+			itemData.ChangeMasterID(lotID);
 			// ログ表示
-			AddLog(string.Format(_BURN_ITEM_LOG_ID.ToMessage(), beforeName, itemData.GetName()));
+			AddLog(string.Format(_LOT_ITEM_LOG_ID.ToMessage(), beforeName, itemData.GetName()));
 		}
 	}
 }

@@ -10,7 +10,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static RogueLogUtility;
+
 public abstract class ActionEffectBase {
+	// ダメージを与えるログメッセージのID
+	private const int _DAMAGE_LOG_ID = 14000;
 
 	/// <summary>
 	/// 効果の実行処理
@@ -20,6 +24,25 @@ public abstract class ActionEffectBase {
 		CharacterBase sourceCharacter,
 		Entity_ActionEffectData.Param effectMaster,
 		ActionRangeBase range);
+
+	/// <summary>
+	/// アニメーションをログを表示するダメージ付与
+	/// </summary>
+	/// <param name="damage"></param>
+	/// <param name="target"></param>
+	/// <returns></returns>
+	protected async UniTask ExecuteDamage(int damage, CharacterBase target) {
+		if (target == null) return;
+		// 対象の被ダメージモーション
+		target.SetAnimation(eCharacterAnimation.Damage);
+		// ログの追加
+		AddLog(string.Format(_DAMAGE_LOG_ID.ToMessage(), target.GetName(), damage));
+		// 被ダメージモーションの終了待ち
+		while (target.GetCurrentAnimation() == eCharacterAnimation.Damage) {
+			await UniTask.DelayFrame(1);
+		}
+		AddDamage(damage, target);
+	}
 
 	/// <summary>
 	/// 死亡判定付きのダメージ付与

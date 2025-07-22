@@ -30,3 +30,12 @@ MonoBehaviour:
     - ID: 4
       effectType: 2
       param: 6400000000000000
+    - ID: 5
+      effectType: 4
+      param: 0000000000000000
+    - ID: 6
+      effectType: 5
+      param: 0000000000000000
+    - ID: 7
+      effectType: 3
+      param: 0500000000000000

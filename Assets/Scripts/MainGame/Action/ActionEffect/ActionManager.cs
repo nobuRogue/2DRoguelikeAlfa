@@ -29,8 +29,9 @@ public class ActionManager {
 		_effectList.Add(new ActionEffect000_Attack());
 		_effectList.Add(new ActionEffect001_RecoveryHP());
 		_effectList.Add(new ActionEffect002_RecoveryStamina());
-		_effectList.Add(null);// TODO:å≈íËÉ_ÉÅÅ[ÉWå¯â 
-
+		_effectList.Add(new ActionEffect003_FixDamage());
+		_effectList.Add(new ActionEffect004_BurnItem());
+		_effectList.Add(new ActionEffect005_LotItem());
 	}
 
 	/// <summary>

@@ -23,8 +23,8 @@ public class CharacterAI00_Normal : CharacterAIBase {
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	/// <param name="sourceCharacterID"></param>		↓基底クラス（CharacterAIBase）のコンストラクタを呼び出す
-	public CharacterAI00_Normal(int sourceCharacterID) : base(sourceCharacterID) {
+	/// <param name="sourceCharacter"></param>		↓基底クラス（CharacterAIBase）のコンストラクタを呼び出す
+	public CharacterAI00_Normal(CharacterBase sourceCharacter) : base(sourceCharacter) {
 
 	}
 
@@ -45,7 +45,8 @@ public class CharacterAI00_Normal : CharacterAIBase {
 			if (_scheduleActionID >= 0) return;
 			// 可能な行動が無ければプレイヤーに近づく
 			CloseMoveToPlayer(player, sourceSquare, sourceCharacter);
-		} else {
+		}
+		else {
 			// 視界にプレイヤーが居ないのでランダム移動
 			RandomMove();
 		}
@@ -55,15 +56,18 @@ public class CharacterAI00_Normal : CharacterAIBase {
 	/// 使用可能な行動があれば予定行動に設定する
 	/// </summary>
 	private void CheckCanUseAction(CharacterBase sourceCharacter) {
-		// 通常攻撃の使用可否判定
-		Entity_ActionData.Param actionMaster = GetActionMaster(NORMAL_ATTACK_ACTION_ID);
+		if (IsEmpty(_actionList)) return;
+		// 使用する行動をリストからランダムに決定
+		int useActionID = _actionList[Random.Range(0, _actionList.Count)];
+		// 使用する行動の使用可否判定
+		Entity_ActionData.Param actionMaster = GetActionMaster(useActionID);
 		if (actionMaster == null) return;
 
 		ActionRangeBase range = GetRange(actionMaster.rangeType);
 		eDirectionEight canUseDir = eDirectionEight.Invalid;
 		if (range == null || !range.CanUse(sourceCharacter, ref canUseDir)) return;
 		// 予定行動に設定
-		SetScheduleAction(NORMAL_ATTACK_ACTION_ID);
+		SetScheduleAction(useActionID);
 	}
 
 	/// <summary>

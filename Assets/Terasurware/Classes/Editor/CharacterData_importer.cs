@@ -56,6 +56,11 @@ public class CharacterData_importer : AssetPostprocessor {
 					cell = row.GetCell(3); p.HP = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(4); p.Attack = (int)(cell == null ? 0 : cell.NumericCellValue);
 					cell = row.GetCell(5); p.Defense = (int)(cell == null ? 0 : cell.NumericCellValue);
+					p.ActionID = new int[4];
+					cell = row.GetCell(6); p.ActionID[0] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(7); p.ActionID[1] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(8); p.ActionID[2] = (int)(cell == null ? 0 : cell.NumericCellValue);
+					cell = row.GetCell(9); p.ActionID[3] = (int)(cell == null ? 0 : cell.NumericCellValue);
 						s.list.Add (p);
 					}
 					data.sheets.Add(s);
