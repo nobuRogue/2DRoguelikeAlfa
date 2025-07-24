@@ -32,6 +32,7 @@ public class ActionManager {
 		_effectList.Add(new ActionEffect003_FixDamage());
 		_effectList.Add(new ActionEffect004_BurnItem());
 		_effectList.Add(new ActionEffect005_LotItem());
+		_effectList.Add(new ActionEffect006_Replace());
 	}
 
 	/// <summary>

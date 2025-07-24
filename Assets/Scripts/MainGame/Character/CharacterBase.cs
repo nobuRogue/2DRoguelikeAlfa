@@ -71,11 +71,18 @@ public abstract class CharacterBase {
 	/// </summary>
 	public virtual void Teardown() {
 		// 今いるマスから取り除く
+		RemoveSquare();
+		// オブジェクトの片付け
+		GetObject()?.Teardown();
+	}
+
+	/// <summary>
+	/// 今いるマスから取り除く
+	/// </summary>
+	public void RemoveSquare() {
 		GetSquareData(posX, posY)?.RemoveCharacter();
 		posX = -1;
 		posY = -1;
-		// オブジェクトの片付け
-		GetObject()?.Teardown();
 	}
 
 	/// <summary>
@@ -106,7 +113,7 @@ public abstract class CharacterBase {
 	public virtual void SetSquareData(MapSquareData squareData) {
 		if (squareData == null) return;
 		// 今いるマスから取り除く
-		GetSquareData(posX, posY)?.RemoveCharacter();
+		RemoveSquare();
 		// マスに設定する
 		squareData.SetCharacter(ID);
 		posX = squareData.posX;

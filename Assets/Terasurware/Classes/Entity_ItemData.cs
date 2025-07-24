@@ -23,6 +23,8 @@ public class Entity_ItemData : ScriptableObject
 		public int actionID;
 		public int burnID;
 		public int lotID;
+		public int MinValue;
+		public int MaxValue;
 	}
 }
 

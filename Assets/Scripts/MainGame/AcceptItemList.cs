@@ -138,8 +138,8 @@ public class AcceptItemList {
 			case eItemCommand.Use:
 				// アクションマネージャーからアクション実行
 				await UseItem(sourceCharacter, itemData);
-				// アイテムを消す
-				RemoveItem(itemData);
+				// アイテムを消費する
+				itemData.Consume();
 				break;
 			case eItemCommand.Puton:
 				// アイテムを置く処理

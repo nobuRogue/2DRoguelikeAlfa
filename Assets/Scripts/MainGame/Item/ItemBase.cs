@@ -33,10 +33,10 @@ public abstract class ItemBase {
 	/// マスに置くアイテムの使用前準備
 	/// </summary>
 	/// <param name="setID"></param>
-	/// <param name="setMasterID"></param>
+	/// <param name="masterData"></param>
 	/// <param name="square"></param>
-	public void SetupSquare(int setID, int setMasterID, MapSquareData square) {
-		Setup(setID, setMasterID);
+	public void SetupSquare(int setID, Entity_ItemData.Param masterData, MapSquareData square) {
+		Setup(setID, masterData);
 		// マスに置く
 		SetSquare(square);
 	}
@@ -45,13 +45,12 @@ public abstract class ItemBase {
 	/// アイテムの使用前準備
 	/// </summary>
 	/// <param name="setID"></param>
-	/// <param name="setMasterID"></param>
-	private void Setup(int setID, int setMasterID) {
+	/// <param name="masterData"></param>
+	protected virtual void Setup(int setID, Entity_ItemData.Param masterData) {
 		ID = setID;
-		masterID = setMasterID;
+		masterID = masterData.ID;
 		// マスターデータ関連のセットアップ
-		var itemMaster = GetItemMaster(masterID);
-		_nameID = itemMaster.nameID;
+		_nameID = masterData.nameID;
 	}
 
 	/// <summary>
@@ -119,7 +118,7 @@ public abstract class ItemBase {
 	/// 名前の取得
 	/// </summary>
 	/// <returns></returns>
-	public string GetName() {
+	public virtual string GetName() {
 		return _nameID.ToMessage();
 	}
 
@@ -131,6 +130,14 @@ public abstract class ItemBase {
 		masterID = changeID;
 		var itemMaster = GetItemMaster(masterID);
 		_nameID = itemMaster.nameID;
+	}
+
+	/// <summary>
+	/// 消費する
+	/// </summary>
+	public virtual void Consume() {
+		// 自身を削除
+		RemoveItem(this);
 	}
 
 }

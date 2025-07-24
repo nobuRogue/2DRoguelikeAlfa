@@ -93,13 +93,9 @@ public class PlayerCharacter : CharacterBase {
 		// Šù‚É‹OÕ‚É‘¶İ‚µ‚Ä‚¢‚½‚çˆ—‚µ‚È‚¢
 		if (_moveTrailList.Contains(square.ID)) return;
 		// ‹OÕ‚ª3ƒ}ƒX•ª‚ ‚Á‚½‚çÅ‰‚Ì—v‘f‚ğæ‚èœ‚­
-		if (_moveTrailList.Count >= _PLAYER_MOVE_TRAIL_COUNT) {
-			GetSquareData(_moveTrailList[0])?.HideMark();
-			_moveTrailList.RemoveAt(0);
-		}
+		if (_moveTrailList.Count >= _PLAYER_MOVE_TRAIL_COUNT) _moveTrailList.RemoveAt(0);
 		// ‹OÕ‚É’Ç‰Á
 		_moveTrailList.Add(square.ID);
-		square.ShowMark(Color.red);
 	}
 
 	/// <summary>
@@ -199,7 +195,8 @@ public class PlayerCharacter : CharacterBase {
 			// €–S”»’è
 			if (isDead) Dead();
 
-		} else {
+		}
+		else {
 			// –• “x‚ğŒ¸‚ç‚·
 			RemoveStamina(_TURN_DECREASE_STAMINA);
 			// €–S‚µ‚Ä‚¢‚È‚¯‚ê‚Î©‘R‰ñ•œ

@@ -22,6 +22,7 @@ public class ActionRangeManager {
 		_rangeList = new List<ActionRangeBase>();
 		_rangeList.Add(new ActionRange00_DirForward());
 		_rangeList.Add(new ActionRange01_Self());
+		_rangeList.Add(new ActionRange02_Shoot());
 	}
 
 	/// <summary>

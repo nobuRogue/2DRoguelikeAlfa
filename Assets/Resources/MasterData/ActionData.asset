@@ -43,3 +43,7 @@ MonoBehaviour:
       nameID: 16103
       rangeType: 1
       effectID: 04000000ffffffffffffffffffffffff
+    - ID: 104
+      nameID: 16104
+      rangeType: 2
+      effectID: 08000000ffffffffffffffffffffffff

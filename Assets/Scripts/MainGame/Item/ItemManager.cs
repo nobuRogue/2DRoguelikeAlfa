@@ -119,7 +119,7 @@ public class ItemManager : MonoBehaviour {
 		if (itemMaster == null) return;
 		// データを使用状態にする
 		int useID = UseItemData(itemMaster.category);
-		GetItemData(useID)?.SetupSquare(useID, masterID, square);
+		GetItemData(useID)?.SetupSquare(useID, itemMaster, square);
 	}
 
 	/// <summary>
