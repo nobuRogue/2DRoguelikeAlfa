@@ -20,14 +20,16 @@ public class MapSquareData {
 	/// 部屋ID
 	public int roomID { get; private set; } = -1;
 
+	public eSquareObjectType objectType { get; private set; } = eSquareObjectType.Invalid;
 	/// マスにいるキャラクターのID
 	public int characterID { get; private set; } = -1;
 	/// マスにキャラクターが存在するか
 	public bool existCharacter { get { return characterID >= 0; } }
-	/// マスにあるアイテムのID
-	public int itemID { get; private set; } = -1;
+
+	/// マスにあるオブジェクトのID
+	public int objectID { get; private set; } = -1;
 	/// マスにアイテムがあるか
-	public bool existItem { get { return itemID >= 0; } }
+	public bool existObject { get { return objectID >= 0; } }
 
 	/// <summary>
 	/// 使用前の準備
@@ -35,12 +37,12 @@ public class MapSquareData {
 	/// <param name="setID"></param>
 	/// <param name="setX"></param>
 	/// <param name="setY"></param>
-	public void Setup(int setID, int setX, int setY) {
+	public void Setup( int setID, int setX, int setY ) {
 		ID = setID;
 		posX = setX;
 		posY = setY;
 		// オブジェクトのセットアップ
-		GetObject()?.Setup(posX, posY);
+		GetObject()?.Setup( posX, posY );
 	}
 
 	/// <summary>
@@ -48,10 +50,10 @@ public class MapSquareData {
 	/// </summary>
 	/// <param name="setTerrain"></param>
 
-	public void SetTerrain(eTerrain setTerrain, int spriteIndex = -1) {
+	public void SetTerrain( eTerrain setTerrain, int spriteIndex = -1 ) {
 		terrain = setTerrain;
 		// オブジェクトの地形変更
-		GetObject()?.SetTerrain(terrain, spriteIndex);
+		GetObject()?.SetTerrain( terrain, spriteIndex );
 	}
 
 	/// <summary>
@@ -59,7 +61,7 @@ public class MapSquareData {
 	/// </summary>
 	/// <returns></returns>
 	private MapSquareObject GetObject() {
-		return MapSquareManager.instance.GetSquareObject(ID);
+		return MapSquareManager.instance.GetSquareObject( ID );
 	}
 
 	/// <summary>
@@ -81,7 +83,7 @@ public class MapSquareData {
 	/// マスにキャラクターを設定する
 	/// </summary>
 	/// <param name="setCharacterID"></param>
-	public void SetCharacter(int setCharacterID) {
+	public void SetCharacter( int setCharacterID ) {
 		characterID = setCharacterID;
 	}
 
@@ -96,21 +98,32 @@ public class MapSquareData {
 	/// マスにアイテム設定
 	/// </summary>
 	/// <param name="setItemID"></param>
-	public void SetItem(int setItemID) {
-		itemID = setItemID;
+	public void SetItem( int setItemID ) {
+		objectType = eSquareObjectType.Item;
+		objectID = setItemID;
 	}
 	/// <summary>
-	/// マスからアイテムを取り除く
+	/// マスに罠設定
 	/// </summary>
-	public void RemoveItem() {
-		itemID = -1;
+	/// <param name="setItemID"></param>
+	public void SetTrap( int setTrapID ) {
+		objectType = eSquareObjectType.Trap;
+		objectID = setTrapID;
+	}
+
+	/// <summary>
+	/// マスからオブジェクトを取り除く
+	/// </summary>
+	public void RemoveObject() {
+		objectType = eSquareObjectType.Invalid;
+		objectID = -1;
 	}
 
 	/// <summary>
 	/// 部屋IDの設定
 	/// </summary>
 	/// <param name="setRoomID"></param>
-	public void SetRoomID(int setRoomID) {
+	public void SetRoomID( int setRoomID ) {
 		roomID = setRoomID;
 	}
 
@@ -118,8 +131,8 @@ public class MapSquareData {
 	/// デバッグ用スプライト表示
 	/// </summary>
 	/// <param name="color"></param>
-	public void ShowMark(Color color) {
-		GetObject()?.ShowMark(color);
+	public void ShowMark( Color color ) {
+		GetObject()?.ShowMark( color );
 	}
 
 	/// <summary>

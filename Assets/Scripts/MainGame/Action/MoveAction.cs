@@ -16,6 +16,7 @@ using static CharacterUtility;
 using static MapSquareUtility;
 using System.Threading;
 using Unity.VisualScripting;
+using System.Threading.Tasks;
 
 public class MoveAction {
 	// アイテム関連ログのメッセージID
@@ -36,7 +37,7 @@ public class MoveAction {
 	/// <param name="SetEndFloor"></param>
 	public static void SetEndProcess(
 		System.Action<eFloorEndReason> SetEndFloor,
-		System.Action<eDungeonEndReason> SetEndDungeon) {
+		System.Action<eDungeonEndReason> SetEndDungeon ) {
 		_EndFloor = SetEndFloor;
 		_EndDungeon = SetEndDungeon;
 	}
@@ -45,20 +46,19 @@ public class MoveAction {
 	/// 階段に乗った時の処理
 	/// </summary>
 	/// <param name="goalSquare">移動先のマス</param>
-	private async UniTask ProcessStair(MapSquareData goalSquare) {
+	private async UniTask ProcessStair( MapSquareData goalSquare ) {
 		// 移動先が階段でなければ処理しない
 		if (goalSquare.terrain != eTerrain.Stair) return;
 		// 次の階層が存在するか判定
 		int currentFloorCount = UserDataHolder.currentData.floorCount;
-		var floorMaster = FloorMasterUtility.GetFloorMaster(currentFloorCount + 1);
-		UniTask task = SoundManager.instance.PlaySE(5);
+		var floorMaster = FloorMasterUtility.GetFloorMaster( currentFloorCount + 1 );
+		UniTask task = SoundManager.instance.PlaySE( 5 );
 		if (floorMaster == null) {
 			// 最後の階層なのでクリア（終了要因Clearでダンジョンを終了させる）
-			_EndDungeon(eDungeonEndReason.Clear);
-		}
-		else {
+			_EndDungeon( eDungeonEndReason.Clear );
+		} else {
 			// 最後の階層でないのでフロア移動（終了要因Stairでフロアを終了させる）
-			_EndFloor?.Invoke(eFloorEndReason.Stair);
+			_EndFloor?.Invoke( eFloorEndReason.Stair );
 		}
 		await UniTask.CompletedTask;
 	}
@@ -66,28 +66,28 @@ public class MoveAction {
 	/// <summary>
 	/// 内部的な移動処理
 	/// </summary>
-	public void ExecuteData(CharacterBase moveCharacter, ChebyshevMoveData moveData) {
+	public void ExecuteData( CharacterBase moveCharacter, ChebyshevMoveData moveData ) {
 		_moveCharacterID = moveCharacter.ID;
 		_moveData = moveData;
 
-		moveCharacter.SetDirection(_moveData.dir);
-		moveCharacter.SetSquareData(GetSquareData(_moveData.targetSquareID));
+		moveCharacter.SetDirection( _moveData.dir );
+		moveCharacter.SetSquareData( GetSquareData( _moveData.targetSquareID ) );
 	}
 
 	/// <summary>
 	/// 見た目上の移動
 	/// </summary>
 	/// <returns></returns>
-	public async UniTask ExecuteObject(float duration) {
+	public async UniTask ExecuteObject( float duration ) {
 		// キャラクター、移動元、移動先の取得
-		CharacterBase moveCharacter = GetCharacterData(_moveCharacterID);
-		MapSquareData startSquare = GetSquareData(_moveData.sourceSquareID);
-		MapSquareData goalSquare = GetSquareData(_moveData.targetSquareID);
+		CharacterBase moveCharacter = GetCharacterData( _moveCharacterID );
+		MapSquareData startSquare = GetSquareData( _moveData.sourceSquareID );
+		MapSquareData goalSquare = GetSquareData( _moveData.targetSquareID );
 
 		Vector3 startPos = startSquare.GetCharacterRoot().position;
 		Vector3 goalPos = goalSquare.GetCharacterRoot().position;
 		// 歩行アニメーション再生
-		moveCharacter.SetAnimation(eCharacterAnimation.Walk);
+		moveCharacter.SetAnimation( eCharacterAnimation.Walk );
 
 		// 移動処理
 		float elapsedTime = 0.0f;// 経過時間
@@ -96,14 +96,14 @@ public class MoveAction {
 			elapsedTime += Time.deltaTime;
 			// 補間した座標取得、キャラに設定
 			float t = elapsedTime / duration;
-			Vector3 setPos = Vector3.Lerp(startPos, goalPos, t);
-			moveCharacter.SetPosition(setPos);
+			Vector3 setPos = Vector3.Lerp( startPos, goalPos, t );
+			moveCharacter.SetPosition( setPos );
 			// 1フレーム待ち
-			await UniTask.DelayFrame(1);
+			await UniTask.DelayFrame( 1 );
 		}
-		moveCharacter.SetPosition(goalPos);
+		moveCharacter.SetPosition( goalPos );
 		// 移動後処理
-		await AfterMoveProcess(moveCharacter, goalSquare);
+		await AfterMoveProcess( moveCharacter, goalSquare );
 	}
 
 	/// <summary>
@@ -111,29 +111,39 @@ public class MoveAction {
 	/// </summary>
 	/// <param name="moveCharacter"></param>
 	/// <param name="goalSquare"></param>
-	private async UniTask AfterMoveProcess(CharacterBase moveCharacter, MapSquareData goalSquare) {
+	private async UniTask AfterMoveProcess( CharacterBase moveCharacter, MapSquareData goalSquare ) {
 		// プレイヤーでなければ移動後処理は行わない
 		if (!moveCharacter.IsPlayer()) return;
 		// 移動先にアイテムがあったら拾得処理
-		AddPossessItem(moveCharacter, goalSquare);
+		ProcessObject( moveCharacter, goalSquare );
 		// 移動先に階段があったらフロア移動
-		await ProcessStair(goalSquare);
+		await ProcessStair( goalSquare );
 	}
 
-	private void AddPossessItem(CharacterBase moveCharacter, MapSquareData moveSquare) {
+	private async Task ProcessObject( CharacterBase moveCharacter, MapSquareData moveSquare ) {
 		// 移動先マスにアイテムがなければ終了
-		if (!moveSquare.existItem) return;
-		ItemBase squareItem = GetItemData(moveSquare.itemID);
-		if (squareItem == null) return;
-		// キャラクタ－が拾えなければログを出して終了
-		if (!moveCharacter.CanAddItem()) {
-			AddLog(string.Format(_CANNOT_ADD_ITEM_LOG_ID.ToMessage(), squareItem.GetName()));
-			return;
+		if (!moveSquare.existObject) return;
+
+		switch (moveSquare.objectType) {
+			case eSquareObjectType.Item:
+				ItemBase squareItem = GetItemData( moveSquare.objectID );
+				if (squareItem == null) return;
+				// キャラクタ－が拾えなければログを出して終了
+				if (!moveCharacter.CanAddItem()) {
+					AddLog( string.Format( _CANNOT_ADD_ITEM_LOG_ID.ToMessage(), squareItem.GetName() ) );
+					return;
+				}
+				// キャラクターの所持アイテムに追加
+				squareItem.AddCharacter( moveCharacter );
+				// ログを表示
+				AddLog( string.Format( _ADD_ITEM_LOG_ID.ToMessage(), squareItem.GetName() ) );
+				break;
+			case eSquareObjectType.Trap:
+				await ActionManager.StepOnTrap( moveCharacter, moveSquare.objectID );
+				break;
 		}
-		// キャラクターの所持アイテムに追加
-		squareItem.AddCharacter(moveCharacter);
-		// ログを表示
-		AddLog(string.Format(_ADD_ITEM_LOG_ID.ToMessage(), squareItem.GetName()));
+
+
 	}
 
 

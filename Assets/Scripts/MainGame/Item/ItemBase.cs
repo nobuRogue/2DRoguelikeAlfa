@@ -103,7 +103,7 @@ public abstract class ItemBase {
 		// 床落ちアイテム除去
 		MapSquareData itemSuqare = GetSquareData(posX, posY);
 		if (itemSuqare != null) {
-			itemSuqare.RemoveItem();
+			itemSuqare.RemoveObject();
 			posX = -1;
 			posY = -1;
 			// オブジェクト非表示

@@ -100,3 +100,9 @@ public enum eItemCommand {
 	SetEquip,   // ‘•”õ
 	RemoveEquip,// ŠO‚·
 }
+
+public enum eSquareObjectType {
+	Invalid = -1,
+	Item,
+	Trap,
+}

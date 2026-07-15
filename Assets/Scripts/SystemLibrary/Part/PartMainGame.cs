@@ -24,6 +24,9 @@ public class PartMainGame : PartBase {
 	// アイテム管理
 	[SerializeField]
 	private ItemManager _itemManager = null;
+	[SerializeField]
+	private TrapManager _trapManager = null;
+
 
 	private DungeonProcessor _dungeonProcessor = null;
 
@@ -31,10 +34,10 @@ public class PartMainGame : PartBase {
 
 	public override async UniTask Initialize() {
 		// メニューの初期化
-		await MenuManager.instance.Get<MenuRogueLog>("Prefabs/Menu/CanvasRogueLog").Initialize();
-		await MenuManager.instance.Get<MenuRogueMain>("Prefabs/Menu/CanvasRogueMain").Initialize();
-		await MenuManager.instance.Get<MenuItemList>("Prefabs/Menu/ItemList/CanvasItemList").Initialize();
-		await MenuManager.instance.Get<MenuItemCommandList>("Prefabs/Menu/ItemList/CanvasItemCommandList").Initialize();
+		await MenuManager.instance.Get<MenuRogueLog>( "Prefabs/Menu/CanvasRogueLog" ).Initialize();
+		await MenuManager.instance.Get<MenuRogueMain>( "Prefabs/Menu/CanvasRogueMain" ).Initialize();
+		await MenuManager.instance.Get<MenuItemList>( "Prefabs/Menu/ItemList/CanvasItemList" ).Initialize();
+		await MenuManager.instance.Get<MenuItemCommandList>( "Prefabs/Menu/ItemList/CanvasItemCommandList" ).Initialize();
 
 		TerrainSpriteAssignor.Initialize();
 		// ダンジョン実行クラス初期化
@@ -44,6 +47,7 @@ public class PartMainGame : PartBase {
 		_squareManager.Initialize();
 		_characterManager.Initialize();
 		_itemManager.Initialize();
+		_trapManager.Initialize();
 		// 射程管理クラス初期化
 		ActionRangeManager.Initialize();
 		ActionManager.Initialize();
@@ -53,7 +57,7 @@ public class PartMainGame : PartBase {
 	public override async UniTask Setup() {
 		await base.Setup();
 		// プレイヤー生成
-		UsePlayer(GetSquareData(0, 0), 0);
+		UsePlayer( GetSquareData( 0, 0 ), 0 );
 		await UniTask.CompletedTask;
 	}
 
@@ -65,7 +69,7 @@ public class PartMainGame : PartBase {
 		MenuRogueMain mainUI = MenuManager.instance.Get<MenuRogueMain>();
 		await mainUI.Open();
 		// BGM再生
-		SoundManager.instance.PlayBGM(_MAIN_BGM_ID);
+		SoundManager.instance.PlayBGM( _MAIN_BGM_ID );
 		// ダンジョンの実行
 		eDungeonEndReason endReason = await _dungeonProcessor.Execute();
 		// BGM止める
@@ -77,10 +81,10 @@ public class PartMainGame : PartBase {
 		UniTask task;
 		switch (endReason) {
 			case eDungeonEndReason.Dead:
-				task = PartManager.instance.TransitionPart(eGamePart.Title);
+				task = PartManager.instance.TransitionPart( eGamePart.Title );
 				break;
 			case eDungeonEndReason.Clear:
-				task = PartManager.instance.TransitionPart(eGamePart.Ending);
+				task = PartManager.instance.TransitionPart( eGamePart.Ending );
 				break;
 		}
 
@@ -88,7 +92,7 @@ public class PartMainGame : PartBase {
 
 	public override async UniTask Teardown() {
 		await base.Teardown();
-		UnusePlayer(GetPlayer() as PlayerCharacter);
+		UnusePlayer( GetPlayer() as PlayerCharacter );
 		await UniTask.CompletedTask;
 	}
 }

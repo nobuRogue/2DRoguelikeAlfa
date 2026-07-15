@@ -29,7 +29,7 @@ public class PutonAction {
 		ItemBase itemData = GetItemData(itemID);
 		if (itemData == null || putonSquare == null) return;
 		// マスにアイテムが置けるか判定
-		if (putonSquare.existItem) {
+		if (putonSquare.existObject) {
 			// マスにアイテムが置けない
 			AddLog(string.Format(_CANNOT_LOG_ID.ToMessage(), itemData.GetName()));
 			return;

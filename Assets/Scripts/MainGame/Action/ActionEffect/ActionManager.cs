@@ -26,13 +26,41 @@ public class ActionManager {
 
 	public static void Initialize() {
 		_effectList = new List<ActionEffectBase>();
-		_effectList.Add(new ActionEffect000_Attack());
-		_effectList.Add(new ActionEffect001_RecoveryHP());
-		_effectList.Add(new ActionEffect002_RecoveryStamina());
-		_effectList.Add(new ActionEffect003_FixDamage());
-		_effectList.Add(new ActionEffect004_BurnItem());
-		_effectList.Add(new ActionEffect005_LotItem());
-		_effectList.Add(new ActionEffect006_Replace());
+		_effectList.Add( new ActionEffect000_Attack() );
+		_effectList.Add( new ActionEffect001_RecoveryHP() );
+		_effectList.Add( new ActionEffect002_RecoveryStamina() );
+		_effectList.Add( new ActionEffect003_FixDamage() );
+		_effectList.Add( new ActionEffect004_BurnItem() );
+		_effectList.Add( new ActionEffect005_LotItem() );
+		_effectList.Add( new ActionEffect006_Replace() );
+	}
+
+	/// <summary>
+	/// 罠発動
+	/// </summary>
+	/// <returns></returns>
+	public static async UniTask StepOnTrap( CharacterBase character, int trapID ) {
+		// 罠の可視化
+		TrapObject trap = TrapManager.instance.GetTrap( trapID );
+		if (trap == null) return;
+		// ログ表示
+		Debug.Log("StepOnTrap");
+		trap.Show();
+		// 発動判定
+		int activateRatio = trap.trapData.masterData.activeRatio;
+		if (Random.Range( 0, 100 ) >= activateRatio) {
+			// ログ表示
+
+			return;
+		}
+		// 効果発動
+		var actionMaster = GetActionMaster( trap.trapData.masterData.actionID );
+		await ExecuteAction( character, actionMaster );
+		// 消滅判定
+		int deleteRatio = trap.trapData.masterData.deleteRatio;
+		if (Random.Range( 0, 100 ) >= deleteRatio) return;
+
+		TrapManager.instance.RemoveTrap( trap );
 	}
 
 	/// <summary>
@@ -41,18 +69,18 @@ public class ActionManager {
 	/// <param name="sourceCharacter"></param>
 	/// <param name="useItem"></param>
 	/// <returns></returns>
-	public static async UniTask UseItem(CharacterBase sourceCharacter, ItemBase useItem) {
+	public static async UniTask UseItem( CharacterBase sourceCharacter, ItemBase useItem ) {
 		// アイテムマスターから行動のマスタ－取得
-		var itemMaster = GetItemMaster(useItem.masterID);
+		var itemMaster = GetItemMaster( useItem.masterID );
 		if (itemMaster == null) return;
 
-		var actionMaster = GetActionMaster(itemMaster.actionID);
+		var actionMaster = GetActionMaster( itemMaster.actionID );
 		if (actionMaster == null) return;
 		// ログ追加
 		string characterName = sourceCharacter.GetName();
 		string itemName = useItem.GetName();
-		AddLog(string.Format(_USE_ITEM_LOG_ID.ToMessage(), characterName, itemName));
-		await ExecuteAction(sourceCharacter, actionMaster);
+		AddLog( string.Format( _USE_ITEM_LOG_ID.ToMessage(), characterName, itemName ) );
+		await ExecuteAction( sourceCharacter, actionMaster );
 	}
 
 	/// <summary>
@@ -61,15 +89,15 @@ public class ActionManager {
 	/// <param name="sourceCharacter"></param>
 	/// <param name="actionID"></param>
 	/// <returns></returns>
-	public static async UniTask UseAction(CharacterBase sourceCharacter, int actionID) {
+	public static async UniTask UseAction( CharacterBase sourceCharacter, int actionID ) {
 		// 行動のマスター取得
-		Entity_ActionData.Param actionMaster = GetActionMaster(actionID);
+		Entity_ActionData.Param actionMaster = GetActionMaster( actionID );
 		if (actionMaster == null) return;
 		// ログ追加
 		string characterName = sourceCharacter.GetName();
 		string actionName = actionMaster.nameID.ToMessage();
-		AddLog(string.Format(_USE_ACTION_LOG_ID.ToMessage(), characterName, actionName));
-		await ExecuteAction(sourceCharacter, actionMaster);
+		AddLog( string.Format( _USE_ACTION_LOG_ID.ToMessage(), characterName, actionName ) );
+		await ExecuteAction( sourceCharacter, actionMaster );
 	}
 
 	/// <summary>
@@ -80,18 +108,18 @@ public class ActionManager {
 	/// <returns></returns>
 	private static async UniTask ExecuteAction(
 		CharacterBase sourceCharacter,
-		Entity_ActionData.Param actionMaster) {
+		Entity_ActionData.Param actionMaster ) {
 		// 射程クラス取得、実行
-		ActionRangeBase range = GetRange(actionMaster.rangeType);
-		range.Execute(sourceCharacter);
+		ActionRangeBase range = GetRange( actionMaster.rangeType );
+		range.Execute( sourceCharacter );
 		// アクションの効果処理
 		int[] effectIDList = actionMaster.effectID;
 		for (int i = 0, max = effectIDList.Length; i < max; i++) {
 			if (effectIDList[i] < 0) continue;
 
-			await ExecuteActionEffect(effectIDList[i], sourceCharacter, range);
+			await ExecuteActionEffect( effectIDList[i], sourceCharacter, range );
 		}
-		await UniTask.DelayFrame(1);
+		await UniTask.DelayFrame( 1 );
 	}
 
 	/// <summary>
@@ -101,15 +129,15 @@ public class ActionManager {
 	/// <param name="sourceCharacter"></param>
 	/// <param name="range"></param>
 	/// <returns></returns>
-	private static async UniTask ExecuteActionEffect(int effectID, CharacterBase sourceCharacter, ActionRangeBase range) {
+	private static async UniTask ExecuteActionEffect( int effectID, CharacterBase sourceCharacter, ActionRangeBase range ) {
 		// 効果のマスター取得
-		Entity_ActionEffectData.Param effectMaster = GetActionEffectMaster(effectID);
+		Entity_ActionEffectData.Param effectMaster = GetActionEffectMaster( effectID );
 		if (effectMaster == null) return;
 
 		int effectType = effectMaster.effectType;
-		if (!IsEnableIndex(_effectList, effectType)) return;
+		if (!IsEnableIndex( _effectList, effectType )) return;
 		// 効果実行
-		await _effectList[effectType].Execute(sourceCharacter, effectMaster, range);
+		await _effectList[effectType].Execute( sourceCharacter, effectMaster, range );
 	}
 
 }

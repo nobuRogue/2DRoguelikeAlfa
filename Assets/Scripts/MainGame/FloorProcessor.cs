@@ -27,9 +27,9 @@ public class FloorProcessor {
 	/// 初期化
 	/// </summary>
 	/// <param name="SetEndDungeon"></param>
-	public void Initialize(System.Action<eDungeonEndReason> SetEndDungeon) {
+	public void Initialize( System.Action<eDungeonEndReason> SetEndDungeon ) {
 		_turnProcessor = new TurnProcessor();
-		_turnProcessor.Initialize(EndFloor, SetEndDungeon);
+		_turnProcessor.Initialize( EndFloor, SetEndDungeon );
 	}
 
 	/// <summary>
@@ -53,20 +53,29 @@ public class FloorProcessor {
 	private async UniTask SetupFloor() {
 		// マップ地形画像設定
 		var floorMaster = GetCurrentFloorMaster();
-		SetFloorSpriteTypeIndex(floorMaster.spriteIndex);
+		SetFloorSpriteTypeIndex( floorMaster.spriteIndex );
 		// マップ生成
 		MapCreater.CreateMap();
 		// アイテムとキャラクターの設置候補マスを集約
-		List<MapSquareData> roomSquareList = new List<MapSquareData>(MAP_SQUARE_COUNT);
-		ExecuteAllSquare(mapSquare => {
+		List<MapSquareData> roomSquareList = new List<MapSquareData>( MAP_SQUARE_COUNT );
+		ExecuteAllSquare( mapSquare => {
 			if (mapSquare.terrain != eTerrain.Room) return;
 
-			roomSquareList.Add(mapSquare);
-		});
+			roomSquareList.Add( mapSquare );
+		} );
 		// キャラクター配置
-		SetCharacter(floorMaster.enemyTableID, roomSquareList);
+		SetCharacter( floorMaster.enemyTableID, roomSquareList );
 		// アイテム配置
-		SetFloorItem(floorMaster.itemTableID, 8, roomSquareList);
+		SetFloorItem( floorMaster.itemTableID, 8, roomSquareList );
+
+		for (int i = 0; i < 8; i++) {
+			if (IsEmpty( roomSquareList )) break;
+
+			MapSquareData square = roomSquareList[Random.Range( 0, roomSquareList.Count )];
+			TrapManager.instance.CreateTrap( 0, square );
+			roomSquareList.Remove( square );
+		}
+
 		// フロアを終了していない状態にする
 		_endReason = eFloorEndReason.Invalid;
 		// フェードイン
@@ -78,16 +87,16 @@ public class FloorProcessor {
 	/// </summary>
 	/// <param name="enemyTableID"></param>
 	/// <param name="roomSquareList"></param>
-	private void SetCharacter(int enemyTableID, List<MapSquareData> roomSquareList) {
+	private void SetCharacter( int enemyTableID, List<MapSquareData> roomSquareList ) {
 		// プレイヤー取得
 		CharacterBase player = GetPlayer();
 		if (player == null) return;
 		// プレイヤーを配置
-		MapSquareData playerSquare = roomSquareList[Random.Range(0, roomSquareList.Count)];
-		player.SetSquare(playerSquare);
-		roomSquareList.Remove(playerSquare);
+		MapSquareData playerSquare = roomSquareList[Random.Range( 0, roomSquareList.Count )];
+		player.SetSquare( playerSquare );
+		roomSquareList.Remove( playerSquare );
 		// エネミーを生成配置
-		SpawnEnemy(8, roomSquareList, enemyTableID);
+		SpawnEnemy( 8, roomSquareList, enemyTableID );
 	}
 
 	/// <summary>
@@ -95,38 +104,38 @@ public class FloorProcessor {
 	/// </summary>
 	/// <param name="spawnCount"></param>
 	/// <param name="candidateSquareList"></param>
-	private void SpawnEnemy(int spawnCount, List<MapSquareData> candidateSquareList, int enemyTableID) {
+	private void SpawnEnemy( int spawnCount, List<MapSquareData> candidateSquareList, int enemyTableID ) {
 		// エネミーテーブルを取得
-		List<int> enemyTable = GetEnemyTable(enemyTableID);
-		if (IsEmpty(enemyTable)) return;
+		List<int> enemyTable = GetEnemyTable( enemyTableID );
+		if (IsEmpty( enemyTable )) return;
 
 		for (int i = 0; i < spawnCount; i++) {
-			if (IsEmpty(candidateSquareList)) return;
+			if (IsEmpty( candidateSquareList )) return;
 			// 候補マスからランダムに取得
-			MapSquareData spawnSquare = candidateSquareList[Random.Range(0, candidateSquareList.Count)];
+			MapSquareData spawnSquare = candidateSquareList[Random.Range( 0, candidateSquareList.Count )];
 			// テーブルからランダムに出現エネミーのマスターIDを取得
-			int enemyID = enemyTable[Random.Range(0, enemyTable.Count)];
+			int enemyID = enemyTable[Random.Range( 0, enemyTable.Count )];
 			// エネミー生成
-			UseEnemy(spawnSquare, enemyID);
-			candidateSquareList.Remove(spawnSquare);
+			UseEnemy( spawnSquare, enemyID );
+			candidateSquareList.Remove( spawnSquare );
 		}
 	}
 
 	/// <summary>
 	/// 床落ちアイテムの生成
 	/// </summary>
-	private void SetFloorItem(int itemDropTableID, int createCount, List<MapSquareData> roomSquareList) {
+	private void SetFloorItem( int itemDropTableID, int createCount, List<MapSquareData> roomSquareList ) {
 		// アイテムドロップテーブル取得
-		List<int> itemDropTable = GetItemDropTable(itemDropTableID);
-		if (IsEmpty(itemDropTable)) return;
+		List<int> itemDropTable = GetItemDropTable( itemDropTableID );
+		if (IsEmpty( itemDropTable )) return;
 
 		for (int i = 0; i < createCount; i++) {
-			if (IsEmpty(roomSquareList)) break;
+			if (IsEmpty( roomSquareList )) break;
 			// 候補マスからランダムに取得
-			MapSquareData itemSquare = roomSquareList[Random.Range(0, roomSquareList.Count)];
-			roomSquareList.Remove(itemSquare);
-			int itemID = itemDropTable[Random.Range(0, itemDropTable.Count)];
-			CreateFloorItem(itemID, itemSquare);
+			MapSquareData itemSquare = roomSquareList[Random.Range( 0, roomSquareList.Count )];
+			roomSquareList.Remove( itemSquare );
+			int itemID = itemDropTable[Random.Range( 0, itemDropTable.Count )];
+			CreateFloorItem( itemID, itemSquare );
 		}
 	}
 
@@ -138,23 +147,24 @@ public class FloorProcessor {
 		// フェードアウト
 		await FadeManager.instance.FadeOut();
 		// 全キャラクターのフロア終了時処理
-		ExecuteAllCharacter(OnEndFloorCharacter);
+		ExecuteAllCharacter( OnEndFloorCharacter );
 		// 床落ちアイテム全削除
-		ExecuteAllItem(OnEndFloorItem);
+		ExecuteAllItem( OnEndFloorItem );
+		// 罠全削除
+		TrapManager.instance.ExecuteAllTrap( TrapManager.instance.RemoveTrap );
 	}
 
 	/// <summary>
 	/// フロア終了時のキャラクターの処理
 	/// </summary>
 	/// <param name="character"></param>
-	private void OnEndFloorCharacter(CharacterBase character) {
+	private void OnEndFloorCharacter( CharacterBase character ) {
 		// エネミーなら削除
 		var enemy = character as EnemyCharacter;
 		if (enemy != null) {
 			// エネミーなら削除
-			UnuseEnemy(enemy);
-		}
-		else {
+			UnuseEnemy( enemy );
+		} else {
 			// フロア終了時処理
 			character.OnEndFloor();
 		}
@@ -163,18 +173,18 @@ public class FloorProcessor {
 	/// フロア終了時のアイテム処理
 	/// </summary>
 	/// <param name="item"></param>
-	private void OnEndFloorItem(ItemBase item) {
+	private void OnEndFloorItem( ItemBase item ) {
 		// 床落ちアイテムなら削除
 		if (item.posX < 0 || item.posY < 0) return;
 
-		RemoveItem(item);
+		RemoveItem( item );
 	}
 
 	/// <summary>
 	/// フロア終了
 	/// </summary>
 	/// <param name="endReason"></param>
-	private void EndFloor(eFloorEndReason endReason) {
+	private void EndFloor( eFloorEndReason endReason ) {
 		_endReason = endReason;
 		switch (_endReason) {
 			case eFloorEndReason.Dead:
@@ -182,7 +192,7 @@ public class FloorProcessor {
 			case eFloorEndReason.Stair:
 				// 階段で次の階層へ（階数+1する）
 				UserData currentData = UserDataHolder.currentData;
-				currentData.SetFloorCount(currentData.floorCount + 1);
+				currentData.SetFloorCount( currentData.floorCount + 1 );
 				break;
 		}
 

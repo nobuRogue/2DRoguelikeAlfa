@@ -21,6 +21,7 @@ public class MasterDataManager {
 	public static List<List<Entity_MessageData.Param>> messageData = null;
 
 	public static List<List<Entity_ItemData.Param>> itemData = null;
+	public static List<Entity_TrapData.Param> trapData = null;
 
 	// 行動の効果関連
 	public static List<List<Entity_ActionData.Param>> actionData = null;
@@ -30,16 +31,17 @@ public class MasterDataManager {
 	/// 全てのマスターデータを読み込む
 	/// </summary>
 	public static void LoadAllData() {
-		floorData = Load<Entity_FloorData, Entity_FloorData.Sheet, Entity_FloorData.Param>("FloorData");
-		enemyTableData = Load<Entity_EnemyTable, Entity_EnemyTable.Sheet, Entity_EnemyTable.Param>("EnemyTable");
-		itemDropTableData = Load<Entity_ItemDropTable, Entity_ItemDropTable.Sheet, Entity_ItemDropTable.Param>("ItemDropTable");
-		characterData = Load<Entity_CharacterData, Entity_CharacterData.Sheet, Entity_CharacterData.Param>("CharacterData");
-		messageData = Load<Entity_MessageData, Entity_MessageData.Sheet, Entity_MessageData.Param>("MessageData");
+		floorData = Load<Entity_FloorData, Entity_FloorData.Sheet, Entity_FloorData.Param>( "FloorData" );
+		enemyTableData = Load<Entity_EnemyTable, Entity_EnemyTable.Sheet, Entity_EnemyTable.Param>( "EnemyTable" );
+		itemDropTableData = Load<Entity_ItemDropTable, Entity_ItemDropTable.Sheet, Entity_ItemDropTable.Param>( "ItemDropTable" );
+		characterData = Load<Entity_CharacterData, Entity_CharacterData.Sheet, Entity_CharacterData.Param>( "CharacterData" );
+		messageData = Load<Entity_MessageData, Entity_MessageData.Sheet, Entity_MessageData.Param>( "MessageData" );
 
-		itemData = Load<Entity_ItemData, Entity_ItemData.Sheet, Entity_ItemData.Param>("ItemData");
+		itemData = Load<Entity_ItemData, Entity_ItemData.Sheet, Entity_ItemData.Param>( "ItemData" );
+		trapData = Load<Entity_TrapData, Entity_TrapData.Sheet, Entity_TrapData.Param>( "TrapData" )[0];
 
-		actionData = Load<Entity_ActionData, Entity_ActionData.Sheet, Entity_ActionData.Param>("ActionData");
-		effectData = Load<Entity_ActionEffectData, Entity_ActionEffectData.Sheet, Entity_ActionEffectData.Param>("ActionEffectData");
+		actionData = Load<Entity_ActionData, Entity_ActionData.Sheet, Entity_ActionData.Param>( "ActionData" );
+		effectData = Load<Entity_ActionEffectData, Entity_ActionEffectData.Sheet, Entity_ActionEffectData.Param>( "ActionEffectData" );
 	}
 
 	/// <summary>
@@ -50,21 +52,30 @@ public class MasterDataManager {
 	/// <typeparam name="T3"></typeparam>
 	/// <param name="dataName">ScriptableObjectファイル名</param>
 	/// <returns></returns>											↓ジェネリッククラス T1 はScriptableObject を継承したクラスに限られる
-	private static List<List<T3>> Load<T1, T2, T3>(string dataName) where T1 : ScriptableObject {
+	private static List<List<T3>> Load<T1, T2, T3>( string dataName ) where T1 : ScriptableObject {
 		// ファイルを読み込む
-		T1 sourceData = Resources.Load<T1>(_DATA_PATH + dataName);
+		T1 sourceData = Resources.Load<T1>( _DATA_PATH + dataName );
 		// 名称指定でシートを取得
-		FieldInfo sheetField = typeof(T1).GetField("sheets");
-		List<T2> sheetListData = sheetField.GetValue(sourceData) as List<T2>;
+		FieldInfo sheetField = typeof( T1 ).GetField( "sheets" );
+		List<T2> sheetListData = sheetField.GetValue( sourceData ) as List<T2>;
 
 		// 名称指定でフィールドを取得
-		FieldInfo listField = typeof(T2).GetField("list");
+		FieldInfo listField = typeof( T2 ).GetField( "list" );
 		List<List<T3>> paramList = new List<List<T3>>();
 		foreach (object elem in sheetListData) {
-			List<T3> param = listField.GetValue(elem) as List<T3>;
-			paramList.Add(param);
+			List<T3> param = listField.GetValue( elem ) as List<T3>;
+			paramList.Add( param );
 		}
 		return paramList;
+	}
+
+	public static Entity_TrapData.Param GetTrapData( int ID ) {
+		for (int i = 0; i < trapData.Count; i++) {
+			if (trapData[i].ID != ID) continue;
+
+			return trapData[i];
+		}
+		return null;
 	}
 
 }
